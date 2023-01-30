@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "noEmit": false,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "module": "commonjs",
+    "paths": {
+      "Lib/*": [
+        "./src/Lib/*"
+      ],
+      "Services/*": [
+        "./src/Services/*"
+      ],
+      "Models/*": [
+        ".src/Models/*"
+      ],
+      "Controllers/*": [
+        "./src/Controllers/*"
+      ],
+      "Infra/*": [
+        "./src/Infra/*"
+      ],
+      "Src/*": [
+        "./src/*"
+      ]
+    },
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "skipLibCheck": true
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
