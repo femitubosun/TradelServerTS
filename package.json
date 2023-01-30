@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only --no-notify -r tsconfig-paths/register src/index.ts",
+    "prod": "node dist/index.js",
     "test": "jest",
-    "build": "tsc",
+    "build": "tsc && resolve-tspaths",
     "test:watch": "jest --watch --verbose",
     "lint": "eslint . --ext .ts"
   },
@@ -52,6 +53,7 @@
     "multer": "1.4.5-lts.1",
     "openapi-types": "^12.0.2",
     "reflect-metadata": "^0.1.13",
+    "resolve-tspaths": "^0.8.3",
     "swagger-jsdoc": "^6.2.5",
     "swagger-ui-express": "^4.5.0",
     "tsyringe": "^4.7.0",
