@@ -1,5 +1,5 @@
 import winston from "winston";
-import { ILoggingDriver } from "Infra/Internal/Logging/ILoggingDriver";
+import { ILoggingDriver } from "Lib/Infra/Internal/Logging/ILoggingDriver";
 
 export class WinstonDriver implements ILoggingDriver {
   winston: winston.Logger;

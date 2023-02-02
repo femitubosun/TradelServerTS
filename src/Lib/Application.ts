@@ -1,16 +1,21 @@
-import Express from "Infra/Internal/Express";
-import { expressConfig } from "Src/Config";
-import { SERVER_STARTED } from "Src/Utils/Messages";
+import Express from "Lib/Infra/Internal/Express";
+import { DBContext } from "Lib/Infra/Internal/DBContext";
+import { expressConfig } from "AppConfig/expressConfig";
+import { SERVER_STARTED } from "Utils/Messages";
+import { DependencyContainer } from "tsyringe";
 
 class Application {
   server: any;
   express: Express;
+  container: DependencyContainer;
 
-  constructor() {
-    this.express = new Express();
+  constructor(container: DependencyContainer) {
+    console.clear();
+    this.container = container;
+    const dbContext: DBContext = this.container.resolve(DBContext);
+    this.express = new Express(dbContext);
     const port = expressConfig.PORT;
     this.server = this.express.app.listen(port, () => {
-      console.clear();
       this.express.loggingProvider.info(`${SERVER_STARTED} PORT: ${port}`);
       this.express.loggingProvider.info(`HEALTH: ${port}/ping`);
     });

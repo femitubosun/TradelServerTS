@@ -1,0 +1,24 @@
+[ERROR] 2023-02-01 17:41:40 TypeError: Cannot read properties of undefined (reading 'connect')
+[ERROR] 2023-02-01 17:41:54 TypeError: Cannot read properties of undefined (reading 'connect')
+[ERROR] 2023-02-01 17:42:06 TypeError: Cannot read properties of undefined (reading 'connect')
+[ERROR] 2023-02-01 17:42:28 TypeError: Cannot read properties of undefined (reading 'connect')
+[ERROR] 2023-02-02 10:24:18 TypeError: Cannot read properties of undefined (reading 'loggingProvider')
+[ERROR] 2023-02-02 10:24:24 TypeError: Cannot read properties of undefined (reading 'loggingProvider')
+[ERROR] 2023-02-02 10:25:13 TypeError: Cannot read properties of undefined (reading 'loggingProvider')
+[ERROR] 2023-02-02 10:25:18 TypeError: Cannot read properties of undefined (reading 'loggingProvider')
+[ERROR] 2023-02-02 10:25:33 TypeError: Cannot read properties of undefined (reading 'loggingProvider')
+[ERROR] 2023-02-02 10:26:29 TypeError: Cannot read properties of undefined (reading 'loggingProvider')
+[ERROR] 2023-02-02 10:26:35 TypeError: Cannot read properties of undefined (reading 'loggingProvider')
+[ERROR] 2023-02-02 10:42:29 EntityNotFoundError: Could not find any entity of type "SettingsUserRoles" matching: {
+    "name": "super_admin"
+}
+[ERROR] 2023-02-02 10:43:13 EntityNotFoundError: Could not find any entity of type "SettingsUserRoles" matching: {
+    "name": "super_admin"
+}
+[ERROR] 2023-02-02 10:43:25 ReferenceError: role is not defined
+[ERROR] 2023-02-02 10:44:24 TypeError: Class constructor SettingsUserRoles cannot be invoked without 'new'
+[ERROR] 2023-02-02 10:44:43 ReferenceError: a is not defined
+[ERROR] 2023-02-02 10:44:55 QueryFailedError: null value in column "isActive" of relation "settings_user_roles" violates not-null constraint
+[ERROR] 2023-02-02 11:59:22 ReferenceError: role is not defined
+[ERROR] 2023-02-02 12:09:42 TypeError: Cannot read properties of undefined (reading 'connect')
+[ERROR] 2023-02-02 18:39:55 EntityMetadataNotFoundError: No metadata for "SettingsUserRoles" was found.

@@ -11,20 +11,23 @@
       "Lib/*": [
         "./src/Lib/*"
       ],
-      "Services/*": [
-        "./src/Services/*"
+      "Domain/*": [
+        "./src/Domain/*"
       ],
-      "Models/*": [
-        ".src/Models/*"
+      "Utils/*": [
+        "./src/Utils/*"
       ],
-      "Controllers/*": [
-        "./src/Controllers/*"
+      "Logic/*": [
+        "./src/Logic/*"
       ],
-      "Infra/*": [
-        "./src/Infra/*"
+      "Web/*": [
+        "./src/Web/*"
       ],
-      "Src/*": [
-        "./src/*"
+      "AppConfig/*": [
+        "./src/Config/*"
+      ],
+      "Entities/*": [
+        "./src/Entities/*"
       ]
     },
     "outDir": "./dist",

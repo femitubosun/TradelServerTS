@@ -1,0 +1,16 @@
+POST http://localhost:8000/Interface/Initiate/CustomerSignUp
+Content-Type: application/json
+
+{
+  "email": "Fire 1"
+}
+
+###
+POST http://localhost:8000/api/v1/auth/initiate/customer-signup
+Content-Type: application/json
+
+{
+  "email": "Fire rules"
+}
+
+###

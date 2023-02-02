@@ -1,9 +1,9 @@
 import { WinstonDriver } from "./WinstonDriver";
 import { LoggingProvider } from "./LoggingProvider";
-import { PROVIDER_NOT_FOUND } from "Src/Utils/Messages";
-import { loggingConfig } from "Src/Config";
+import { PROVIDER_NOT_FOUND } from "Utils/Messages";
+import { loggingConfig } from "AppConfig/loggingConfig";
 
-export default class LoggingFactory {
+export class LoggingFactory {
   public static build() {
     if (LoggingFactory.getCurrentProvider() === "winston") {
       return new LoggingProvider(new WinstonDriver());

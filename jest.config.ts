@@ -8,8 +8,6 @@ export default {
   roots: ["<rootDir>"],
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   moduleNameMapper: {
-    "^Logic/(.*)$": "<rootDir>/logic/$1",
-    "^Web/(.*)$": "<rootDir>/web/$1",
-    "^Domain/(.*)$": "<rootDir>/domain/$1",
+    "^Services/(.*)$": "<rootDir>/src/Services/$1",
   },
 };

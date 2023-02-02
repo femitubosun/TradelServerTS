@@ -1,5 +1,5 @@
 import winston from "winston";
-import { expressConfig, loggingConfig } from "Src/Config/";
+import { expressConfig } from "AppConfig/index";
 
 const transports = [];
 
