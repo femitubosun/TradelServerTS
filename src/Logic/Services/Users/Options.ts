@@ -23,3 +23,16 @@ export type CreateUserOptions = Pick<
   IUser,
   "email" | "firstName" | "lastName" | "password" | "role"
 >;
+
+export interface UpdateUserRecordOptions {
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  password?: string;
+  isFirstTimeLogin?: boolean;
+  hasVerifiedEmail?: boolean;
+  lastLoginDate?: Date;
+  role: any;
+  isActive?: boolean;
+  isDeleted?: boolean;
+}
