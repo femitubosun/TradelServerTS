@@ -3,6 +3,7 @@ import ApplicationError from "./ApplicationError";
 import { HttpCode } from "./httpCode.enum";
 import { CRITICAL_ERROR_EXITING, INTERNAL_SERVER_ERROR } from "Utils/Messages";
 
+// https://www.codeconcisely.com/posts/how-to-handle-errors-in-express-with-typescript/
 class ErrorHandler {
   private isTrustedError(error: Error): boolean {
     if (error instanceof ApplicationError) {

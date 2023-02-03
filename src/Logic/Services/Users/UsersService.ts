@@ -2,6 +2,8 @@ import { CreateUserOptions, IUser, UpdateUserRecordOptions } from "./Options";
 import { autoInjectable } from "tsyringe";
 import { DBContext } from "Lib/Infra/Internal/DBContext";
 import { Users } from "Domain/Entities/Users";
+import { DATABASE_ERROR, INTERNAL_SERVER_ERROR } from "Utils/Messages";
+import { InternalServerError } from "Logic/Exceptions";
 
 @autoInjectable()
 class UsersService {
@@ -18,7 +20,12 @@ class UsersService {
     user.lastName = createUserOptions.lastName;
     user.password = createUserOptions.password;
     user.role = createUserOptions.role;
-    await this.userRepo.save(user);
+    try {
+      await this.userRepo.save(user);
+    } catch (e) {
+      console.error();
+      throw new InternalServerError(DATABASE_ERROR);
+    }
     return;
   }
 

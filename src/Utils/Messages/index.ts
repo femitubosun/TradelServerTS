@@ -13,3 +13,5 @@ export const EMAIL_IN_USE_ERROR = "Email is Already in Use";
 export const INTERNAL_SERVER_ERROR = "Internal Server Error";
 export const CRITICAL_ERROR_EXITING =
   "Application Encountered a Critical Error. Exiting";
+export const ROLE_DOES_NOT_EXIST = "Role with this name does not exist";
+export const DATABASE_ERROR = "Database Error";

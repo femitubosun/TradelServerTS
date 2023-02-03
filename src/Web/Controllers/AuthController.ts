@@ -36,19 +36,16 @@ class AuthController {
       roleName: "merchant",
     };
 
-    throw new Error("Find an Error");
-    try {
-      await SignupUserWithRoleUseCase.execute(
-        dbContext,
-        signupUserWithRoleOptions
-      );
-      return res.status(201).json({
-        status: "success",
-        status_code: 201,
-        message: "Merchant Signed Up Successfully",
-        results: null,
-      });
-    } catch (e) {}
+    await SignupUserWithRoleUseCase.execute(
+      dbContext,
+      signupUserWithRoleOptions
+    );
+    return res.status(201).json({
+      status: "success",
+      status_code: 201,
+      message: "Merchant Signed Up Successfully",
+      results: null,
+    });
   }
 }
 
