@@ -22,3 +22,8 @@
 [ERROR] 2023-02-02 11:59:22 ReferenceError: role is not defined
 [ERROR] 2023-02-02 12:09:42 TypeError: Cannot read properties of undefined (reading 'connect')
 [ERROR] 2023-02-02 18:39:55 EntityMetadataNotFoundError: No metadata for "SettingsUserRoles" was found.
+[ERROR] 2023-02-03 09:06:30 Find an Error
+[ERROR] 2023-02-03 09:07:55 Find an Error
+[ERROR] 2023-02-03 09:17:42 Email is Already in Use
+[ERROR] 2023-02-03 09:31:01 Email is Already in Use
+[ERROR] 2023-02-03 09:31:15 Email is Already in Use

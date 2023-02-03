@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { container } from "tsyringe";
 import { DBContext } from "Lib/Infra/Internal/DBContext";
 import { keysSnakeCaseToCamelCase } from "Utils/keysSnakeCaseToCamelCase";
@@ -40,7 +40,6 @@ class AuthController {
       dbContext,
       signupUserWithRoleOptions
     );
-
     return res.status(201).json({
       status: "success",
       status_code: 201,

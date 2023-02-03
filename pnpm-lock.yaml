@@ -26,6 +26,7 @@ specifiers:
   dotenv: ^16.0.3
   eslint: 8.22.0
   express: ^4.18.2
+  express-async-errors: ^3.1.1
   express-ping: ^1.4.0
   express-validator: ^6.14.2
   helmet: ^6.0.0
@@ -63,6 +64,7 @@ dependencies:
   debug: 4.3.4
   dotenv: 16.0.3
   express: 4.18.2
+  express-async-errors: 3.1.1_express@4.18.2
   express-ping: 1.4.0
   express-validator: 6.14.2
   helmet: 6.0.0
@@ -2107,6 +2109,14 @@ packages:
       jest-message-util: 29.2.1
       jest-util: 29.2.1
     dev: true
+
+  /express-async-errors/3.1.1_express@4.18.2:
+    resolution: {integrity: sha512-h6aK1da4tpqWSbyCa3FxB/V6Ehd4EEB15zyQq9qe75OZBp0krinNKuH4rAY+S/U/2I36vdLAUFSjQJ+TFmODng==}
+    peerDependencies:
+      express: ^4.16.2
+    dependencies:
+      express: 4.18.2
+    dev: false
 
   /express-ping/1.4.0:
     resolution: {integrity: sha512-EY3jqP2PgeodX7UHR3SQguHuRhdLqR4zXEZOUNiTF5jgFRAm3agsN5MBPr0xLZNU9T4zE10S6KIq+7Uj7uuMOQ==}

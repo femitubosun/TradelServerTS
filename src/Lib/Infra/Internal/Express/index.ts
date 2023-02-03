@@ -4,8 +4,9 @@ import cors from "cors";
 import helmet from "helmet";
 import { expressConfig } from "AppConfig/expressConfig";
 import { LoggingFactory, ILoggingDriver } from "Lib/Infra/Internal/Logging";
+import "express-async-errors";
 import routes from "Web/Routers";
-
+import { errorHandler } from "Logic/Exceptions/ErrorHandler";
 import {
   DATABASE_CONNECTED,
   DATABASE_CONNECTION_ERROR,
@@ -37,11 +38,12 @@ export default class Express {
       });
     this.#attachMiddlewares();
     this.#attachRouters();
+    this.#attachErrorHandlers();
   }
 
   #attachMiddlewares() {
     this.app.use(bodyParser.urlencoded({ extended: false }));
-    this.app.use(this.#clientErrorHandler);
+
     this.app.use(helmet());
     this.app.use(express.json());
     this.app.use(
@@ -66,6 +68,7 @@ export default class Express {
 
   #attachRouters() {
     this.loggingProvider.info(ROUTES_ATTACHED);
+
     this.app.use("/Interface", routes);
   }
 
@@ -73,14 +76,21 @@ export default class Express {
     return expressConfig.CORS_WHITELIST;
   }
 
-  #clientErrorHandler(
-    err: any,
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): void {
-    if (err.hasOwnProperty("thrown")) {
-      res.status(err["status"].send({ error: err.message }));
-    }
+  #attachErrorHandlers() {
+    // https://www.codeconcisely.com/posts/how-to-handle-errors-in-express-with-typescript/
+
+    this.app.use(
+      (err: Error, req: Request, res: Response, next: NextFunction) => {
+        this.loggingProvider.error(err.message);
+
+        next(err);
+      }
+    );
+
+    this.app.use(
+      (err: Error, req: Request, res: Response, next: NextFunction) => {
+        errorHandler.handleError(err, res);
+      }
+    );
   }
 }
