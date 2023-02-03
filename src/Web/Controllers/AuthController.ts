@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { container } from "tsyringe";
 import { DBContext } from "Lib/Infra/Internal/DBContext";
 import { keysSnakeCaseToCamelCase } from "Utils/keysSnakeCaseToCamelCase";
@@ -36,17 +36,19 @@ class AuthController {
       roleName: "merchant",
     };
 
-    await SignupUserWithRoleUseCase.execute(
-      dbContext,
-      signupUserWithRoleOptions
-    );
-
-    return res.status(201).json({
-      status: "success",
-      status_code: 201,
-      message: "Merchant Signed Up Successfully",
-      results: null,
-    });
+    throw new Error("Find an Error");
+    try {
+      await SignupUserWithRoleUseCase.execute(
+        dbContext,
+        signupUserWithRoleOptions
+      );
+      return res.status(201).json({
+        status: "success",
+        status_code: 201,
+        message: "Merchant Signed Up Successfully",
+        results: null,
+      });
+    } catch (e) {}
   }
 }
 

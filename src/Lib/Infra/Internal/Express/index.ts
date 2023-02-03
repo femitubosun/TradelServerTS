@@ -4,6 +4,7 @@ import cors from "cors";
 import helmet from "helmet";
 import { expressConfig } from "AppConfig/expressConfig";
 import { LoggingFactory, ILoggingDriver } from "Lib/Infra/Internal/Logging";
+import "express-async-errors";
 import routes from "Web/Routers";
 
 import {
@@ -37,11 +38,16 @@ export default class Express {
       });
     this.#attachMiddlewares();
     this.#attachRouters();
+    // this.app.use((err: any, req: any, res: any, next: any) => {
+    //   console.error(err.stack);
+    //   res.status(500).send("Something broke!");
+    // });
+    this.app.use(this.clientErrorHandler);
   }
 
   #attachMiddlewares() {
     this.app.use(bodyParser.urlencoded({ extended: false }));
-    this.app.use(this.#clientErrorHandler);
+
     this.app.use(helmet());
     this.app.use(express.json());
     this.app.use(
@@ -66,6 +72,7 @@ export default class Express {
 
   #attachRouters() {
     this.loggingProvider.info(ROUTES_ATTACHED);
+
     this.app.use("/Interface", routes);
   }
 
@@ -73,14 +80,18 @@ export default class Express {
     return expressConfig.CORS_WHITELIST;
   }
 
-  #clientErrorHandler(
+  //TODO custom exceptions
+  public clientErrorHandler(
     err: any,
     req: Request,
     res: Response,
     next: NextFunction
   ): void {
-    if (err.hasOwnProperty("thrown")) {
-      res.status(err["status"].send({ error: err.message }));
-    }
+    res.status(500).send({
+      error: err.message,
+      status: "error",
+      status_code: 500,
+      message: err.message,
+    });
   }
 }
