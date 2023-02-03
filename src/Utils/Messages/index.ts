@@ -15,3 +15,4 @@ export const CRITICAL_ERROR_EXITING =
   "Application Encountered a Critical Error. Exiting";
 export const ROLE_DOES_NOT_EXIST = "Role with this name does not exist";
 export const DATABASE_ERROR = "Database Error";
+export const SIGNIN_SUCCESSFUL = "Sign in Successful";

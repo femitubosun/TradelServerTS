@@ -12,3 +12,14 @@ export const AppDataSource = new DataSource({
   entities: [SettingsUserRoles, Users],
   synchronize: true,
 });
+
+export const TestDataSource = new DataSource({
+  type: "postgres",
+  host: dbConfig.TEST_HOST,
+  port: dbConfig.TEST_PORT,
+  username: dbConfig.TEST_USERNAME,
+  password: dbConfig.TEST_PASSWORD,
+  database: dbConfig.TEST_DB_NAME,
+  entities: [SettingsUserRoles, Users],
+  synchronize: true,
+});

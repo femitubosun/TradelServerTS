@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 
-const userSignupValidator = [
+const userSignUpValidator = [
   body("email", "Email should be an email").isEmail(),
 
   body("first_name", "First name should be at least 3 characters").isLength({
@@ -12,4 +12,4 @@ const userSignupValidator = [
   body("password").isLength({ min: 7 }),
 ];
 
-export default userSignupValidator;
+export default userSignUpValidator;

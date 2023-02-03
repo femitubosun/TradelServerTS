@@ -3,6 +3,7 @@ import { DBContext } from "Lib/Infra/Internal/DBContext";
 import { expressConfig } from "AppConfig/expressConfig";
 import { SERVER_STARTED } from "Utils/Messages";
 import { DependencyContainer } from "tsyringe";
+import { AppDataSource } from "Lib/Infra/Internal/DBContext/DataSource";
 
 class Application {
   server: any;

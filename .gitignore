@@ -205,3 +205,4 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+!/src/Lib/Infra/Internal/Express/Express.spec.ts
