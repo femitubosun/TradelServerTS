@@ -1,1 +1,1 @@
-export * from "./SignupUserWithRoleUseCase";
+export * from "./SignUpUserWithRoleUseCase";

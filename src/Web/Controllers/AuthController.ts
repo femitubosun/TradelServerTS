@@ -3,26 +3,21 @@ import { container } from "tsyringe";
 import { DBContext } from "Lib/Infra/Internal/DBContext";
 import { keysSnakeCaseToCamelCase } from "Utils/keysSnakeCaseToCamelCase";
 import {
-  SignupUserWithRoleUseCase,
-  SignupUserWithRoleOptions,
+  SignUpUserWithRoleUseCase,
+  SignUpUserWithRoleDTO,
 } from "Logic/UseCases/Auth";
 import { HttpCode } from "Logic/Exceptions/httpCode.enum";
 import { SIGNIN_SUCCESSFUL } from "Utils/Messages";
 
-const dbContext = container.resolve(DBContext);
-
 class AuthController {
   public async signupCustomer(req: Request, res: Response) {
     const data: any = keysSnakeCaseToCamelCase(req.body);
-    const signupUserWithRoleOptions: SignupUserWithRoleOptions = {
+    const signUpUserWithRoleDTO: SignUpUserWithRoleDTO = {
       ...data,
       roleName: "customer",
     };
 
-    await SignupUserWithRoleUseCase.execute(
-      dbContext,
-      signupUserWithRoleOptions
-    );
+    await SignUpUserWithRoleUseCase.execute(signUpUserWithRoleDTO);
     return res.status(201).json({
       status: "Success",
       status_code: 201,
@@ -33,15 +28,11 @@ class AuthController {
 
   public async signupMerchant(req: Request, res: Response) {
     const data: any = keysSnakeCaseToCamelCase(req.body);
-    const signupUserWithRoleOptions: SignupUserWithRoleOptions = {
+    const signupUserWithRoleOptions: SignUpUserWithRoleDTO = {
       ...data,
       roleName: "merchant",
     };
-
-    await SignupUserWithRoleUseCase.execute(
-      dbContext,
-      signupUserWithRoleOptions
-    );
+    await SignUpUserWithRoleUseCase.execute(signupUserWithRoleOptions);
     return res.status(201).json({
       status: "success",
       status_code: 201,
@@ -49,6 +40,8 @@ class AuthController {
       results: null,
     });
   }
+
+  public async verifyEmail(req: Request, res: Response) {}
 
   public async emailSignIn(req: Request, res: Response) {
     res.status(HttpCode.OK).json({

@@ -19,12 +19,12 @@ export interface IUser {
   updatedAt: Date;
 }
 
-export type CreateUserOptions = Pick<
+export type CreateUserRecordDTO = Pick<
   IUser,
   "email" | "firstName" | "lastName" | "password" | "role"
 >;
 
-export interface UpdateUserRecordOptions {
+export interface UpdateUserRecordDTO {
   email?: string;
   firstName?: string;
   lastName?: string;

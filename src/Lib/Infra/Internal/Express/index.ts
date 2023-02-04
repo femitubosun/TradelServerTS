@@ -3,7 +3,10 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import helmet from "helmet";
 import { expressConfig } from "AppConfig/expressConfig";
-import { LoggingFactory, ILoggingDriver } from "Lib/Infra/Internal/Logging";
+import {
+  LoggingProviderFactory,
+  ILoggingDriver,
+} from "Lib/Infra/Internal/Logging";
 import "express-async-errors";
 import routes from "Web/Routers";
 import { errorHandler } from "Logic/Exceptions/ErrorHandler";
@@ -24,7 +27,7 @@ export default class Express {
   loggingProvider: ILoggingDriver;
 
   constructor(dbContext: any) {
-    this.loggingProvider = LoggingFactory.build();
+    this.loggingProvider = LoggingProviderFactory.build();
     this.dbContext = dbContext;
     this.#bootstrap();
   }
@@ -67,9 +70,8 @@ export default class Express {
   }
 
   #attachRouters() {
-    this.loggingProvider.info(ROUTES_ATTACHED);
-
     this.app.use("/Interface", routes);
+    this.loggingProvider.info(ROUTES_ATTACHED);
   }
 
   public static getCorsWhiteList(): Array<String> {
@@ -82,7 +84,6 @@ export default class Express {
     this.app.use(
       (err: Error, req: Request, res: Response, next: NextFunction) => {
         this.loggingProvider.error(err.message);
-
         next(err);
       }
     );

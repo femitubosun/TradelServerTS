@@ -1,3 +1,3 @@
 export * from "./ILoggingDriver";
-export * from "./LoggingFactory";
+export * from "./LoggingProviderFactory";
 export * from "./LoggingProvider";

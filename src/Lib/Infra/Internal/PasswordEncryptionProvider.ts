@@ -1,7 +1,7 @@
 import * as bcrypt from "bcrypt";
 import { encryptionConfig } from "AppConfig/index";
 
-export class PasswordEncryptionService {
+export class PasswordEncryptionProvider {
   public static hashPassword(password: string): string {
     return bcrypt.hashSync(password, encryptionConfig.SALT_ROUNDS);
   }

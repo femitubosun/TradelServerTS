@@ -25,4 +25,8 @@ routes.post(
   AuthController.emailSignIn
 );
 
+routes.get("/Initiate/StartVerifyEmail/", AuthController.verifyEmail);
+
+routes.post("/Initiate/VerifyEmail", AuthController.verifyEmail);
+
 export default routes;

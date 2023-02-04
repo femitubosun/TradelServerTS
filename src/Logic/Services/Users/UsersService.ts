@@ -1,8 +1,8 @@
-import { CreateUserOptions, IUser, UpdateUserRecordOptions } from "./Options";
+import { CreateUserRecordDTO, IUser, UpdateUserRecordDTO } from "./Options";
 import { autoInjectable } from "tsyringe";
 import { DBContext } from "Lib/Infra/Internal/DBContext";
 import { Users } from "Domain/Entities/Users";
-import { DATABASE_ERROR, INTERNAL_SERVER_ERROR } from "Utils/Messages";
+import { DATABASE_ERROR } from "Utils/Messages";
 import { InternalServerError } from "Logic/Exceptions";
 
 @autoInjectable()
@@ -13,13 +13,13 @@ class UsersService {
     this.userRepo = dbContext?.getEntityRepository(Users);
   }
 
-  public async createUserRecord(createUserOptions: CreateUserOptions) {
+  public async createUserRecord(createUserRecordDTO: CreateUserRecordDTO) {
     const user = new Users();
-    user.email = createUserOptions.email;
-    user.firstName = createUserOptions.firstName;
-    user.lastName = createUserOptions.lastName;
-    user.password = createUserOptions.password;
-    user.role = createUserOptions.role;
+    user.email = createUserRecordDTO.email;
+    user.firstName = createUserRecordDTO.firstName;
+    user.lastName = createUserRecordDTO.lastName;
+    user.password = createUserRecordDTO.password;
+    user.role = createUserRecordDTO.role;
     try {
       await this.userRepo.save(user);
     } catch (e) {
@@ -55,7 +55,7 @@ class UsersService {
 
   public async updateUserRecord(
     id: number,
-    updateUserRecordOptions: UpdateUserRecordOptions
+    updateUserRecordOptions: UpdateUserRecordDTO
   ): Promise<boolean> {
     return await this.userRepo.findOneAndUpdate(id, updateUserRecordOptions);
   }

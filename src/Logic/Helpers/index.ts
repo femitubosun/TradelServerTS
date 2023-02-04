@@ -1,1 +1,1 @@
-export * from "./PasswordEncryptionService";
+export * from "Lib/Infra/Internal/PasswordEncryptionProvider";
