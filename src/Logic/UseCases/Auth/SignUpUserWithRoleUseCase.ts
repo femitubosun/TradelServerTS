@@ -2,14 +2,7 @@ import UsersService from "Logic/Services/Users/UsersService";
 import SettingsUserRoleService from "Logic/Services/SettingsUserRole/SettingsUserRoleService";
 import { BadRequestError } from "Logic/Exceptions";
 import { EMAIL_IN_USE_ERROR, ROLE_DOES_NOT_EXIST } from "Utils/Messages";
-
-export type SignUpUserWithRoleDTO = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  roleName: string;
-};
+import { SignUpUserWithRoleDTO } from "Logic/UseCases/Auth/TypeSetting";
 
 export class SignUpUserWithRoleUseCase {
   public static async execute(

@@ -1,9 +1,13 @@
-import { CreateUserRecordDTO, IUser, UpdateUserRecordDTO } from "./Options";
 import { autoInjectable } from "tsyringe";
 import { DBContext } from "Lib/Infra/Internal/DBContext";
 import { Users } from "Domain/Entities/Users";
 import { DATABASE_ERROR } from "Utils/Messages";
 import { InternalServerError } from "Logic/Exceptions";
+import {
+  CreateUserRecordDTO,
+  IUser,
+  UpdateUserRecordDTO,
+} from "Logic/Services/Users/TypeSetting";
 
 @autoInjectable()
 class UsersService {

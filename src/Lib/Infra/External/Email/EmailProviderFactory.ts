@@ -1,5 +1,4 @@
 import { emailConfig } from "AppConfig/emailConfig";
-import { LoggingProvider } from "Lib/Infra/Internal/Logging";
 import { SendInBlueDriver } from "Lib/Infra/External/Email/SendInBlueDriver";
 import { EmailProvider } from "Lib/Infra/External/Email/EmailProvider";
 

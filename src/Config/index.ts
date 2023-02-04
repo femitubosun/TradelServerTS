@@ -4,3 +4,5 @@ export * from "./expressConfig";
 export * from "./loggingConfig";
 export * from "./dbConfig";
 export * from "./encryptionConfig";
+export * from "./jwtConfig";
+export * from "./emailConfig";

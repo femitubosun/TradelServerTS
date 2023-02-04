@@ -1,57 +1,57 @@
 import { Request, Response } from "express";
-import { container } from "tsyringe";
-import { DBContext } from "Lib/Infra/Internal/DBContext";
 import { keysSnakeCaseToCamelCase } from "Utils/keysSnakeCaseToCamelCase";
-import {
-  SignUpUserWithRoleUseCase,
-  SignUpUserWithRoleDTO,
-} from "Logic/UseCases/Auth";
+import { SignUpUserWithRoleUseCase } from "Logic/UseCases/Auth";
 import { HttpCode } from "Logic/Exceptions/httpCode.enum";
-import { SIGNIN_SUCCESSFUL } from "Utils/Messages";
+import { SIGN_IN_SUCCESSFUL } from "Utils/Messages";
+import { SignUpUserWithRoleDTO } from "Logic/UseCases/Auth/TypeSetting";
+import { SignInUserWithEmailUseCase } from "Logic/UseCases/Auth/SignInUserWithEmail.UseCase";
 
 class AuthController {
   public async signupCustomer(req: Request, res: Response) {
-    const data: any = keysSnakeCaseToCamelCase(req.body);
+    const payload: any = keysSnakeCaseToCamelCase(req.body);
     const signUpUserWithRoleDTO: SignUpUserWithRoleDTO = {
-      ...data,
+      ...payload,
       roleName: "customer",
     };
 
-    await SignUpUserWithRoleUseCase.execute(signUpUserWithRoleDTO);
+    const results = await SignUpUserWithRoleUseCase.execute(
+      signUpUserWithRoleDTO
+    );
     return res.status(201).json({
       status: "Success",
       status_code: 201,
       message: "Customer Signed Up Successfully",
-      results: null,
+      results,
     });
   }
 
   public async signupMerchant(req: Request, res: Response) {
-    const data: any = keysSnakeCaseToCamelCase(req.body);
+    const payload: any = keysSnakeCaseToCamelCase(req.body);
     const signupUserWithRoleOptions: SignUpUserWithRoleDTO = {
-      ...data,
+      ...payload,
       roleName: "merchant",
     };
-    await SignUpUserWithRoleUseCase.execute(signupUserWithRoleOptions);
+    const results = await SignUpUserWithRoleUseCase.execute(
+      signupUserWithRoleOptions
+    );
     return res.status(201).json({
       status: "success",
       status_code: 201,
       message: "Merchant Signed Up Successfully",
-      results: null,
+      results,
     });
   }
 
   public async verifyEmail(req: Request, res: Response) {}
 
   public async emailSignIn(req: Request, res: Response) {
+    const payload: any = keysSnakeCaseToCamelCase(req.body);
+    const results = await SignInUserWithEmailUseCase.execute(payload);
     res.status(HttpCode.OK).json({
       status: "Success",
       status_code: HttpCode.OK,
-      message: SIGNIN_SUCCESSFUL,
-      results: {
-        access_token:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiZW1haWwiOiJ0ZXN0QGVtYWlsLmNvbSIsImlhdCI6MTUxNjIzOTAyMn0.I3Ryi7y0Dco_wsPDwdUYnEyWRMsltjmopopbwM8E21Y",
-      },
+      message: SIGN_IN_SUCCESSFUL,
+      results,
     });
   }
 }
