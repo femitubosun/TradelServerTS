@@ -1,3 +1,9 @@
+import * as crypto from "crypto";
+
 export function generateToken(tokenLength: number): string {
-  return "";
+  return crypto
+    .randomBytes(tokenLength)
+    .toString("hex")
+    .slice(0, tokenLength)
+    .toUpperCase();
 }

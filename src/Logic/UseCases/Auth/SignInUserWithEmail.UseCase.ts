@@ -1,8 +1,7 @@
-import { JwtProvider } from "Lib/Infra/Internal/JwtProvider";
-import { PasswordEncryptionProvider } from "Lib/Infra/Internal/PasswordEncryptionProvider";
+import { JwtHelper, PasswordEncryptionHelper } from "Helpers/index";
 import UsersService from "Logic/Services/Users/UsersService";
 import { SignInUserDTO } from "Logic/UseCases/Auth/TypeSetting";
-import { BadRequestError } from "Logic/Exceptions";
+import { BadRequestError } from "Exceptions/index";
 import { CHECK_EMAIL_AND_PASSWORD } from "Utils/Messages";
 import { SignInUserWithEmailUseCaseReturnType } from "Logic/UseCases/Auth/TypeSetting/TokenPayloadType";
 
@@ -16,13 +15,13 @@ export class SignInUserWithEmailUseCase {
 
     if (!user) throw new BadRequestError(CHECK_EMAIL_AND_PASSWORD);
 
-    const isMatch = PasswordEncryptionProvider.verifyPassword(
+    const isMatch = PasswordEncryptionHelper.verifyPassword(
       password,
       user.password
     );
     if (!isMatch) throw new BadRequestError(CHECK_EMAIL_AND_PASSWORD);
 
-    const token = JwtProvider.signUser(user);
+    const token = JwtHelper.signUser(user);
 
     return {
       user: {

@@ -20,8 +20,14 @@
       "Web/*": [
         "./src/Web/*"
       ],
-      "AppConfig/*": [
+      "Config/*": [
         "./src/Config/*"
+      ],
+      "Helpers/*": [
+        "./src/Helpers/*"
+      ],
+      "Exceptions/*": [
+        "./src/Exceptions/*"
       ],
       "Entities/*": [
         "./src/Entities/*"

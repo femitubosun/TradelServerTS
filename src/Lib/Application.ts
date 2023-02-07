@@ -1,6 +1,6 @@
 import Express from "Lib/Infra/Internal/Express";
 import { DBContext } from "Lib/Infra/Internal/DBContext";
-import { expressConfig } from "AppConfig/expressConfig";
+import { expressConfig } from "Config/index";
 import { SERVER_STARTED } from "Utils/Messages";
 import { DependencyContainer } from "tsyringe";
 

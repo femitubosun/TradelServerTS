@@ -1,12 +1,12 @@
 import { CustomBaseEntity } from "Entities/Base";
 import { Entity, OneToOne, Column, JoinColumn } from "typeorm";
-import { Users } from "Entities/Users";
+import { User } from "Entities/User";
 
 @Entity()
-export class Customers extends CustomBaseEntity {
-  @OneToOne(() => Users)
+export class Customer extends CustomBaseEntity {
+  @OneToOne(() => User)
   @JoinColumn()
-  user: Users;
+  user: User;
 
   @Column({
     nullable: true,

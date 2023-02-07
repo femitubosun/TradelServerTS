@@ -1,6 +1,6 @@
 import { autoInjectable } from "tsyringe";
 import { DBContext } from "Lib/Infra/Internal/DBContext";
-import { Customers } from "Entities/Customers";
+import { Customer } from "Entities/Customer";
 import { CreateCustomerArgs } from "Logic/Services/Customers/TypeChecking/CreateCustomerArgs";
 import { NULL_OBJECT } from "Utils/Messages";
 
@@ -9,7 +9,7 @@ class CustomersService {
   private customersRepository: any;
 
   constructor(private dbContext?: DBContext) {
-    this.customersRepository = dbContext?.getEntityRepository(Customers);
+    this.customersRepository = dbContext?.getEntityRepository(Customer);
   }
 
   //TODO Add A Database Transaction to This
@@ -19,7 +19,7 @@ class CustomersService {
 
     if (foundCustomer) return NULL_OBJECT;
 
-    const customer = new Customers();
+    const customer = new Customer();
     Object.assign(customer, {
       user,
     });

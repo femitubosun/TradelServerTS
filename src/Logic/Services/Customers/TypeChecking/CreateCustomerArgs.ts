@@ -1,7 +1,7 @@
 import { QueryRunner } from "typeorm";
-import { Users } from "Entities/Users";
+import { User } from "Entities/User";
 
 export class CreateCustomerArgs {
-  user: Users;
+  user: User;
   queryRunner: QueryRunner;
 }

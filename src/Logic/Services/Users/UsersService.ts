@@ -1,8 +1,8 @@
 import { autoInjectable } from "tsyringe";
 import { DBContext } from "Lib/Infra/Internal/DBContext";
-import { Users } from "Entities/Users";
-import { DATABASE_ERROR, NULL_OBJECT } from "Utils/Messages";
-import { InternalServerError, TypeOrmError } from "Logic/Exceptions";
+import { User } from "Entities/User";
+import { DATABASE_ERROR } from "Utils/Messages";
+import { TypeOrmError } from "Exceptions/index";
 import {
   CreateUserRecordArgs,
   IUser,
@@ -14,7 +14,7 @@ class UsersService {
   private userRepo: any;
 
   constructor(private dbContext?: DBContext) {
-    this.userRepo = dbContext?.getEntityRepository(Users);
+    this.userRepo = dbContext?.getEntityRepository(User);
   }
 
   public async createUserRecord(createUserRecordArgs: CreateUserRecordArgs) {
@@ -27,14 +27,10 @@ class UsersService {
       password,
       role,
     };
-    const user = new Users();
+    const user = new User();
     Object.assign(user, newUserData);
-    try {
-      await queryRunner.manager.save(user);
-    } catch (e) {
-      console.error();
-      throw new TypeOrmError(DATABASE_ERROR);
-    }
+    await queryRunner.manager.save(user);
+
     return user;
   }
 

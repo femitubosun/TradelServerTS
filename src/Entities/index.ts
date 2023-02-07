@@ -1,4 +1,5 @@
 export * from "./SettingsUserRoles";
-export * from "./Users";
-export * from "./Customers";
+export * from "./User";
+export * from "./Customer";
 export * from "./UserTokens";
+export * from "./Cart";

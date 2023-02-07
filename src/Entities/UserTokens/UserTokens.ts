@@ -1,12 +1,12 @@
 import { CustomBaseEntity } from "Entities/Base";
 import { Column, Entity, ManyToOne } from "typeorm";
-import { Users } from "../Users";
+import { User } from "../User";
 import { UserTokenTypesEnum } from "Entities/UserTokens";
 
 @Entity()
 export class UserTokens extends CustomBaseEntity {
-  @ManyToOne(() => Users)
-  user: Users;
+  @ManyToOne(() => User)
+  user: User;
 
   @Column({
     nullable: false,
@@ -18,4 +18,9 @@ export class UserTokens extends CustomBaseEntity {
     enum: UserTokenTypesEnum,
   })
   type: UserTokenTypesEnum;
+
+  @Column({
+    default: false,
+  })
+  expired: boolean;
 }

@@ -6,3 +6,4 @@ export * from "./dbConfig";
 export * from "./encryptionConfig";
 export * from "./jwtConfig";
 export * from "./emailConfig";
+export * from "./domainConfig";

@@ -1,22 +1,24 @@
 import SettingsUserRoleService from "Logic/Services/SettingsUserRole/SettingsUserRoleService";
-import { BadRequestError, InternalServerError } from "Logic/Exceptions";
+import { BadRequestError, InternalServerError } from "Exceptions/index";
 import {
-  ROLE_DOES_NOT_EXIST,
   CUSTOMER_ONBOARDING_SUCCESS,
+  ROLE_DOES_NOT_EXIST,
 } from "Utils/Messages";
 import UsersService from "Logic/Services/Users/UsersService";
 import CustomersService from "Logic/Services/Customers/CustomersService";
+import UserTokensService from "Logic/Services/UserTokens/UserTokensService";
 import { CustomerOnboardingArgs } from "Logic/UseCases/Onboarding/TypeChecking";
+import { UserTokenTypesEnum } from "Entities/UserTokens";
+import { EMAIL_IN_USE } from "Utils/Messages";
 
 export class CustomerOnboardingUseCase {
-  private static EMAIL_IN_USE: string;
-
   /**
    * This Use Case handles Customer Onboarding.
    *
    * The Customer Onboarding Process includes
    * - Creating User Record with Customer Role
    * - Create A Customer Record with the created User
+   * - Create CustomerCart
    * - Create Email Activation Token & Send to User Email
    *
    */
@@ -33,7 +35,7 @@ export class CustomerOnboardingUseCase {
 
     const user = await UsersService.findUserByEmail(email);
     if (user) {
-      throw new BadRequestError(this.EMAIL_IN_USE);
+      throw new BadRequestError(EMAIL_IN_USE);
     }
     if (!role) {
       throw new InternalServerError(ROLE_DOES_NOT_EXIST);
@@ -54,13 +56,18 @@ export class CustomerOnboardingUseCase {
         queryRunner,
       });
       await queryRunner.commitTransaction();
-    } catch (typeOrmError) {
-      console.error();
+      // Create Activation Token And Send to User
+      const userToken = await UserTokensService.createUserTokenRecord({
+        user,
+        type: UserTokenTypesEnum.EMAIL,
+      });
+      console.log(userToken.token);
+    } catch (typeOrmError: any) {
       console.error(typeOrmError);
       await queryRunner.rollbackTransaction();
       throw new InternalServerError();
     }
-    // Create Activation Token And Send to User
+
     return CUSTOMER_ONBOARDING_SUCCESS;
   }
 }

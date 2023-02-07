@@ -2,14 +2,14 @@ import express, { NextFunction, Request, Response } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import helmet from "helmet";
-import { expressConfig } from "AppConfig/expressConfig";
+import { expressConfig } from "Config/index";
 import {
   LoggingProviderFactory,
   ILoggingDriver,
 } from "Lib/Infra/Internal/Logging";
 import "express-async-errors";
 import routes from "Web/Routers";
-import { errorHandler } from "Logic/Exceptions/ErrorHandler";
+import { errorHandler } from "Exceptions/ErrorHandler";
 import {
   DATABASE_CONNECTED,
   DATABASE_CONNECTION_ERROR,

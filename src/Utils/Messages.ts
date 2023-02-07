@@ -9,7 +9,7 @@ export const EXPRESS_BOOTSTRAPPED_ERROR = "Express Bootstrap Failure";
 export const ROUTES_ATTACHED = "Routers Attached Successfully";
 export const VALIDATION_ERROR = "Validation Error";
 export const DATABASE_POPULATED = "Database Populated Successfully";
-export const EMAIL_IN_USE_ERROR = "Email is Already in Use";
+export const EMAIL_IN_USE = "Email is Already in Use";
 export const INTERNAL_SERVER_ERROR = "Internal Server Error";
 export const CRITICAL_ERROR_EXITING =
   "Application Encountered a Critical Error. Exiting";

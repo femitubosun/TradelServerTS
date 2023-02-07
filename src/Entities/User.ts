@@ -1,10 +1,10 @@
 import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne } from "typeorm";
 import { CustomBaseEntity } from "./Base";
 import { SettingsUserRoles } from "./SettingsUserRoles";
-import { PasswordEncryptionProvider } from "Logic/Helpers";
+import { PasswordEncryptionHelper } from "Helpers/PasswordEncryptionHelper";
 
 @Entity()
-export class Users extends CustomBaseEntity {
+export class User extends CustomBaseEntity {
   @Column()
   email: string;
 
@@ -39,7 +39,7 @@ export class Users extends CustomBaseEntity {
   @BeforeUpdate()
   hashPassword() {
     if (this.password) {
-      this.password = PasswordEncryptionProvider.hashPassword(this.password);
+      this.password = PasswordEncryptionHelper.hashPassword(this.password);
       return this.password;
     }
   }

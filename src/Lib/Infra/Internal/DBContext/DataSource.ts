@@ -1,10 +1,11 @@
 import { DataSource } from "typeorm";
-import { dbConfig } from "AppConfig/dbConfig";
+import { dbConfig } from "Config/index";
 import {
-  Users,
+  User,
   SettingsUserRoles,
-  Customers,
+  Customer,
   UserTokens,
+  Cart,
 } from "Entities/index";
 
 export const AppDataSource = new DataSource({
@@ -14,7 +15,7 @@ export const AppDataSource = new DataSource({
   username: dbConfig.USERNAME,
   password: dbConfig.PASSWORD,
   database: dbConfig.DB_NAME,
-  entities: [SettingsUserRoles, Users, Customers, UserTokens],
+  entities: [SettingsUserRoles, User, Customer, UserTokens, Cart],
   synchronize: true,
 });
 
@@ -25,6 +26,6 @@ export const TestDataSource = new DataSource({
   username: dbConfig.TEST_USERNAME,
   password: dbConfig.TEST_PASSWORD,
   database: dbConfig.TEST_DB_NAME,
-  entities: [SettingsUserRoles, Users],
+  entities: [SettingsUserRoles, User],
   synchronize: true,
 });
