@@ -1,10 +1,10 @@
 import { autoInjectable } from "tsyringe";
 import { DBContext } from "Lib/Infra/Internal/DBContext";
-import { Users } from "Domain/Entities/Users";
-import { DATABASE_ERROR } from "Utils/Messages";
-import { InternalServerError } from "Logic/Exceptions";
+import { Users } from "Entities/Users";
+import { DATABASE_ERROR, NULL_OBJECT } from "Utils/Messages";
+import { InternalServerError, TypeOrmError } from "Logic/Exceptions";
 import {
-  CreateUserRecordDTO,
+  CreateUserRecordArgs,
   IUser,
   UpdateUserRecordDTO,
 } from "Logic/Services/Users/TypeSetting";
@@ -17,20 +17,25 @@ class UsersService {
     this.userRepo = dbContext?.getEntityRepository(Users);
   }
 
-  public async createUserRecord(createUserRecordDTO: CreateUserRecordDTO) {
+  public async createUserRecord(createUserRecordArgs: CreateUserRecordArgs) {
+    const { email, firstName, lastName, password, role, queryRunner } =
+      createUserRecordArgs;
+    const newUserData = {
+      email,
+      firstName,
+      lastName,
+      password,
+      role,
+    };
     const user = new Users();
-    user.email = createUserRecordDTO.email;
-    user.firstName = createUserRecordDTO.firstName;
-    user.lastName = createUserRecordDTO.lastName;
-    user.password = createUserRecordDTO.password;
-    user.role = createUserRecordDTO.role;
+    Object.assign(user, newUserData);
     try {
-      await this.userRepo.save(user);
+      await queryRunner.manager.save(user);
     } catch (e) {
       console.error();
-      throw new InternalServerError(DATABASE_ERROR);
+      throw new TypeOrmError(DATABASE_ERROR);
     }
-    return;
+    return user;
   }
 
   public async listActiveUserRecord(): Promise<Iterable<IUser>> {

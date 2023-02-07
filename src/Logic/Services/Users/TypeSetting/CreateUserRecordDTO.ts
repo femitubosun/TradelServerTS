@@ -1,6 +1,12 @@
-import { IUser } from "./IUser";
+import { ISettingsUserRole } from "Logic/Services/SettingsUserRole/TypeChecking";
+import { QueryRunner } from "typeorm";
+import { SettingsUserRoles } from "Entities/SettingsUserRoles";
 
-export type CreateUserRecordDTO = Pick<
-  IUser,
-  "email" | "firstName" | "lastName" | "password" | "role"
->;
+export type CreateUserRecordArgs = {
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+  role: SettingsUserRoles;
+  queryRunner: QueryRunner;
+};

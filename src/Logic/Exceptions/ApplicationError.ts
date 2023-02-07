@@ -1,20 +1,20 @@
-import { HttpCode } from "Logic/Exceptions/httpCode.enum";
+import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 
 interface ApplicationErrorArgs {
-  httpCode: HttpCode;
+  httpStatusCode: HttpStatusCodeEnum;
   description: string;
   isOperational?: boolean;
 }
 
 export default class ApplicationError extends Error {
   public readonly description: string;
-  public readonly httpCode: HttpCode;
+  public readonly httpCode: HttpStatusCodeEnum;
   public readonly isOperational: boolean = true;
 
   constructor(applicationErrorArgs: ApplicationErrorArgs) {
     super(applicationErrorArgs.description);
     Object.setPrototypeOf(this, new.target.prototype);
-    this.httpCode = applicationErrorArgs.httpCode;
+    this.httpCode = applicationErrorArgs.httpStatusCode;
 
     if (applicationErrorArgs.isOperational !== undefined) {
       this.isOperational = applicationErrorArgs.isOperational;

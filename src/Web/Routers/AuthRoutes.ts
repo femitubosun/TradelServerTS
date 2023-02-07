@@ -1,23 +1,9 @@
 import { Router } from "express";
-import AuthController from "src/Web/Controllers/AuthController";
-import userSignUpValidator from "../Validators/Auth/userSignUpValidator";
-import validate from "../Validators/Common/validate";
+import AuthController from "Web/Controllers/AuthController";
+import validate from "Web/Validators/Common/validate";
 import userSignInValidator from "Web/Validators/Auth/userSignInValidator";
 
 const routes = Router();
-
-routes.post(
-  "/Initiate/CustomerSignUp",
-  userSignUpValidator,
-  validate,
-  AuthController.signupCustomer
-);
-routes.post(
-  "/initiate/MerchantSignup",
-  userSignUpValidator,
-  validate,
-  AuthController.signupMerchant
-);
 
 routes.post(
   "/Initiate/EmailSignIn",

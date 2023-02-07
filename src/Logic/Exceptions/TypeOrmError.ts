@@ -1,7 +1,7 @@
 import ApplicationError from "./ApplicationError";
 
-export class InternalServerError extends ApplicationError {
-  constructor(description: string = "Internal Server Error") {
+export class TypeOrmError extends ApplicationError {
+  constructor(description: string = "TypeOrm Error") {
     super({
       description,
       httpStatusCode: 422,

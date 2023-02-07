@@ -1,6 +1,11 @@
 import { DataSource } from "typeorm";
 import { dbConfig } from "AppConfig/dbConfig";
-import { Users, SettingsUserRoles } from "Domain/Entities";
+import {
+  Users,
+  SettingsUserRoles,
+  Customers,
+  UserTokens,
+} from "Entities/index";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -9,7 +14,7 @@ export const AppDataSource = new DataSource({
   username: dbConfig.USERNAME,
   password: dbConfig.PASSWORD,
   database: dbConfig.DB_NAME,
-  entities: [SettingsUserRoles, Users],
+  entities: [SettingsUserRoles, Users, Customers, UserTokens],
   synchronize: true,
 });
 

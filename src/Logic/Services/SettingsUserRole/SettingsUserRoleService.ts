@@ -1,7 +1,7 @@
 import { autoInjectable } from "tsyringe";
 import { DBContext } from "Lib/Infra/Internal/DBContext";
-import { SettingsUserRoles } from "Domain/Entities/SettingsUserRoles";
-import { ISettingsUserRole } from "Logic/Services/SettingsUserRole/Options";
+import { SettingsUserRoles } from "Entities/SettingsUserRoles";
+import { ISettingsUserRole } from "./TypeChecking";
 
 @autoInjectable()
 class SettingsUserRoleService {

@@ -5,7 +5,7 @@ import {
 } from "Logic/UseCases/Auth/SignUpUserWithRoleUseCase";
 import UsersService from "Logic/Services/Users/UsersService";
 import SettingsUserRoleService from "Logic/Services/SettingsUserRole/SettingsUserRoleService";
-import { ISettingsUserRole } from "Logic/Services/SettingsUserRole/Options";
+import { ISettingsUserRole } from "Logic/Services/SettingsUserRole/TypeChecking/Options";
 import { BadRequestError, ValidationError } from "Logic/Exceptions";
 
 describe("Sign Up User With Role UseCase", function () {

@@ -1,11 +1,10 @@
 import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne } from "typeorm";
-import { CustomBaseEntity } from "Domain/Base";
-import { SettingsUserRoles } from "Domain/Entities/SettingsUserRoles";
+import { CustomBaseEntity } from "./Base";
+import { SettingsUserRoles } from "./SettingsUserRoles";
 import { PasswordEncryptionProvider } from "Logic/Helpers";
 
 @Entity()
 export class Users extends CustomBaseEntity {
-  //    Todo RELATIONSHIP
   @Column()
   email: string;
 
@@ -45,5 +44,3 @@ export class Users extends CustomBaseEntity {
     }
   }
 }
-
-// export const UserRepository = AppDataSource.getRepository(Users);

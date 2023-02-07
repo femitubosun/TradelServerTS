@@ -1,6 +1,6 @@
 import { DataSource } from "typeorm";
 import { AppDataSource } from "Lib/Infra/Internal/DBContext/DataSource";
-import { SettingsUserRoles } from "Domain/Entities/SettingsUserRoles";
+import { SettingsUserRoles } from "Entities/SettingsUserRoles";
 import { inject, singleton, container } from "tsyringe";
 
 container.register("DataSource", { useValue: AppDataSource });
@@ -31,6 +31,12 @@ export class DBContext {
 
   public getEntityRepository(entity: any) {
     return this._dbSource.getRepository(entity);
+  }
+
+  public async getTransactionalQueryRunner() {
+    const queryRunner = await this._dbSource.createQueryRunner();
+    await queryRunner.connect();
+    return queryRunner;
   }
 
   private async _createRoleIfNotExist(name: string) {

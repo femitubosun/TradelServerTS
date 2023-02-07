@@ -1,7 +1,11 @@
 import { Response } from "express";
 import ApplicationError from "./ApplicationError";
-import { HttpCode } from "./httpCode.enum";
-import { CRITICAL_ERROR_EXITING, INTERNAL_SERVER_ERROR } from "Utils/Messages";
+import {
+  CRITICAL_ERROR_EXITING,
+  ERROR,
+  INTERNAL_SERVER_ERROR,
+} from "Utils/Messages";
+import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 
 // https://www.codeconcisely.com/posts/how-to-handle-errors-in-express-with-typescript/
 class ErrorHandler {
@@ -30,7 +34,7 @@ class ErrorHandler {
   ): void {
     response.status(error.httpCode).json({
       message: error.message,
-      status: "error",
+      status: ERROR,
       status_code: error.httpCode,
     });
   }
@@ -40,10 +44,10 @@ class ErrorHandler {
     response?: Response
   ): void {
     if (response) {
-      response.status(HttpCode.INTERNAL_SERVER_ERROR).json({
+      response.status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR).json({
         message: INTERNAL_SERVER_ERROR,
-        status: "error",
-        status_code: HttpCode.INTERNAL_SERVER_ERROR,
+        status: ERROR,
+        status_code: HttpStatusCodeEnum.INTERNAL_SERVER_ERROR,
       });
     }
 

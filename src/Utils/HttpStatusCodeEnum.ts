@@ -1,6 +1,7 @@
-export enum HttpCode {
+export enum HttpStatusCodeEnum {
   OK = 200,
   NO_CONTENT = 204,
+  CREATED = 201,
   UNPROCESSABLE_ENTITY = 422,
   NOT_FOUND = 404,
   INTERNAL_SERVER_ERROR = 500,

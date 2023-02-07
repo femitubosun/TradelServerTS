@@ -11,9 +11,6 @@
       "Lib/*": [
         "./src/Lib/*"
       ],
-      "Domain/*": [
-        "./src/Domain/*"
-      ],
       "Utils/*": [
         "./src/Utils/*"
       ],
