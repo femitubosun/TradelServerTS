@@ -7,9 +7,11 @@ import {
 import UsersService from "Logic/Services/Users/UsersService";
 import CustomersService from "Logic/Services/Customers/CustomersService";
 import UserTokensService from "Logic/Services/UserTokens/UserTokensService";
+import CartService from "Logic/Services/Cart/CartService";
 import { CustomerOnboardingArgs } from "Logic/UseCases/Onboarding/TypeChecking";
 import { UserTokenTypesEnum } from "Entities/UserTokens";
 import { EMAIL_IN_USE } from "Utils/Messages";
+import { EmailProviderFactory, SendEmailArgs } from "Lib/Infra/External/Email";
 
 export class CustomerOnboardingUseCase {
   /**
@@ -53,20 +55,35 @@ export class CustomerOnboardingUseCase {
 
       const customer = await CustomersService.createCustomerRecord({
         user,
+        phoneNumber,
         queryRunner,
       });
-      await queryRunner.commitTransaction();
-      // Create Activation Token And Send to User
-      const userToken = await UserTokensService.createUserTokenRecord({
-        user,
-        type: UserTokenTypesEnum.EMAIL,
+
+      const cart = await CartService.createCartRecord({
+        customer,
+        queryRunner,
       });
-      console.log(userToken.token);
+
+      await queryRunner.commitTransaction();
     } catch (typeOrmError: any) {
       console.error(typeOrmError);
       await queryRunner.rollbackTransaction();
       throw new InternalServerError();
     }
+
+    const userToken = await UserTokensService.createUserTokenRecord({
+      user,
+      type: UserTokenTypesEnum.EMAIL,
+    });
+
+    const emailProvider = EmailProviderFactory.build();
+
+    const emailPayload: SendEmailArgs = {
+      body: userToken.token,
+      subject: "Tradel Activation Email",
+      to: email,
+    };
+    await emailProvider.sendEmail(emailPayload);
 
     return CUSTOMER_ONBOARDING_SUCCESS;
   }

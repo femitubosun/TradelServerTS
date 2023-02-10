@@ -8,7 +8,7 @@ import {
   ILoggingDriver,
 } from "Lib/Infra/Internal/Logging";
 import "express-async-errors";
-import routes from "Web/Routers";
+import routes from "Web/Routes";
 import { errorHandler } from "Exceptions/ErrorHandler";
 import {
   DATABASE_CONNECTED,
@@ -61,8 +61,6 @@ export default class Express {
     try {
       await this.dbContext.connect();
       this.loggingProvider.info(DATABASE_CONNECTED);
-      // await this.dbContext.populateDB();
-      // this.loggingProvider.info(DATABASE_POPULATED);
     } catch (e: any) {
       this.loggingProvider.info(DATABASE_CONNECTION_ERROR);
       this.loggingProvider.error(e.toString());

@@ -45,3 +45,38 @@
 [ERROR] 2023-02-07 05:05:23 Bad Request Error
 [ERROR] 2023-02-07 05:06:46 Email is Already in Use
 [ERROR] 2023-02-07 05:06:52 Internal Server Error
+[ERROR] 2023-02-07 12:33:32 Driver not Connected
+[ERROR] 2023-02-07 12:34:55 Driver not Connected
+[ERROR] 2023-02-07 12:36:47 Driver not Connected
+[ERROR] 2023-02-07 12:38:32 Driver not Connected
+[ERROR] 2023-02-07 12:42:26 QueryFailedError: insert or update on table "user_tokens" violates foreign key constraint "FK_92ce9a299624e4c4ffd99b645b6"
+[ERROR] 2023-02-07 12:44:23 relation "user" does not exist
+[ERROR] 2023-02-07 12:54:10 Email is Already in Use
+[ERROR] 2023-02-07 13:13:56 Internal Server Error
+[ERROR] 2023-02-07 15:04:47 Transaction is not started yet, start transaction before committing or rolling it back.
+[ERROR] 2023-02-07 15:05:59 Email is Already in Use
+[ERROR] 2023-02-07 15:08:27 Email is Already in Use
+[ERROR] 2023-02-07 15:08:49 Cannot read properties of null (reading 'email')
+[ERROR] 2023-02-07 15:10:19 connect ECONNREFUSED 127.0.0.1:587
+[ERROR] 2023-02-07 15:12:32 connect ECONNREFUSED 127.0.0.1:587
+[ERROR] 2023-02-07 15:13:14 connect ECONNREFUSED 127.0.0.1:587
+[ERROR] 2023-02-07 15:17:27 Cannot read properties of undefined (reading 'host')
+[ERROR] 2023-02-07 15:18:40 Cannot read properties of undefined (reading 'host')
+[ERROR] 2023-02-07 15:19:37 Cannot read properties of undefined (reading 'host')
+[ERROR] 2023-02-07 15:28:39 6176:error:1408F10B:SSL routines:ssl3_get_record:wrong version number:c:\ws\deps\openssl\openssl\ssl\record\ssl3_record.c:332:
+
+[ERROR] 2023-02-07 15:30:17 Email is Already in Use
+[ERROR] 2023-02-07 15:30:22 Invalid greeting. response=421 Service not available: 421 Service not available
+[ERROR] 2023-02-07 15:31:37 Email is Already in Use
+[ERROR] 2023-02-07 15:31:43 Invalid greeting. response=421 Service not available: 421 Service not available
+[ERROR] 2023-02-07 15:32:25 Invalid greeting. response=421 Service not available: 421 Service not available
+[ERROR] 2023-02-07 15:36:32 Invalid greeting. response=421 Service not available: 421 Service not available
+[ERROR] 2023-02-07 15:39:22 Invalid login: 530 Invalid username or password
+[ERROR] 2023-02-07 19:22:26 Invalid login: 535 Authentication failed: The provided authorization grant is invalid, expired, or revoked
+[ERROR] 2023-02-07 19:23:28 Invalid greeting. response=421 Service not available: 421 Service not available
+[ERROR] 2023-02-10 16:34:03 QueryFailedError: column "phoneNumber" of relation "customer" contains null values
+[ERROR] 2023-02-10 16:36:59 Internal Server Error
+[ERROR] 2023-02-10 16:38:27 Invalid login: 530 Invalid username or password
+[ERROR] 2023-02-10 16:40:56 Invalid login: 530 Invalid username or password
+[ERROR] 2023-02-10 18:23:33 Missing the required parameter 'sendSmtpEmail' when calling sendTransacEmail
+[ERROR] 2023-02-10 18:25:28 connect ETIMEDOUT 104.17.9.12:443

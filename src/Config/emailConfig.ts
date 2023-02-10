@@ -1,9 +1,21 @@
 export const emailConfig = {
-  SEND_IN_BLUE: {
-    SMTP_HOST: process.env.SEND_IN_BLUE_SMTP_HOST,
-    SMTP_PORT: parseInt(process.env.SEND_IN_BLUE_SMTP_PORT!, 10),
-    SMTP_USERNAME: process.env.SEND_IN_BLUE_SMTP_USERNAME,
-    SMTP_PASSWORD: process.env.SEND_IN_BLUE_SMTP_PASSWORD,
+  sendinblue: {
+    host: process.env.SEND_IN_BLUE_SMTP_HOST!,
+    port: parseInt(process.env.SEND_IN_BLUE_SMTP_PORT!, 10)!,
+    user: process.env.SEND_IN_BLUE_SMTP_USERNAME!,
+    pass: process.env.SEND_IN_BLUE_SMTP_PASSWORD!,
+    secure: false,
+    apiKey: process.env.SEND_IN_BLUE_API_KEY!,
   },
-  EMAIL_PROVIDER: process.env.EMAIL_PROVIDER,
+  provider: process.env.EMAIL_PROVIDER!,
+  sendgrid: {
+    host: process.env.SEND_GRID_SMTP_HOST!,
+    port: parseInt(process.env.SEND_GRID_SMTP_PORT!, 10),
+    user: process.env.SEND_GRID_SMTP_USERNAME!,
+    pass: process.env.SEND_GRID_SMTP_PASSWORD!,
+    secure: false,
+  },
+  emailFromEmail: process.env.EMAIL_FROM_EMAIL!,
+  emailFromName: process.env.EMAIL_FROM_NAME,
+  emailSecure: false,
 };

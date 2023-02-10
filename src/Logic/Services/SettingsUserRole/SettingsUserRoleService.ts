@@ -4,23 +4,24 @@ import { SettingsUserRoles } from "Entities/SettingsUserRoles";
 import { ISettingsUserRole } from "./TypeChecking";
 
 @autoInjectable()
-class SettingsUserRoleService {
-  private settingsRepo: any;
+export class SettingsUserRoleService {
+  private settingsUserRoleRepository: any;
 
   constructor(private dbContext?: DBContext) {
-    this.settingsRepo = dbContext?.getEntityRepository(SettingsUserRoles);
+    this.settingsUserRoleRepository =
+      dbContext?.getEntityRepository(SettingsUserRoles);
   }
 
   public async findSettingsUserRoleById(
     id: number
   ): Promise<ISettingsUserRole | null> {
-    return await this.settingsRepo.findOneBy({ id });
+    return await this.settingsUserRoleRepository.findOneBy({ id });
   }
 
   public async findSettingsUserRoleByIdentifier(
     identifier: string
   ): Promise<ISettingsUserRole | null> {
-    return await this.settingsRepo.findOneBy({
+    return await this.settingsUserRoleRepository.findOneBy({
       identifier,
     });
   }
@@ -28,7 +29,7 @@ class SettingsUserRoleService {
   public async findSettingsUserRoleByName(
     name: string
   ): Promise<ISettingsUserRole | null> {
-    return await this.settingsRepo.findOneBy({
+    return await this.settingsUserRoleRepository.findOneBy({
       name,
     });
   }
@@ -36,7 +37,7 @@ class SettingsUserRoleService {
   public async createSettingsUserRoleRecord(name: string): Promise<boolean> {
     const newRole = new SettingsUserRoles();
     newRole.name = name;
-    return await this.settingsRepo.save(newRole);
+    return await this.settingsUserRoleRepository.save(newRole);
   }
 }
 

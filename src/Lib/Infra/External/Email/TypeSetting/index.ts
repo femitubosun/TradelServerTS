@@ -1,3 +1,3 @@
 export * from "./IEmailDriver";
-export * from "./SendEmailDTO";
-export * from "./SendBulkEmailDTO";
+export * from "./SendEmailArgs";
+export * from "./SendBulkEmailArgs";

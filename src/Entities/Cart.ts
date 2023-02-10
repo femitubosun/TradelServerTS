@@ -7,4 +7,9 @@ export class Cart extends CustomBaseEntity {
   @OneToOne(() => Customer)
   @JoinColumn()
   customer: Customer;
+
+  @Column({
+    nullable: true,
+  })
+  customerId: number;
 }

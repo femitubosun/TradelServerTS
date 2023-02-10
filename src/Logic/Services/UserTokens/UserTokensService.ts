@@ -15,19 +15,34 @@ class UserTokensService {
     this.userTokenRepository = dbContext?.getEntityRepository(UserTokens);
   }
 
+  /*
+   * This method creates a new UserToken Record
+   *
+   * @args
+   * - createUserTokenArgs: CreateUserTokenArgs
+   *
+   * returns UserToken
+   */
   public async createUserTokenRecord(createUserTokenArgs: CreateUserTokenArgs) {
     const userToken = new UserTokens();
-    const token = generateToken(domainConfig.USER_TOKEN_LENGTH);
+    let generatedToken = generateToken(domainConfig.USER_TOKEN_LENGTH);
+    let foundToken = await this.findUserTokenByToken(generatedToken);
+
+    while (foundToken) {
+      generatedToken = generateToken(domainConfig.USER_TOKEN_LENGTH);
+      foundToken = await this.findUserTokenByToken(generatedToken);
+    }
+
     Object.assign(userToken, {
       ...createUserTokenArgs,
-      token,
+      token: generatedToken,
     });
     await this.userTokenRepository.save(userToken);
     return userToken;
   }
 
   public async findUserTokenByToken(token: string) {
-    return await this.userTokenRepository.findOneById({
+    return await this.userTokenRepository.findOneBy({
       token,
     });
   }

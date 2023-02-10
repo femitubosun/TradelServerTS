@@ -1,8 +1,8 @@
-import { SendEmailDTO } from "Lib/Infra/External/Email/TypeSetting/SendEmailDTO";
-import { SendBulkEmailDTO } from "Lib/Infra/External/Email/TypeSetting/SendBulkEmailDTO";
+import { SendEmailArgs } from "Lib/Infra/External/Email/TypeSetting/SendEmailArgs";
+import { SendBulkEmailArgs } from "Lib/Infra/External/Email/TypeSetting/SendBulkEmailArgs";
 
 export interface IEmailDriver {
-  sendEmail(sendEmailDTO: SendEmailDTO): null;
+  sendEmail(sendEmailArgs: SendEmailArgs): any;
 
-  sendBulkEmail(sendBulkEmailDTO: SendBulkEmailDTO): null;
+  sendBulkEmail(sendBulkEmailArgs: SendBulkEmailArgs): any;
 }

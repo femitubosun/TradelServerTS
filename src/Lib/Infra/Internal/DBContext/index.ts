@@ -14,10 +14,8 @@ export class DBContext {
   }
 
   public async connect() {
-    this._dbSource
-      .initialize()
-      .then(() => console.log("Database Initialized"))
-      .catch((e) => console.error());
+    await this._dbSource.initialize();
+    await this.populateDB();
   }
 
   public async populateDB() {

@@ -8,6 +8,9 @@ export class Customer extends CustomBaseEntity {
   @JoinColumn()
   user: User;
 
+  @Column()
+  phoneNumber: string;
+
   @Column({
     nullable: true,
   })

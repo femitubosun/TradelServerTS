@@ -50,7 +50,7 @@ class ErrorHandler {
         status_code: HttpStatusCodeEnum.INTERNAL_SERVER_ERROR,
       });
     }
-
+    console.log(error);
     console.log(CRITICAL_ERROR_EXITING);
     process.exit(1);
   }

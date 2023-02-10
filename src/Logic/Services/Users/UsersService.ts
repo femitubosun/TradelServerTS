@@ -11,10 +11,10 @@ import {
 
 @autoInjectable()
 class UsersService {
-  private userRepo: any;
+  private userRepository: any;
 
   constructor(private dbContext?: DBContext) {
-    this.userRepo = dbContext?.getEntityRepository(User);
+    this.userRepository = dbContext?.getEntityRepository(User);
   }
 
   public async createUserRecord(createUserRecordArgs: CreateUserRecordArgs) {
@@ -27,33 +27,35 @@ class UsersService {
       password,
       role,
     };
+
     const user = new User();
     Object.assign(user, newUserData);
+
     await queryRunner.manager.save(user);
 
     return user;
   }
 
   public async listActiveUserRecord(): Promise<Iterable<IUser>> {
-    return await this.userRepo.findBy({
+    return await this.userRepository.findBy({
       active: true,
     });
   }
 
   public async findUserByIdentifier(identifier: string): Promise<any> {
-    return await this.userRepo.findOneBy({
+    return await this.userRepository.findOneBy({
       identifier,
     });
   }
 
   public async findUserByEmail(email: string) {
-    return await this.userRepo.findOneBy({
+    return await this.userRepository.findOneBy({
       email,
     });
   }
 
   public async findUserById(id: number): Promise<IUser | null> {
-    return await this.userRepo.findOneBy({
+    return await this.userRepository.findOneBy({
       id,
     });
   }
@@ -62,14 +64,17 @@ class UsersService {
     id: number,
     updateUserRecordOptions: UpdateUserRecordDTO
   ): Promise<boolean> {
-    return await this.userRepo.findOneAndUpdate(id, updateUserRecordOptions);
+    return await this.userRepository.findOneAndUpdate(
+      id,
+      updateUserRecordOptions
+    );
   }
 
   public async disableUserRecord(id: number): Promise<any> {
     const user = (await this.findUserById(id))!;
     user.isDeleted = true;
     user.isActive = false;
-    this.userRepo.save(user);
+    this.userRepository.save(user);
   }
 }
 
