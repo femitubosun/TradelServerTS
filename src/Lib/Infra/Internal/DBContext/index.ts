@@ -1,21 +1,21 @@
 import { DataSource } from "typeorm";
 import { AppDataSource } from "Lib/Infra/Internal/DBContext/DataSource";
-import { SettingsUserRoles } from "Domain/Entities/SettingsUserRoles";
-import { singleton } from "tsyringe";
+import { SettingsUserRoles } from "Entities/SettingsUserRoles";
+import { inject, singleton, container } from "tsyringe";
+
+container.register("DataSource", { useValue: AppDataSource });
 
 @singleton()
 export class DBContext {
   private _dbSource: DataSource;
 
-  constructor() {
-    this._dbSource = AppDataSource;
+  constructor(@inject("DataSource") dbSource: DataSource) {
+    this._dbSource = dbSource;
   }
 
   public async connect() {
-    this._dbSource
-      .initialize()
-      .then(() => console.log("Database Initialized"))
-      .catch((e) => console.error());
+    await this._dbSource.initialize();
+    await this.populateDB();
   }
 
   public async populateDB() {
@@ -29,6 +29,12 @@ export class DBContext {
 
   public getEntityRepository(entity: any) {
     return this._dbSource.getRepository(entity);
+  }
+
+  public async getTransactionalQueryRunner() {
+    const queryRunner = await this._dbSource.createQueryRunner();
+    await queryRunner.connect();
+    return queryRunner;
   }
 
   private async _createRoleIfNotExist(name: string) {

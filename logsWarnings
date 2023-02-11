@@ -27,3 +27,78 @@
 [ERROR] 2023-02-03 09:17:42 Email is Already in Use
 [ERROR] 2023-02-03 09:31:01 Email is Already in Use
 [ERROR] 2023-02-03 09:31:15 Email is Already in Use
+[ERROR] 2023-02-04 10:05:12 Email is Already in Use
+[ERROR] 2023-02-04 10:09:45 Check Your Email and Password
+[ERROR] 2023-02-06 21:25:12 Internal Server Error
+[ERROR] 2023-02-06 21:27:41 Email is Already in Use
+[ERROR] 2023-02-06 21:27:46 Internal Server Error
+[ERROR] 2023-02-06 21:53:26 Internal Server Error
+[ERROR] 2023-02-06 21:55:14 Internal Server Error
+[ERROR] 2023-02-06 21:56:40 Internal Server Error
+[ERROR] 2023-02-06 22:13:51 Internal Server Error
+[ERROR] 2023-02-06 22:22:11 Bad Request Error
+[ERROR] 2023-02-06 22:23:04 Bad Request Error
+[ERROR] 2023-02-07 04:55:54 Internal Server Error
+[ERROR] 2023-02-07 05:01:58 TypeError: Cannot read properties of undefined (reading 'hashPassword')
+[ERROR] 2023-02-07 05:02:08 TypeError: Cannot read properties of undefined (reading 'hashPassword')
+[ERROR] 2023-02-07 05:05:18 Bad Request Error
+[ERROR] 2023-02-07 05:05:23 Bad Request Error
+[ERROR] 2023-02-07 05:06:46 Email is Already in Use
+[ERROR] 2023-02-07 05:06:52 Internal Server Error
+[ERROR] 2023-02-07 12:33:32 Driver not Connected
+[ERROR] 2023-02-07 12:34:55 Driver not Connected
+[ERROR] 2023-02-07 12:36:47 Driver not Connected
+[ERROR] 2023-02-07 12:38:32 Driver not Connected
+[ERROR] 2023-02-07 12:42:26 QueryFailedError: insert or update on table "user_tokens" violates foreign key constraint "FK_92ce9a299624e4c4ffd99b645b6"
+[ERROR] 2023-02-07 12:44:23 relation "user" does not exist
+[ERROR] 2023-02-07 12:54:10 Email is Already in Use
+[ERROR] 2023-02-07 13:13:56 Internal Server Error
+[ERROR] 2023-02-07 15:04:47 Transaction is not started yet, start transaction before committing or rolling it back.
+[ERROR] 2023-02-07 15:05:59 Email is Already in Use
+[ERROR] 2023-02-07 15:08:27 Email is Already in Use
+[ERROR] 2023-02-07 15:08:49 Cannot read properties of null (reading 'email')
+[ERROR] 2023-02-07 15:10:19 connect ECONNREFUSED 127.0.0.1:587
+[ERROR] 2023-02-07 15:12:32 connect ECONNREFUSED 127.0.0.1:587
+[ERROR] 2023-02-07 15:13:14 connect ECONNREFUSED 127.0.0.1:587
+[ERROR] 2023-02-07 15:17:27 Cannot read properties of undefined (reading 'host')
+[ERROR] 2023-02-07 15:18:40 Cannot read properties of undefined (reading 'host')
+[ERROR] 2023-02-07 15:19:37 Cannot read properties of undefined (reading 'host')
+[ERROR] 2023-02-07 15:28:39 6176:error:1408F10B:SSL routines:ssl3_get_record:wrong version number:c:\ws\deps\openssl\openssl\ssl\record\ssl3_record.c:332:
+
+[ERROR] 2023-02-07 15:30:17 Email is Already in Use
+[ERROR] 2023-02-07 15:30:22 Invalid greeting. response=421 Service not available: 421 Service not available
+[ERROR] 2023-02-07 15:31:37 Email is Already in Use
+[ERROR] 2023-02-07 15:31:43 Invalid greeting. response=421 Service not available: 421 Service not available
+[ERROR] 2023-02-07 15:32:25 Invalid greeting. response=421 Service not available: 421 Service not available
+[ERROR] 2023-02-07 15:36:32 Invalid greeting. response=421 Service not available: 421 Service not available
+[ERROR] 2023-02-07 15:39:22 Invalid login: 530 Invalid username or password
+[ERROR] 2023-02-07 19:22:26 Invalid login: 535 Authentication failed: The provided authorization grant is invalid, expired, or revoked
+[ERROR] 2023-02-07 19:23:28 Invalid greeting. response=421 Service not available: 421 Service not available
+[ERROR] 2023-02-10 16:34:03 QueryFailedError: column "phoneNumber" of relation "customer" contains null values
+[ERROR] 2023-02-10 16:36:59 Internal Server Error
+[ERROR] 2023-02-10 16:38:27 Invalid login: 530 Invalid username or password
+[ERROR] 2023-02-10 16:40:56 Invalid login: 530 Invalid username or password
+[ERROR] 2023-02-10 18:23:33 Missing the required parameter 'sendSmtpEmail' when calling sendTransacEmail
+[ERROR] 2023-02-10 18:25:28 connect ETIMEDOUT 104.17.9.12:443
+[ERROR] 2023-02-11 08:56:41 DataTypeNotSupportedError: Data type "DateTime" in "User.lastLoginDate" is not supported by "postgres" database.
+[ERROR] 2023-02-11 08:58:05 QueryFailedError: column "expiresOn" of relation "user_tokens" contains null values
+[ERROR] 2023-02-11 09:03:16 Email is Already in Use
+[ERROR] 2023-02-11 09:06:02 invalid token
+[ERROR] 2023-02-11 09:09:27 invalid token
+[ERROR] 2023-02-11 09:12:17 invalid token
+[ERROR] 2023-02-11 09:13:57 invalid token
+[ERROR] 2023-02-11 09:28:59 Unauthorized
+[ERROR] 2023-02-11 09:33:32 invalid token
+[ERROR] 2023-02-11 09:35:15 invalid token
+[ERROR] 2023-02-11 09:35:50 invalid token
+[ERROR] 2023-02-11 09:44:04 Cannot read properties of undefined (reading 'email')
+[ERROR] 2023-02-11 09:44:37 Cannot read properties of undefined (reading 'email')
+[ERROR] 2023-02-11 13:59:33 Cannot read properties of undefined (reading 'email')
+[ERROR] 2023-02-11 14:00:33 Cannot read properties of undefined (reading 'email')
+[ERROR] 2023-02-11 14:01:04 Cannot read properties of undefined (reading 'email')
+[ERROR] 2023-02-11 14:33:20 Invalid Token
+[ERROR] 2023-02-11 14:36:13 No Token Record in Database
+[ERROR] 2023-02-11 14:36:55 Unauthorized
+[ERROR] 2023-02-11 14:37:26 Not Authenticated
+[ERROR] 2023-02-11 14:38:00 Not Authenticated
+[ERROR] 2023-02-11 14:39:04 Not Authenticated

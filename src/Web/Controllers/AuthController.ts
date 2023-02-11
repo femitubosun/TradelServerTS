@@ -1,50 +1,20 @@
-import { NextFunction, Request, Response } from "express";
-import { container } from "tsyringe";
-import { DBContext } from "Lib/Infra/Internal/DBContext";
+import { Request, Response } from "express";
 import { keysSnakeCaseToCamelCase } from "Utils/keysSnakeCaseToCamelCase";
-import {
-  SignupUserWithRoleUseCase,
-  SignupUserWithRoleOptions,
-} from "Logic/UseCases/Auth";
-
-const dbContext = container.resolve(DBContext);
+import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
+import { SIGN_IN_SUCCESSFUL, SUCCESS } from "Utils/Messages";
+import { SignInUserWithEmailUseCase } from "Logic/UseCases/Auth/SignInUserWithEmail.UseCase";
 
 class AuthController {
-  public async signupCustomer(req: Request, res: Response) {
-    const data: any = keysSnakeCaseToCamelCase(req.body);
-    const signupUserWithRoleOptions: SignupUserWithRoleOptions = {
-      ...data,
-      roleName: "customer",
-    };
+  public async verifyEmail(req: Request, res: Response) {}
 
-    await SignupUserWithRoleUseCase.execute(
-      dbContext,
-      signupUserWithRoleOptions
-    );
-    return res.status(201).json({
-      status: "Success",
-      status_code: 201,
-      message: "Customer Signed Up Successfully",
-      results: null,
-    });
-  }
-
-  public async signupMerchant(req: Request, res: Response) {
-    const data: any = keysSnakeCaseToCamelCase(req.body);
-    const signupUserWithRoleOptions: SignupUserWithRoleOptions = {
-      ...data,
-      roleName: "merchant",
-    };
-
-    await SignupUserWithRoleUseCase.execute(
-      dbContext,
-      signupUserWithRoleOptions
-    );
-    return res.status(201).json({
-      status: "success",
-      status_code: 201,
-      message: "Merchant Signed Up Successfully",
-      results: null,
+  public async emailSignIn(req: Request, res: Response) {
+    const payload: any = keysSnakeCaseToCamelCase(req.body);
+    const results = await SignInUserWithEmailUseCase.execute(payload);
+    res.status(HttpStatusCodeEnum.OK).json({
+      status: SUCCESS,
+      status_code: HttpStatusCodeEnum.OK,
+      message: SIGN_IN_SUCCESSFUL,
+      results,
     });
   }
 }

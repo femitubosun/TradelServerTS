@@ -7,12 +7,10 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "module": "commonjs",
+
     "paths": {
       "Lib/*": [
         "./src/Lib/*"
-      ],
-      "Domain/*": [
-        "./src/Domain/*"
       ],
       "Utils/*": [
         "./src/Utils/*"
@@ -23,8 +21,14 @@
       "Web/*": [
         "./src/Web/*"
       ],
-      "AppConfig/*": [
+      "Config/*": [
         "./src/Config/*"
+      ],
+      "Helpers/*": [
+        "./src/Helpers/*"
+      ],
+      "Exceptions/*": [
+        "./src/Exceptions/*"
       ],
       "Entities/*": [
         "./src/Entities/*"

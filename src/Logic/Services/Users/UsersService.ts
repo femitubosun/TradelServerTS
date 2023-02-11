@@ -1,70 +1,104 @@
-import { CreateUserOptions, IUser, UpdateUserRecordOptions } from "./Options";
 import { autoInjectable } from "tsyringe";
 import { DBContext } from "Lib/Infra/Internal/DBContext";
-import { Users } from "Domain/Entities/Users";
-import { DATABASE_ERROR, INTERNAL_SERVER_ERROR } from "Utils/Messages";
-import { InternalServerError } from "Logic/Exceptions";
+import { User } from "Entities/User";
+import { DATABASE_ERROR, FAILURE, SUCCESS } from "Utils/Messages";
+import { TypeOrmError } from "Exceptions/index";
+import {
+  CreateUserRecordArgs,
+  IUser,
+  UpdateUserRecordArgs,
+} from "Logic/Services/Users/TypeSetting";
+import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
 
 @autoInjectable()
 class UsersService {
-  private userRepo: any;
+  private userRepository: any;
 
   constructor(private dbContext?: DBContext) {
-    this.userRepo = dbContext?.getEntityRepository(Users);
+    this.userRepository = dbContext?.getEntityRepository(User);
   }
 
-  public async createUserRecord(createUserOptions: CreateUserOptions) {
-    const user = new Users();
-    user.email = createUserOptions.email;
-    user.firstName = createUserOptions.firstName;
-    user.lastName = createUserOptions.lastName;
-    user.password = createUserOptions.password;
-    user.role = createUserOptions.role;
-    try {
-      await this.userRepo.save(user);
-    } catch (e) {
-      console.error();
-      throw new InternalServerError(DATABASE_ERROR);
-    }
-    return;
+  public async createUserRecord(createUserRecordArgs: CreateUserRecordArgs) {
+    const { email, firstName, lastName, password, role, queryRunner } =
+      createUserRecordArgs;
+    const newUserData = {
+      email,
+      firstName,
+      lastName,
+      password,
+      role,
+    };
+
+    const user = new User();
+    Object.assign(user, newUserData);
+
+    await queryRunner.manager.save(user);
+
+    return user;
   }
 
   public async listActiveUserRecord(): Promise<Iterable<IUser>> {
-    return await this.userRepo.findBy({
+    return await this.userRepository.findBy({
       active: true,
     });
   }
 
   public async findUserByIdentifier(identifier: string): Promise<any> {
-    return await this.userRepo.findOneBy({
+    return await this.userRepository.findOneBy({
       identifier,
     });
   }
 
   public async findUserByEmail(email: string) {
-    return await this.userRepo.findOneBy({
+    return await this.userRepository.findOneBy({
       email,
     });
   }
 
   public async findUserById(id: number): Promise<IUser | null> {
-    return await this.userRepo.findOneBy({
+    return await this.userRepository.findOneBy({
       id,
     });
   }
 
+  public async activateUserEmail(id: number) {
+    const updateUserRecordArgs: UpdateUserRecordArgs = {
+      identifierType: "id",
+      identifier: id,
+      updateUserRecordPayload: {
+        hasVerifiedEmail: true,
+      },
+    };
+    return await this.updateUserRecord(updateUserRecordArgs);
+  }
+
   public async updateUserRecord(
-    id: number,
-    updateUserRecordOptions: UpdateUserRecordOptions
-  ): Promise<boolean> {
-    return await this.userRepo.findOneAndUpdate(id, updateUserRecordOptions);
+    updateUserRecordArgs: UpdateUserRecordArgs
+  ): Promise<string> {
+    const { identifierType, identifier, updateUserRecordPayload } =
+      updateUserRecordArgs;
+    const user =
+      identifierType == "id"
+        ? await this.userRepository.findUserById(identifier as number)
+        : await this.userRepository.findOneBy({ identifier });
+
+    Object.assign(user, updateUserRecordPayload);
+    try {
+      await this.userRepository.save(user);
+      return SUCCESS;
+    } catch (e) {
+      const logger = LoggingProviderFactory.build();
+      console.log(e);
+      logger.error(e);
+      return FAILURE;
+    }
   }
 
   public async disableUserRecord(id: number): Promise<any> {
     const user = (await this.findUserById(id))!;
     user.isDeleted = true;
     user.isActive = false;
-    this.userRepo.save(user);
+    this.userRepository.save(user);
   }
 }
 

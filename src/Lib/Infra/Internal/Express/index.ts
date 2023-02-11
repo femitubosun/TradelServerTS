@@ -2,11 +2,14 @@ import express, { NextFunction, Request, Response } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import helmet from "helmet";
-import { expressConfig } from "AppConfig/expressConfig";
-import { LoggingFactory, ILoggingDriver } from "Lib/Infra/Internal/Logging";
+import { expressConfig } from "Config/index";
+import {
+  LoggingProviderFactory,
+  ILoggingDriver,
+} from "Lib/Infra/Internal/Logging";
 import "express-async-errors";
-import routes from "Web/Routers";
-import { errorHandler } from "Logic/Exceptions/ErrorHandler";
+import routes from "Web/Routes";
+import { errorHandler } from "Exceptions/ErrorHandler";
 import {
   DATABASE_CONNECTED,
   DATABASE_CONNECTION_ERROR,
@@ -24,7 +27,7 @@ export default class Express {
   loggingProvider: ILoggingDriver;
 
   constructor(dbContext: any) {
-    this.loggingProvider = LoggingFactory.build();
+    this.loggingProvider = LoggingProviderFactory.build();
     this.dbContext = dbContext;
     this.#bootstrap();
   }
@@ -58,8 +61,6 @@ export default class Express {
     try {
       await this.dbContext.connect();
       this.loggingProvider.info(DATABASE_CONNECTED);
-      // await this.dbContext.populateDB();
-      // this.loggingProvider.info(DATABASE_POPULATED);
     } catch (e: any) {
       this.loggingProvider.info(DATABASE_CONNECTION_ERROR);
       this.loggingProvider.error(e.toString());
@@ -67,9 +68,8 @@ export default class Express {
   }
 
   #attachRouters() {
-    this.loggingProvider.info(ROUTES_ATTACHED);
-
     this.app.use("/Interface", routes);
+    this.loggingProvider.info(ROUTES_ATTACHED);
   }
 
   public static getCorsWhiteList(): Array<String> {
@@ -82,7 +82,6 @@ export default class Express {
     this.app.use(
       (err: Error, req: Request, res: Response, next: NextFunction) => {
         this.loggingProvider.error(err.message);
-
         next(err);
       }
     );

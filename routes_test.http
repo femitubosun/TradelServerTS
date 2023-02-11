@@ -1,8 +1,12 @@
-POST http://localhost:8000/Interface/Initiate/CustomerSignUp
+POST http://localhost:8000/Interface/Initiate/CustomerOnboarding
 Content-Type: application/json
 
 {
-  "email": "Fire 1"
+  "email": "t2est@email.com",
+  "password": "12345678",
+  "first_name": "Test",
+  "last_name": "Customer",
+  "phone_number": "1234567890"
 }
 
 ###
