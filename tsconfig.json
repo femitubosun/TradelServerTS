@@ -1,13 +1,16 @@
 {
   "compilerOptions": {
-    "target": "es2016",
+    "target": "es2021",
+    "lib": [
+      "es2021"
+    ],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "noEmit": false,
+    "noPropertyAccessFromIndexSignature": true,
     "moduleResolution": "node",
     "sourceMap": true,
     "module": "commonjs",
-
     "paths": {
       "Lib/*": [
         "./src/Lib/*"
@@ -43,7 +46,8 @@
     "skipLibCheck": true
   },
   "include": [
-    "./src/**/*"
+    "./src/**/*",
+    "env.d.ts"
   ],
   "exclude": [
     "node_modules",

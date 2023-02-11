@@ -4,7 +4,6 @@ export const dbConfig = {
   USERNAME: process.env.DATABASE_USERNAME,
   PASSWORD: process.env.DATABASE_PASSWORD,
   DB_NAME: process.env.DATABASE_NAME,
-
   TEST_HOST: process.env.TEST_DATABASE_HOST,
   TEST_PORT: parseInt(process.env.TEST_DATABASE_PORT!, 10),
   TEST_USERNAME: process.env.TEST_DATABASE_USERNAME,

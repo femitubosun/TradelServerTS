@@ -1,9 +1,5 @@
 export const emailConfig = {
   sendinblue: {
-    host: process.env.SEND_IN_BLUE_SMTP_HOST!,
-    port: parseInt(process.env.SEND_IN_BLUE_SMTP_PORT!, 10)!,
-    user: process.env.SEND_IN_BLUE_SMTP_USERNAME!,
-    pass: process.env.SEND_IN_BLUE_SMTP_PASSWORD!,
     secure: false,
     apiKey: process.env.SEND_IN_BLUE_API_KEY!,
   },
