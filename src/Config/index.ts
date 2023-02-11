@@ -1,5 +1,6 @@
 import "dotenv/config";
 
+export * from "./appConfig";
 export * from "./expressConfig";
 export * from "./loggingConfig";
 export * from "./dbConfig";

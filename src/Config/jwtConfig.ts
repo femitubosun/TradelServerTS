@@ -1,3 +1,3 @@
 export const jwtConfig = {
-  JWT_SECRET: process.env.JWT_SECRET!,
+  jwtSecret: process.env.JWT_SECRET!,
 };

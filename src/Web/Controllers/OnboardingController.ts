@@ -3,16 +3,18 @@ import { keysSnakeCaseToCamelCase } from "Utils/keysSnakeCaseToCamelCase";
 import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 import {
   CUSTOMER_ONBOARDING_SUCCESS,
-  FAILURE,
+  EMAIL_VERIFICATION_SUCCESS,
   MERCHANT_ONBOARDING_SUCCESS,
   SUCCESS,
 } from "Utils/Messages";
 import {
   CustomerOnboardingArgs,
   CustomerOnboardingUseCase,
+  EmailVerificationUseCase,
 } from "Logic/UseCases/Onboarding";
 import { container } from "tsyringe";
 import { DBContext } from "Lib/Infra/Internal/DBContext";
+import { AuthRequest } from "Web/TypeChecking";
 
 const dbContext = container.resolve(DBContext);
 
@@ -42,6 +44,22 @@ class OnboardingController {
       status: SUCCESS,
       status_code: HttpStatusCodeEnum.CREATED,
       message: MERCHANT_ONBOARDING_SUCCESS,
+    });
+  }
+
+  public async emailVerification(req: Request, res: Response) {
+    const user = (req as AuthRequest).user;
+    const emailVerifyToken = req.params["emailVerifyToken"];
+
+    const results = await EmailVerificationUseCase.execute({
+      user,
+      emailVerificationToken: emailVerifyToken,
+    });
+    return res.status(HttpStatusCodeEnum.OK).json({
+      status: SUCCESS,
+      status_code: HttpStatusCodeEnum.OK,
+      message: EMAIL_VERIFICATION_SUCCESS,
+      results,
     });
   }
 }

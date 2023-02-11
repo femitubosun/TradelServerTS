@@ -2,6 +2,7 @@ import { CustomBaseEntity } from "Entities/Base";
 import { Column, Entity, ManyToOne } from "typeorm";
 import { User } from "../User";
 import { UserTokenTypesEnum } from "Entities/UserTokens";
+import { DateTime } from "luxon";
 
 @Entity()
 export class UserTokens extends CustomBaseEntity {
@@ -18,6 +19,11 @@ export class UserTokens extends CustomBaseEntity {
     enum: UserTokenTypesEnum,
   })
   type: UserTokenTypesEnum;
+
+  @Column({
+    type: "timestamp",
+  })
+  expiresOn: DateTime;
 
   @Column({
     default: false,

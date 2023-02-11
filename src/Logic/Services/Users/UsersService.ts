@@ -1,13 +1,14 @@
 import { autoInjectable } from "tsyringe";
 import { DBContext } from "Lib/Infra/Internal/DBContext";
 import { User } from "Entities/User";
-import { DATABASE_ERROR } from "Utils/Messages";
+import { DATABASE_ERROR, FAILURE, SUCCESS } from "Utils/Messages";
 import { TypeOrmError } from "Exceptions/index";
 import {
   CreateUserRecordArgs,
   IUser,
-  UpdateUserRecordDTO,
+  UpdateUserRecordArgs,
 } from "Logic/Services/Users/TypeSetting";
+import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
 
 @autoInjectable()
 class UsersService {
@@ -60,14 +61,37 @@ class UsersService {
     });
   }
 
+  public async activateUserEmail(id: number) {
+    const updateUserRecordArgs: UpdateUserRecordArgs = {
+      identifierType: "id",
+      identifier: id,
+      updateUserRecordPayload: {
+        hasVerifiedEmail: true,
+      },
+    };
+    return await this.updateUserRecord(updateUserRecordArgs);
+  }
+
   public async updateUserRecord(
-    id: number,
-    updateUserRecordOptions: UpdateUserRecordDTO
-  ): Promise<boolean> {
-    return await this.userRepository.findOneAndUpdate(
-      id,
-      updateUserRecordOptions
-    );
+    updateUserRecordArgs: UpdateUserRecordArgs
+  ): Promise<string> {
+    const { identifierType, identifier, updateUserRecordPayload } =
+      updateUserRecordArgs;
+    const user =
+      identifierType == "id"
+        ? await this.userRepository.findUserById(identifier as number)
+        : await this.userRepository.findOneBy({ identifier });
+
+    Object.assign(user, updateUserRecordPayload);
+    try {
+      await this.userRepository.save(user);
+      return SUCCESS;
+    } catch (e) {
+      const logger = LoggingProviderFactory.build();
+      console.log(e);
+      logger.error(e);
+      return FAILURE;
+    }
   }
 
   public async disableUserRecord(id: number): Promise<any> {

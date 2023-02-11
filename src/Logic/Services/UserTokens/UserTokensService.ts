@@ -1,11 +1,18 @@
 import { autoInjectable } from "tsyringe";
-import { CreateUserTokenArgs } from "Logic/Services/UserTokens/TypeChecking/CreateUserTokenArgs";
-import { UserTokens } from "Entities/UserTokens";
+
+import { UserTokens, UserTokenTypesEnum } from "Entities/UserTokens";
 import { DBContext } from "Lib/Infra/Internal/DBContext";
-import { SUCCESS } from "Utils/Messages";
-import { UpdateUserTokenRecordArgs } from "Logic/Services/UserTokens/TypeChecking";
+import { FAILURE, SUCCESS } from "Utils/Messages";
+import {
+  CreateUserTokenArgs,
+  UpdateUserTokenRecordArgs,
+} from "Logic/Services/UserTokens/TypeChecking";
 import { generateToken } from "Utils/generateToken";
 import { domainConfig } from "Config/domainConfig";
+import { User } from "Entities/User";
+import { DateTime } from "luxon";
+import { appConfig } from "Config/appConfig";
+import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
 
 @autoInjectable()
 class UserTokensService {
@@ -25,11 +32,11 @@ class UserTokensService {
    */
   public async createUserTokenRecord(createUserTokenArgs: CreateUserTokenArgs) {
     const userToken = new UserTokens();
-    let generatedToken = generateToken(domainConfig.USER_TOKEN_LENGTH);
+    let generatedToken = generateToken(appConfig.userTokenLength);
     let foundToken = await this.findUserTokenByToken(generatedToken);
 
     while (foundToken) {
-      generatedToken = generateToken(domainConfig.USER_TOKEN_LENGTH);
+      generatedToken = generateToken(appConfig.userTokenLength);
       foundToken = await this.findUserTokenByToken(generatedToken);
     }
 
@@ -38,10 +45,23 @@ class UserTokensService {
       token: generatedToken,
     });
     await this.userTokenRepository.save(userToken);
+
     return userToken;
   }
 
-  public async findUserTokenByToken(token: string) {
+  public async createEmailActivationToken(user: User) {
+    const expiresOn = DateTime.now().plus({
+      minute: appConfig.emailTokenExpiresInMinutes,
+    });
+    const createUserTokenArgs: CreateUserTokenArgs = {
+      user,
+      type: UserTokenTypesEnum.EMAIL,
+      expiresOn,
+    };
+    return await this.createUserTokenRecord(createUserTokenArgs);
+  }
+
+  public async findUserTokenByToken(token: string): Promise<UserTokens | null> {
     return await this.userTokenRepository.findOneBy({
       token,
     });
@@ -51,10 +71,22 @@ class UserTokensService {
     return await this.userTokenRepository.findOneById(id);
   }
 
-  public async findUserTokenByIdentifier(identifier: string) {
+  public async findUserTokenByIdentifier(tokenIdentifier: string) {
     return await this.userTokenRepository.findOne({
-      identifier,
+      identifier: tokenIdentifier,
     });
+  }
+
+  public async deactivateUserToken(tokenId: number) {
+    const updateUserTokenRecordArgs: UpdateUserTokenRecordArgs = {
+      identifierType: "id",
+      identifier: tokenId,
+      updatePayload: {
+        expired: true,
+      },
+    };
+
+    return await this.updateUserTokenRecord(updateUserTokenRecordArgs);
   }
 
   public async updateUserTokenRecord(
@@ -70,8 +102,16 @@ class UserTokensService {
           });
 
     Object.assign(userToken, updatePayload);
-    await this.userTokenRepository.save(userToken);
-    return SUCCESS;
+
+    try {
+      await this.userTokenRepository.save(userToken);
+      return SUCCESS;
+    } catch (e) {
+      const logger = LoggingProviderFactory.build();
+      console.log(e);
+      logger.error(e);
+      return FAILURE;
+    }
   }
 }
 

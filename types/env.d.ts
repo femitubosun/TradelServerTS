@@ -4,5 +4,6 @@ declare namespace NodeJS {
     NODE_ENV: string;
     PORT: string;
     DB_URI: string;
+    EMAIL_TOKEN_EXPIRES_IN_MINUTES: string;
   }
 }

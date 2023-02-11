@@ -5,6 +5,7 @@ type UpdateUserTokenPayload = {
 };
 
 export type UpdateUserTokenRecordArgs = {
-  identifier: "id" | "identifier";
+  identifierType: "id" | "identifier";
+  identifier: number | string;
   updatePayload: UpdateUserTokenPayload;
 };

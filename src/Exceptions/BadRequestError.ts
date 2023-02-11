@@ -1,10 +1,11 @@
 import ApplicationError from "./ApplicationError";
+import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 
 export class BadRequestError extends ApplicationError {
   constructor(description: string = "Bad Request Error") {
     super({
       description,
-      httpStatusCode: 400,
+      httpStatusCode: HttpStatusCodeEnum.BAD_REQUEST,
       isOperational: undefined,
     });
     Object.setPrototypeOf(this, new.target.prototype);

@@ -80,3 +80,25 @@
 [ERROR] 2023-02-10 16:40:56 Invalid login: 530 Invalid username or password
 [ERROR] 2023-02-10 18:23:33 Missing the required parameter 'sendSmtpEmail' when calling sendTransacEmail
 [ERROR] 2023-02-10 18:25:28 connect ETIMEDOUT 104.17.9.12:443
+[ERROR] 2023-02-11 08:56:41 DataTypeNotSupportedError: Data type "DateTime" in "User.lastLoginDate" is not supported by "postgres" database.
+[ERROR] 2023-02-11 08:58:05 QueryFailedError: column "expiresOn" of relation "user_tokens" contains null values
+[ERROR] 2023-02-11 09:03:16 Email is Already in Use
+[ERROR] 2023-02-11 09:06:02 invalid token
+[ERROR] 2023-02-11 09:09:27 invalid token
+[ERROR] 2023-02-11 09:12:17 invalid token
+[ERROR] 2023-02-11 09:13:57 invalid token
+[ERROR] 2023-02-11 09:28:59 Unauthorized
+[ERROR] 2023-02-11 09:33:32 invalid token
+[ERROR] 2023-02-11 09:35:15 invalid token
+[ERROR] 2023-02-11 09:35:50 invalid token
+[ERROR] 2023-02-11 09:44:04 Cannot read properties of undefined (reading 'email')
+[ERROR] 2023-02-11 09:44:37 Cannot read properties of undefined (reading 'email')
+[ERROR] 2023-02-11 13:59:33 Cannot read properties of undefined (reading 'email')
+[ERROR] 2023-02-11 14:00:33 Cannot read properties of undefined (reading 'email')
+[ERROR] 2023-02-11 14:01:04 Cannot read properties of undefined (reading 'email')
+[ERROR] 2023-02-11 14:33:20 Invalid Token
+[ERROR] 2023-02-11 14:36:13 No Token Record in Database
+[ERROR] 2023-02-11 14:36:55 Unauthorized
+[ERROR] 2023-02-11 14:37:26 Not Authenticated
+[ERROR] 2023-02-11 14:38:00 Not Authenticated
+[ERROR] 2023-02-11 14:39:04 Not Authenticated

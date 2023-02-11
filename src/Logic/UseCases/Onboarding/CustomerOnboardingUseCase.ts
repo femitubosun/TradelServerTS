@@ -12,6 +12,7 @@ import { CustomerOnboardingArgs } from "Logic/UseCases/Onboarding/TypeChecking";
 import { UserTokenTypesEnum } from "Entities/UserTokens";
 import { EMAIL_IN_USE } from "Utils/Messages";
 import { EmailProviderFactory, SendEmailArgs } from "Lib/Infra/External/Email";
+import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
 
 export class CustomerOnboardingUseCase {
   /**
@@ -28,6 +29,7 @@ export class CustomerOnboardingUseCase {
   public static async execute(
     customerOnboardingArgs: CustomerOnboardingArgs
   ): Promise<string> {
+    const logger = LoggingProviderFactory.build();
     const { email, password, firstName, lastName, phoneNumber, queryRunner } =
       customerOnboardingArgs;
 
@@ -66,15 +68,12 @@ export class CustomerOnboardingUseCase {
 
       await queryRunner.commitTransaction();
     } catch (typeOrmError: any) {
-      console.error(typeOrmError);
+      logger.error(typeOrmError);
       await queryRunner.rollbackTransaction();
       throw new InternalServerError();
     }
 
-    const userToken = await UserTokensService.createUserTokenRecord({
-      user,
-      type: UserTokenTypesEnum.EMAIL,
-    });
+    const userToken = await UserTokensService.createEmailActivationToken(user);
 
     const emailProvider = EmailProviderFactory.build();
 
@@ -83,6 +82,7 @@ export class CustomerOnboardingUseCase {
       subject: "Tradel Activation Email",
       to: email,
     };
+
     await emailProvider.sendEmail(emailPayload);
 
     return CUSTOMER_ONBOARDING_SUCCESS;

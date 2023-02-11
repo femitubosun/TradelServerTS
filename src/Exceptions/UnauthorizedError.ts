@@ -1,10 +1,11 @@
 import ApplicationError from "./ApplicationError";
+import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 
 export class UnauthorizedError extends ApplicationError {
-  constructor(description: string = "Internal Server Error") {
+  constructor(description: string = "Unauthorized") {
     super({
       description,
-      httpStatusCode: 401,
+      httpStatusCode: HttpStatusCodeEnum.UNAUTHORIZED,
       isOperational: undefined,
     });
     Object.setPrototypeOf(this, new.target.prototype);
