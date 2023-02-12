@@ -11,7 +11,7 @@ export class SignInUserWithEmailUseCase {
   ): Promise<SignInUserWithEmailUseCaseReturnType> {
     const { email, password } = signInUserDTO;
 
-    const user = await UsersService.findUserByEmail(email);
+    const user = await UsersService.getUserByEmail(email);
 
     if (!user) throw new BadRequestError(CHECK_EMAIL_AND_PASSWORD);
 

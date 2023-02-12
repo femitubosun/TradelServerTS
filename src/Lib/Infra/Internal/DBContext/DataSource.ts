@@ -7,6 +7,7 @@ import {
   UserTokens,
   Cart,
 } from "Entities/index";
+import { Merchant } from "Entities/Merchant";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -15,7 +16,7 @@ export const AppDataSource = new DataSource({
   username: dbConfig.USERNAME,
   password: dbConfig.PASSWORD,
   database: dbConfig.DB_NAME,
-  entities: [SettingsUserRoles, User, Customer, UserTokens, Cart],
+  entities: [SettingsUserRoles, User, Customer, UserTokens, Cart, Merchant],
   synchronize: true,
 });
 

@@ -1,4 +1,3 @@
-import { ISettingsUserRole } from "Logic/Services/SettingsUserRole/TypeChecking";
 import { QueryRunner } from "typeorm";
 import { SettingsUserRoles } from "Entities/SettingsUserRoles";
 

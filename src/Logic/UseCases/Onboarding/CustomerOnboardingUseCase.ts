@@ -8,8 +8,7 @@ import UsersService from "Logic/Services/Users/UsersService";
 import CustomersService from "Logic/Services/Customers/CustomersService";
 import UserTokensService from "Logic/Services/UserTokens/UserTokensService";
 import CartService from "Logic/Services/Cart/CartService";
-import { CustomerOnboardingArgs } from "Logic/UseCases/Onboarding/TypeChecking";
-import { UserTokenTypesEnum } from "Entities/UserTokens";
+import { CustomerOnboardingUseCaseArgs } from "Logic/UseCases/Onboarding/TypeChecking";
 import { EMAIL_IN_USE } from "Utils/Messages";
 import { EmailProviderFactory, SendEmailArgs } from "Lib/Infra/External/Email";
 import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
@@ -27,9 +26,10 @@ export class CustomerOnboardingUseCase {
    */
 
   public static async execute(
-    customerOnboardingArgs: CustomerOnboardingArgs
+    customerOnboardingArgs: CustomerOnboardingUseCaseArgs
   ): Promise<string> {
-    const logger = LoggingProviderFactory.build();
+    const loggingProvider = LoggingProviderFactory.build();
+
     const { email, password, firstName, lastName, phoneNumber, queryRunner } =
       customerOnboardingArgs;
 
@@ -37,8 +37,8 @@ export class CustomerOnboardingUseCase {
       "customer"
     );
 
-    const user = await UsersService.findUserByEmail(email);
-    if (user) {
+    const foundUser = await UsersService.getUserByEmail(email);
+    if (foundUser) {
       throw new BadRequestError(EMAIL_IN_USE);
     }
     if (!role) {
@@ -61,30 +61,29 @@ export class CustomerOnboardingUseCase {
         queryRunner,
       });
 
-      const cart = await CartService.createCartRecord({
+      await CartService.createCartRecord({
         customer,
         queryRunner,
       });
+      const userToken = await UserTokensService.createEmailActivationToken(
+        user
+      );
 
       await queryRunner.commitTransaction();
+
+      const emailPayload: SendEmailArgs = {
+        body: userToken.token,
+        subject: "Tradel Activation Email",
+        to: email,
+      };
+      const emailProvider = EmailProviderFactory.build();
+      await emailProvider.sendEmail(emailPayload);
+
+      return CUSTOMER_ONBOARDING_SUCCESS;
     } catch (typeOrmError: any) {
-      logger.error(typeOrmError);
+      loggingProvider.error(typeOrmError);
       await queryRunner.rollbackTransaction();
       throw new InternalServerError();
     }
-
-    const userToken = await UserTokensService.createEmailActivationToken(user);
-
-    const emailProvider = EmailProviderFactory.build();
-
-    const emailPayload: SendEmailArgs = {
-      body: userToken.token,
-      subject: "Tradel Activation Email",
-      to: email,
-    };
-
-    await emailProvider.sendEmail(emailPayload);
-
-    return CUSTOMER_ONBOARDING_SUCCESS;
   }
 }

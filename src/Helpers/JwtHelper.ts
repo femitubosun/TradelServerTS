@@ -4,7 +4,6 @@ import { IUser } from "Logic/Services/Users/TypeSetting";
 import { UnauthenticatedError } from "Exceptions/UnauthenticatedError";
 
 export class JwtHelper {
-  //  TODO add expiresIn
   public static signUser(user: IUser) {
     console.log("Secret ", jwtConfig.jwtSecret);
     const token = jwt.sign(

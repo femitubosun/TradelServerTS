@@ -11,6 +11,9 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "module": "commonjs",
+    "types": [
+      "./types"
+    ],
     "paths": {
       "Lib/*": [
         "./src/Lib/*"
@@ -47,7 +50,7 @@
   },
   "include": [
     "./src/**/*",
-    "env.d.ts"
+    "./types/"
   ],
   "exclude": [
     "node_modules",

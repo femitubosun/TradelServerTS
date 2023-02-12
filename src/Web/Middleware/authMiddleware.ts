@@ -16,7 +16,11 @@ export const authMiddleware = async (
 
   const decoded: any = JwtHelper.verifyToken(token);
 
-  (req as AuthRequest).user = await UsersService.findUserByEmail(decoded.email);
+  const user = await UsersService.getUserByEmail(decoded.email);
+
+  if (!user) throw new UnauthenticatedError();
+
+  (req as AuthRequest).user = user;
 
   return next();
 };

@@ -1,13 +1,12 @@
 import { autoInjectable } from "tsyringe";
 import { DBContext } from "Lib/Infra/Internal/DBContext";
 import { User } from "Entities/User";
-import { DATABASE_ERROR, FAILURE, SUCCESS } from "Utils/Messages";
-import { TypeOrmError } from "Exceptions/index";
+import { FAILURE, NULL_OBJECT, SUCCESS } from "Utils/Messages";
 import {
   CreateUserRecordArgs,
   IUser,
   UpdateUserRecordArgs,
-} from "Logic/Services/Users/TypeSetting";
+} from "Logic/Services/Users/TypeChecking";
 import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
 
 @autoInjectable()
@@ -43,22 +42,30 @@ class UsersService {
     });
   }
 
-  public async findUserByIdentifier(identifier: string): Promise<any> {
-    return await this.userRepository.findOneBy({
+  public async getUserByIdentifier(identifier: string): Promise<any> {
+    const user = await this.userRepository.findOneBy({
       identifier,
     });
+
+    if (!user) return NULL_OBJECT;
+    return user;
   }
 
-  public async findUserByEmail(email: string) {
-    return await this.userRepository.findOneBy({
+  public async getUserByEmail(email: string) {
+    const user = await this.userRepository.findOneBy({
       email,
     });
+    if (!user) return NULL_OBJECT;
+    return user;
   }
 
-  public async findUserById(id: number): Promise<IUser | null> {
-    return await this.userRepository.findOneBy({
+  public async getUserById(id: number): Promise<IUser | null> {
+    const user = await this.userRepository.findOneBy({
       id,
     });
+
+    if (!user) return NULL_OBJECT;
+    return user;
   }
 
   public async activateUserEmail(id: number) {
@@ -95,7 +102,7 @@ class UsersService {
   }
 
   public async disableUserRecord(id: number): Promise<any> {
-    const user = (await this.findUserById(id))!;
+    const user = (await this.getUserById(id))!;
     user.isDeleted = true;
     user.isActive = false;
     this.userRepository.save(user);

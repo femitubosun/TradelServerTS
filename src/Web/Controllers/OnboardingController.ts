@@ -8,7 +8,7 @@ import {
   SUCCESS,
 } from "Utils/Messages";
 import {
-  CustomerOnboardingArgs,
+  CustomerOnboardingUseCaseArgs,
   CustomerOnboardingUseCase,
   EmailVerificationUseCase,
 } from "Logic/UseCases/Onboarding";
@@ -22,13 +22,13 @@ class OnboardingController {
   public async onboardCustomer(req: Request, res: Response) {
     const payload: any = keysSnakeCaseToCamelCase(req.body);
     const queryRunner = await dbContext.getTransactionalQueryRunner();
-    const customerOnboardingArgs: CustomerOnboardingArgs = {
+    const customerOnboardingUseCaseArgs: CustomerOnboardingUseCaseArgs = {
       ...payload,
       queryRunner,
     };
 
     const results = await CustomerOnboardingUseCase.execute(
-      customerOnboardingArgs
+      customerOnboardingUseCaseArgs
     );
 
     return res.status(HttpStatusCodeEnum.CREATED).json({
@@ -55,6 +55,7 @@ class OnboardingController {
       user,
       emailVerificationToken: emailVerifyToken,
     });
+
     return res.status(HttpStatusCodeEnum.OK).json({
       status: SUCCESS,
       status_code: HttpStatusCodeEnum.OK,
