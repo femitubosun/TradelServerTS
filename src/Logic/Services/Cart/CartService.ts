@@ -1,14 +1,14 @@
 import { autoInjectable } from "tsyringe";
-import { DBContext } from "Lib/Infra/Internal/DBContext";
+import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { Cart } from "Entities/Cart";
 import { CreateCartRecordArgs } from "Logic/Services/Cart";
-import { NULL_OBJECT } from "Utils/Messages";
+import { NULL_OBJECT } from "Helpers/Messages/SystemMessages";
 
 @autoInjectable()
 export class CartService {
   private cartRepository: any;
 
-  constructor(private dbContext?: DBContext) {
+  constructor(private dbContext?: DbContext) {
     this.cartRepository = dbContext?.getEntityRepository(Cart);
   }
 

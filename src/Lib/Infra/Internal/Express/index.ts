@@ -8,7 +8,7 @@ import {
   ILoggingDriver,
 } from "Lib/Infra/Internal/Logging";
 import "express-async-errors";
-import routes from "Web/Routes";
+import routes from "Api/Routes";
 import { errorHandler } from "Exceptions/ErrorHandler";
 import {
   DATABASE_CONNECTED,
@@ -17,12 +17,12 @@ import {
   EXPRESS_BOOTSTRAPPED_ERROR,
   MIDDLEWARE_ATTACHED,
   ROUTES_ATTACHED,
-} from "Utils/Messages";
-import { DBContext } from "Lib/Infra/Internal/DBContext";
+} from "Helpers/Messages/SystemMessages";
+import { DbContext } from "Lib/Infra/Internal/DBContext";
 
 export default class Express {
   app: express.Express;
-  dbContext: DBContext;
+  dbContext: DbContext;
   loggingProvider: ILoggingDriver;
 
   constructor(dbContext: any) {
@@ -72,7 +72,7 @@ export default class Express {
   }
 
   public static getCorsWhiteList(): Array<String> {
-    return expressConfig.CORS_WHITELIST;
+    return expressConfig.corsWhitelist;
   }
 
   #attachErrorHandlers() {

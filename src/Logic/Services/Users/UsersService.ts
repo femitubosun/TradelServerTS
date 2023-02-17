@@ -1,19 +1,20 @@
 import { autoInjectable } from "tsyringe";
-import { DBContext } from "Lib/Infra/Internal/DBContext";
+import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { User } from "Entities/User";
-import { FAILURE, NULL_OBJECT, SUCCESS } from "Utils/Messages";
+import { FAILURE, NULL_OBJECT, SUCCESS } from "Helpers/Messages/SystemMessages";
 import {
   CreateUserRecordArgs,
   IUser,
   UpdateUserRecordArgs,
 } from "Logic/Services/Users/TypeChecking";
 import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
+import { DateTime } from "luxon";
 
 @autoInjectable()
 class UsersService {
   private userRepository: any;
 
-  constructor(private dbContext?: DBContext) {
+  constructor(private dbContext?: DbContext) {
     this.userRepository = dbContext?.getEntityRepository(User);
   }
 
@@ -86,8 +87,8 @@ class UsersService {
       updateUserRecordArgs;
     const user =
       identifierType == "id"
-        ? await this.userRepository.findUserById(identifier as number)
-        : await this.userRepository.findOneBy({ identifier });
+        ? await this.getUserById(identifier as number)
+        : await this.getUserByIdentifier(identifier as string);
 
     Object.assign(user, updateUserRecordPayload);
     try {
@@ -106,6 +107,17 @@ class UsersService {
     user.isDeleted = true;
     user.isActive = false;
     this.userRepository.save(user);
+  }
+
+  public async updateUserLastLoginDate(userId: number) {
+    const updateUserRecordArgs: UpdateUserRecordArgs = {
+      identifier: userId,
+      identifierType: "id",
+      updateUserRecordPayload: {
+        lastLoginDate: DateTime.now(),
+      },
+    };
+    return await this.updateUserRecord(updateUserRecordArgs);
   }
 }
 

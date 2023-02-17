@@ -10,7 +10,7 @@ import {
   NO_TOKEN_RECORD,
   SOMETHING_WENT_WRONG,
   TOKEN_EXPIRED,
-} from "Utils/Messages";
+} from "Helpers/Messages/SystemMessages";
 import { UnauthorizedError } from "Exceptions/UnauthorizedError";
 import { UserTokenTypesEnum } from "Entities/UserTokens";
 import { DateTime } from "luxon";
@@ -33,7 +33,7 @@ export class EmailVerificationUseCase {
     const { emailVerificationToken, user } = emailVerificationArgs;
 
     const dbEmailVerificationToken =
-      await UserTokensService.findUserTokenByToken(emailVerificationToken);
+      await UserTokensService.getUserTokenByToken(emailVerificationToken);
 
     if (!dbEmailVerificationToken) throw new BadRequestError(NO_TOKEN_RECORD);
 

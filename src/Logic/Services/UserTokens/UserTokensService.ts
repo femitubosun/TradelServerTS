@@ -1,15 +1,13 @@
 import { autoInjectable } from "tsyringe";
-
 import { UserTokens, UserTokenTypesEnum } from "Entities/UserTokens";
-import { DBContext } from "Lib/Infra/Internal/DBContext";
-import { FAILURE, SUCCESS } from "Utils/Messages";
+import { DbContext } from "Lib/Infra/Internal/DBContext";
+import { FAILURE, SUCCESS } from "Helpers/Messages/SystemMessages";
 import {
+  CreateEmailActivationTokenArgs,
   CreateUserTokenArgs,
   UpdateUserTokenRecordArgs,
 } from "Logic/Services/UserTokens/TypeChecking";
 import { generateToken } from "Utils/generateToken";
-import { domainConfig } from "Config/domainConfig";
-import { User } from "Entities/User";
 import { DateTime } from "luxon";
 import { appConfig } from "Config/appConfig";
 import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
@@ -18,7 +16,7 @@ import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
 class UserTokensService {
   private userTokenRepository: any;
 
-  constructor(private dbContext?: DBContext) {
+  constructor(private dbContext?: DbContext) {
     this.userTokenRepository = dbContext?.getEntityRepository(UserTokens);
   }
 
@@ -31,6 +29,7 @@ class UserTokensService {
    * returns UserToken
    */
   public async createUserTokenRecord(createUserTokenArgs: CreateUserTokenArgs) {
+    const { queryRunner } = createUserTokenArgs;
     const userToken = new UserTokens();
     let generatedToken = generateToken(appConfig.userTokenLength);
     let foundToken = await this.findUserTokenByToken(generatedToken);
@@ -44,19 +43,22 @@ class UserTokensService {
       ...createUserTokenArgs,
       token: generatedToken,
     });
-    await this.userTokenRepository.save(userToken);
-
+    await queryRunner.manager.save(userToken);
     return userToken;
   }
 
-  public async createEmailActivationToken(user: User) {
+  public async createEmailActivationToken(
+    createEmailActivationTokenArgs: CreateEmailActivationTokenArgs
+  ) {
+    const { userId, queryRunner } = createEmailActivationTokenArgs;
     const expiresOn = DateTime.now().plus({
       minute: appConfig.emailTokenExpiresInMinutes,
     });
     const createUserTokenArgs: CreateUserTokenArgs = {
-      user,
+      userId,
       type: UserTokenTypesEnum.EMAIL,
       expiresOn,
+      queryRunner,
     };
     return await this.createUserTokenRecord(createUserTokenArgs);
   }

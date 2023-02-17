@@ -2,5 +2,5 @@ import { UpdateMerchantRecordArgs } from "Logic/Services/Merchant/TypeChecking/U
 
 export type DeleteMerchantArgs = Pick<
   UpdateMerchantRecordArgs,
-  "identifier" | "identifierType"
+  "identifierValue" | "identifierType"
 >;

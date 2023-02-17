@@ -1,5 +1,5 @@
 import { CustomBaseEntity } from "Entities/Base";
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { User } from "../User";
 import { UserTokenTypesEnum } from "Entities/UserTokens";
 import { DateTime } from "luxon";
@@ -7,7 +7,13 @@ import { DateTime } from "luxon";
 @Entity()
 export class UserTokens extends CustomBaseEntity {
   @ManyToOne(() => User)
+  @JoinColumn()
   user: User;
+
+  @Column({
+    nullable: true,
+  })
+  userId: number;
 
   @Column({
     nullable: false,

@@ -1,5 +1,5 @@
-import { QueryRunner } from "typeorm";
 import { SettingsUserRoles } from "Entities/SettingsUserRoles";
+import DbQueryRunner from "Logic/Services/TypeChecking/QueryRunner";
 
 export type CreateUserRecordArgs = {
   email: string;
@@ -7,5 +7,4 @@ export type CreateUserRecordArgs = {
   lastName: string;
   password: string;
   role: SettingsUserRoles;
-  queryRunner: QueryRunner;
-};
+} & DbQueryRunner;

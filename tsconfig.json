@@ -24,8 +24,8 @@
       "Logic/*": [
         "./src/Logic/*"
       ],
-      "Web/*": [
-        "./src/Web/*"
+      "Api/*": [
+        "./src/Api/*"
       ],
       "Config/*": [
         "./src/Config/*"

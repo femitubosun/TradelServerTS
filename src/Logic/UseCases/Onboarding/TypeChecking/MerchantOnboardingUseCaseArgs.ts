@@ -6,5 +6,6 @@ export type MerchantOnboardingUseCaseArgs = {
   phoneNumber: string;
   email: string;
   password: string;
+  storeName: string;
   queryRunner: QueryRunner;
 };

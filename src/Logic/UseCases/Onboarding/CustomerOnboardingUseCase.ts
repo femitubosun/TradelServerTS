@@ -3,15 +3,17 @@ import { BadRequestError, InternalServerError } from "Exceptions/index";
 import {
   CUSTOMER_ONBOARDING_SUCCESS,
   ROLE_DOES_NOT_EXIST,
-} from "Utils/Messages";
+} from "Helpers/Messages/SystemMessages";
 import UsersService from "Logic/Services/Users/UsersService";
 import CustomersService from "Logic/Services/Customers/CustomersService";
 import UserTokensService from "Logic/Services/UserTokens/UserTokensService";
 import CartService from "Logic/Services/Cart/CartService";
 import { CustomerOnboardingUseCaseArgs } from "Logic/UseCases/Onboarding/TypeChecking";
-import { EMAIL_IN_USE } from "Utils/Messages";
+import { EMAIL_IN_USE } from "Helpers/Messages/SystemMessages";
 import { EmailProviderFactory, SendEmailArgs } from "Lib/Infra/External/Email";
 import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
+import { eventTypes } from "Lib/Events/Listeners/eventTypes";
+import Event from "Lib/Events";
 
 export class CustomerOnboardingUseCase {
   /**
@@ -33,17 +35,18 @@ export class CustomerOnboardingUseCase {
     const { email, password, firstName, lastName, phoneNumber, queryRunner } =
       customerOnboardingArgs;
 
-    const role = await SettingsUserRoleService.findSettingsUserRoleByName(
-      "customer"
-    );
-
     const foundUser = await UsersService.getUserByEmail(email);
     if (foundUser) {
       throw new BadRequestError(EMAIL_IN_USE);
     }
+
+    const role = await SettingsUserRoleService.findSettingsUserRoleByName(
+      "customer"
+    );
     if (!role) {
       throw new InternalServerError(ROLE_DOES_NOT_EXIST);
     }
+
     await queryRunner.startTransaction();
     try {
       const user = await UsersService.createUserRecord({
@@ -65,9 +68,10 @@ export class CustomerOnboardingUseCase {
         customer,
         queryRunner,
       });
-      const userToken = await UserTokensService.createEmailActivationToken(
-        user
-      );
+      const userToken = await UserTokensService.createEmailActivationToken({
+        userId: user.id,
+        queryRunner,
+      });
 
       await queryRunner.commitTransaction();
 
@@ -76,6 +80,8 @@ export class CustomerOnboardingUseCase {
         subject: "Tradel Activation Email",
         to: email,
       };
+
+      Event.emit(eventTypes.user.signIn, user.id);
       const emailProvider = EmailProviderFactory.build();
       await emailProvider.sendEmail(emailPayload);
 

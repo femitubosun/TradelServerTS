@@ -1,5 +1,5 @@
 import { autoInjectable } from "tsyringe";
-import { DBContext } from "Lib/Infra/Internal/DBContext";
+import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { SettingsUserRoles } from "Entities/SettingsUserRoles";
 import { ISettingsUserRole } from "./TypeChecking";
 
@@ -7,7 +7,7 @@ import { ISettingsUserRole } from "./TypeChecking";
 export class SettingsUserRoleService {
   private settingsUserRoleRepository: any;
 
-  constructor(private dbContext?: DBContext) {
+  constructor(private dbContext?: DbContext) {
     this.settingsUserRoleRepository =
       dbContext?.getEntityRepository(SettingsUserRoles);
   }

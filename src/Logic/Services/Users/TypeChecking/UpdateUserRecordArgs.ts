@@ -1,8 +1,10 @@
+import { DateTime } from "luxon";
+
 type UpdateUserRecordArgsPayload = {
   email?: string;
   isFirstTimeLogin?: boolean;
   hasVerifiedEmail?: boolean;
-  lastLoginDate?: Date;
+  lastLoginDate?: DateTime;
   role?: any;
   isActive?: boolean;
   isDeleted?: boolean;

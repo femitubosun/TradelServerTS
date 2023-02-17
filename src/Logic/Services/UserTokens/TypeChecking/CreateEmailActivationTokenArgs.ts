@@ -1,5 +1,5 @@
-import { User } from "Entities/User";
+import DbQueryRunner from "Logic/Services/TypeChecking/QueryRunner";
 
 export type CreateEmailActivationTokenArgs = {
-  user: User;
-};
+  userId: number;
+} & DbQueryRunner;

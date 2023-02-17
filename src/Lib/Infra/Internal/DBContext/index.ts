@@ -6,7 +6,7 @@ import { inject, singleton, container } from "tsyringe";
 container.register("DataSource", { useValue: AppDataSource });
 
 @singleton()
-export class DBContext {
+export class DbContext {
   private _dbSource: DataSource;
 
   constructor(@inject("DataSource") dbSource: DataSource) {

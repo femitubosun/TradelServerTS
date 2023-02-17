@@ -1,10 +1,9 @@
-import { User } from "Entities/User";
 import { UserTokenTypesEnum } from "Entities/UserTokens";
-import { QueryRunner } from "typeorm";
 import { DateTime } from "luxon";
+import DbQueryRunner from "Logic/Services/TypeChecking/QueryRunner";
 
 export type CreateUserTokenArgs = {
-  user: User;
+  userId: number;
   type: UserTokenTypesEnum;
   expiresOn: DateTime;
-};
+} & DbQueryRunner;

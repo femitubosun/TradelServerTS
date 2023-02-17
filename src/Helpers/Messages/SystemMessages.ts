@@ -1,3 +1,4 @@
+export const NULL_OBJECT = null;
 export const PROVIDER_NOT_FOUND = "Provider Was Not Found";
 export const MIDDLEWARE_ATTACHED = "Middleware Attached Successfully";
 export const NOT_ALLOWED_BY_CORS = "This Origin is not allowed by CORS";
@@ -16,19 +17,24 @@ export const CRITICAL_ERROR_EXITING =
 export const ROLE_DOES_NOT_EXIST = "Role with this name does not exist";
 export const DATABASE_ERROR = "Database Error";
 export const SIGN_IN_SUCCESSFUL = "Sign in Successful";
+export const SIGN_UP_SUCCESSFUL = "Sign up Successful";
 export const CHECK_EMAIL_AND_PASSWORD = "Check Your Email and Password";
 export const SUCCESS = "Success";
-export const NULL_OBJECT = null;
 export const FAILURE = "Failure";
 export const ERROR = "Error";
 export const CUSTOMER_ONBOARDING_SUCCESS = "Customer Onboarded Successfully";
 export const MERCHANT_ONBOARDING_SUCCESS = "Merchant Onboarded Successfully";
 export const EMAIL_VERIFICATION_SUCCESS = "Email Verification Success";
 export const INVALID_TOKEN = "Invalid Token";
-export const TOKEN_EXPIRED = "This Token has Expired";
+export const TOKEN_EXPIRED =
+  "This Token has Expired. Please Request a Fresh One.";
 export const NO_TOKEN_RECORD = "No Token Record in Database";
 export const INVALID_TOKEN_TYPE = "Invalid Token Type";
 export const SOMETHING_WENT_WRONG =
   "Something went wrong while performing this operation";
 export const UNAUTHORIZED_OPERATION =
   "You are not authorized to perform this Operation";
+export const EMAIL_VERIFICATION_TOKEN_REQUEST_SUCCESS =
+  "Email Verification Request Success";
+export const ENV_NOT_FOUND = ".env File is missing";
+export const WALLET_RESOURCE = "Wallet Resource";

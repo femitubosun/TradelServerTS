@@ -11,7 +11,7 @@ export default {
     "^Lib/(.*)$": "<rootDir>/src/Lib/$1",
     "^Utils/(.*)$": "<rootDir>/src/Utils/$1",
     "^Logic/(.*)$": "<rootDir>/src/Logic/$1",
-    "^Web/(.*)$": "<rootDir>/src/Web/$1",
+    "^Web/(.*)$": "<rootDir>/src/Api/$1",
     "^Config/(.*)$": "<rootDir>/src/Config/$1",
     "^Helpers/(.*)$": "<rootDir>/src/Helpers/$1",
     "^Exceptions/(.*)$": "<rootDir>/src/Exceptions/$1",

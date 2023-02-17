@@ -1,11 +1,10 @@
 import { jwtConfig } from "Config/index";
 import jwt from "jsonwebtoken";
-import { IUser } from "Logic/Services/Users/TypeSetting";
+import { IUser } from "Logic/Services/Users/TypeChecking";
 import { UnauthenticatedError } from "Exceptions/UnauthenticatedError";
 
 export class JwtHelper {
   public static signUser(user: IUser) {
-    console.log("Secret ", jwtConfig.jwtSecret);
     const token = jwt.sign(
       {
         identifier: user.identifier,
@@ -18,7 +17,6 @@ export class JwtHelper {
       }
     );
     const decoded = this.verifyToken(token);
-    console.log(decoded);
 
     return token;
   }

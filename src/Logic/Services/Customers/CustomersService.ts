@@ -1,14 +1,13 @@
 import { autoInjectable } from "tsyringe";
-import { DBContext } from "Lib/Infra/Internal/DBContext";
+import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { Customer } from "Entities/Customer";
 import { CreateCustomerArgs } from "Logic/Services/Customers/TypeChecking/CreateCustomerArgs";
-import { NULL_OBJECT } from "Utils/Messages";
 
 @autoInjectable()
 class CustomerService {
   private customersRepository: any;
 
-  constructor(private dbContext?: DBContext) {
+  constructor(private dbContext?: DbContext) {
     this.customersRepository = dbContext?.getEntityRepository(Customer);
   }
 

@@ -1,4 +1,4 @@
-import { VALIDATION_ERROR } from "Utils/Messages";
+import { VALIDATION_ERROR } from "Helpers/Messages/SystemMessages";
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 

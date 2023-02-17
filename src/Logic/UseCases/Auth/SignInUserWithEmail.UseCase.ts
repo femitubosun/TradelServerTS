@@ -2,8 +2,10 @@ import { JwtHelper, PasswordEncryptionHelper } from "Helpers/index";
 import UsersService from "Logic/Services/Users/UsersService";
 import { SignInUserDTO } from "Logic/UseCases/Auth/TypeSetting";
 import { BadRequestError } from "Exceptions/index";
-import { CHECK_EMAIL_AND_PASSWORD } from "Utils/Messages";
+import { CHECK_EMAIL_AND_PASSWORD } from "Helpers/Messages/SystemMessages";
 import { SignInUserWithEmailUseCaseReturnType } from "Logic/UseCases/Auth/TypeSetting/TokenPayloadType";
+import Event from "Lib/Events";
+import { eventTypes } from "Lib/Events/Listeners/eventTypes";
 
 export class SignInUserWithEmailUseCase {
   public static async execute(
@@ -22,7 +24,7 @@ export class SignInUserWithEmailUseCase {
     if (!isMatch) throw new BadRequestError(CHECK_EMAIL_AND_PASSWORD);
 
     const token = JwtHelper.signUser(user);
-
+    Event.emit(eventTypes.user.signIn, user.id);
     return {
       user: {
         identifier: user.identifier,

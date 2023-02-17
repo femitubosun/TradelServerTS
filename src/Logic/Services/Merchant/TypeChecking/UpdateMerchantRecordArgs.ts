@@ -4,7 +4,7 @@ type UpdateMerchantRecordArgsPayload = {
 };
 
 export type UpdateMerchantRecordArgs = {
-  identifierType: "id" | "identifier";
-  identifier: string | number;
+  identifierType: "id" | "identifierValue";
+  identifierValue: string | number;
   updatePayload: UpdateMerchantRecordArgsPayload;
 };

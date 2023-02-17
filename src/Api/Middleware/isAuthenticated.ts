@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import UsersService from "Logic/Services/Users/UsersService";
 import { JwtHelper } from "Helpers/JwtHelper";
-import { AuthRequest } from "Web/TypeChecking";
-import { UnauthorizedError } from "Exceptions/UnauthorizedError";
+import { AuthRequest } from "../TypeChecking";
+
 import { UnauthenticatedError } from "Exceptions/UnauthenticatedError";
 
-export const authMiddleware = async (
+export const isAuthenticated = async (
   req: Request,
   res: Response,
   next: NextFunction

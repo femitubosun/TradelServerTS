@@ -1,8 +1,8 @@
 import { autoInjectable } from "tsyringe";
-import { DBContext } from "Lib/Infra/Internal/DBContext";
+import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { Merchant } from "Entities/Merchant";
 import { CreateMerchantRecordArgs } from "Logic/Services/Merchant/TypeChecking/CreateMerchantRecordArgs";
-import { FAILURE, NULL_OBJECT, SUCCESS } from "Utils/Messages";
+import { FAILURE, NULL_OBJECT, SUCCESS } from "Helpers/Messages/SystemMessages";
 import {
   DeleteMerchantArgs,
   DisableMerchantRecordArgs,
@@ -14,7 +14,7 @@ import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
 class MerchantService {
   private merchantsRepository: any;
 
-  constructor(private dbContext?: DBContext) {
+  constructor(private dbContext?: DbContext) {
     this.merchantsRepository = dbContext?.getEntityRepository(Merchant);
   }
 
@@ -66,13 +66,13 @@ class MerchantService {
   public async updateMerchantRecord(
     updateMerchantRecordArgs: UpdateMerchantRecordArgs
   ) {
-    const { identifier, identifierType, updatePayload } =
+    const { identifierValue, identifierType, updatePayload } =
       updateMerchantRecordArgs;
 
     const merchant =
       identifierType == "id"
-        ? await this.getMerchantById(identifier as number)
-        : await this.getMerchantByIdentifier(identifier as string);
+        ? await this.getMerchantById(identifierValue as number)
+        : await this.getMerchantByIdentifier(identifierValue as string);
 
     Object.assign(merchant, updatePayload);
     try {
@@ -89,11 +89,11 @@ class MerchantService {
   public async deleteMerchantRecord(
     deleteMerchantRecordArgs: DeleteMerchantArgs
   ) {
-    const { identifier, identifierType } = deleteMerchantRecordArgs;
+    const { identifierValue, identifierType } = deleteMerchantRecordArgs;
     const merchant =
       identifierType == "id"
-        ? await this.getMerchantById(identifier as number)
-        : await this.getMerchantByIdentifier(identifier as string);
+        ? await this.getMerchantById(identifierValue as number)
+        : await this.getMerchantByIdentifier(identifierValue as string);
 
     merchant.isDeleted = true;
     merchant.isActive = false;
@@ -119,11 +119,11 @@ class MerchantService {
   public async disableMerchantRecord(
     disableMerchantRecordArgs: DisableMerchantRecordArgs
   ) {
-    const { identifier, identifierType } = disableMerchantRecordArgs;
+    const { identifierValue, identifierType } = disableMerchantRecordArgs;
     const merchant =
       identifierType == "id"
-        ? await this.getMerchantById(identifier as number)
-        : await this.getMerchantByIdentifier(identifier as string);
+        ? await this.getMerchantById(identifierValue as number)
+        : await this.getMerchantByIdentifier(identifierValue as string);
 
     merchant.isActive = false;
     await this.merchantsRepository.save(merchant);
