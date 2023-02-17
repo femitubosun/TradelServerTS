@@ -9,7 +9,7 @@ import {
 } from "Logic/Services/UserTokens/TypeChecking";
 import { generateToken } from "Utils/generateToken";
 import { DateTime } from "luxon";
-import { appConfig } from "Config/appConfig";
+import { businessConfig } from "Config/businessConfig";
 import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
 
 @autoInjectable()
@@ -31,11 +31,11 @@ class UserTokensService {
   public async createUserTokenRecord(createUserTokenArgs: CreateUserTokenArgs) {
     const { queryRunner } = createUserTokenArgs;
     const userToken = new UserTokens();
-    let generatedToken = generateToken(appConfig.userTokenLength);
+    let generatedToken = generateToken(businessConfig.userTokenLength);
     let foundToken = await this.findUserTokenByToken(generatedToken);
 
     while (foundToken) {
-      generatedToken = generateToken(appConfig.userTokenLength);
+      generatedToken = generateToken(businessConfig.userTokenLength);
       foundToken = await this.findUserTokenByToken(generatedToken);
     }
 
@@ -52,7 +52,7 @@ class UserTokensService {
   ) {
     const { userId, queryRunner } = createEmailActivationTokenArgs;
     const expiresOn = DateTime.now().plus({
-      minute: appConfig.emailTokenExpiresInMinutes,
+      minute: businessConfig.emailTokenExpiresInMinutes,
     });
     const createUserTokenArgs: CreateUserTokenArgs = {
       userId,

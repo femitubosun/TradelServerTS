@@ -33,7 +33,8 @@ class ErrorHandler {
     response: Response
   ): void {
     response.status(error.httpCode).json({
-      message: error.message,
+      results: error.message,
+      message: ERROR,
       status: ERROR,
       status_code: error.httpCode,
     });
@@ -45,7 +46,7 @@ class ErrorHandler {
   ): void {
     if (response) {
       response.status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR).json({
-        message: INTERNAL_SERVER_ERROR,
+        result: INTERNAL_SERVER_ERROR,
         status: ERROR,
         status_code: HttpStatusCodeEnum.INTERNAL_SERVER_ERROR,
       });

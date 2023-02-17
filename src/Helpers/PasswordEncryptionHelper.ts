@@ -3,7 +3,7 @@ import { encryptionConfig } from "Config/index";
 
 export class PasswordEncryptionHelper {
   public static hashPassword(password: string): string {
-    return bcrypt.hashSync(password, encryptionConfig.SALT_ROUNDS);
+    return bcrypt.hashSync(password, encryptionConfig.saltRounds);
   }
 
   public static async verifyPassword(

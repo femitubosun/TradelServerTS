@@ -11,22 +11,22 @@ import { Merchant } from "Entities/Merchant";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
-  host: dbConfig.HOST,
-  port: dbConfig.PORT,
-  username: dbConfig.USERNAME,
-  password: dbConfig.PASSWORD,
-  database: dbConfig.DB_NAME,
+  host: dbConfig.host,
+  port: dbConfig.port,
+  username: dbConfig.username,
+  password: dbConfig.password,
+  database: dbConfig.dbName,
   entities: [SettingsUserRoles, User, Customer, UserTokens, Cart, Merchant],
   synchronize: true,
 });
 
 export const TestDataSource = new DataSource({
   type: "postgres",
-  host: dbConfig.TEST_HOST,
-  port: dbConfig.TEST_PORT,
-  username: dbConfig.TEST_USERNAME,
-  password: dbConfig.TEST_PASSWORD,
-  database: dbConfig.TEST_DB_NAME,
+  host: dbConfig.testHost,
+  port: dbConfig.testPort,
+  username: dbConfig.testUsername,
+  password: dbConfig.testPassword,
+  database: dbConfig.testDbName,
   entities: [SettingsUserRoles, User],
   synchronize: true,
 });
