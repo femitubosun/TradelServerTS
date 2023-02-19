@@ -11,6 +11,7 @@ import { generateToken } from "Utils/generateToken";
 import { DateTime } from "luxon";
 import { businessConfig } from "Config/businessConfig";
 import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
+import { ListUserTokenForUserByTokenTypeArgs } from "Logic/Services/UserTokens/TypeChecking/ListUserTokenForUserByTokenTypeArgs";
 
 @autoInjectable()
 class UserTokensService {
@@ -56,7 +57,7 @@ class UserTokensService {
     });
     const createUserTokenArgs: CreateUserTokenArgs = {
       userId,
-      type: UserTokenTypesEnum.EMAIL,
+      tokenType: UserTokenTypesEnum.EMAIL,
       expiresOn,
       queryRunner,
     };
@@ -71,6 +72,14 @@ class UserTokensService {
 
   public async findUserTokenById(id: number) {
     return await this.userTokenRepository.findOneById(id);
+  }
+
+  public async listUserTokenForUserByTokenType(
+    listUserTokenForUserByTokenTypeArgs: ListUserTokenForUserByTokenTypeArgs
+  ) {
+    return await this.userTokenRepository.find(
+      listUserTokenForUserByTokenTypeArgs
+    );
   }
 
   public async findUserTokenByIdentifier(tokenIdentifier: string) {

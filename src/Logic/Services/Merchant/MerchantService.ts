@@ -23,10 +23,9 @@ class MerchantService {
   ) {
     const { user, queryRunner, phoneNumber, storeName } =
       createMerchantRecordArgs;
+    const foundMerchant = await this.findMerchantByUserId(user.id);
 
-    const foundMerchant = this.findMerchantByUserId(user.id);
-
-    if (foundMerchant !== NULL_OBJECT) return foundMerchant;
+    if (foundMerchant) return foundMerchant;
 
     const merchant = new Merchant();
 
@@ -130,13 +129,11 @@ class MerchantService {
   }
 
   public async findMerchantByUserId(userId: number) {
-    const merchant = this.merchantsRepository.findOneBy({
+    const merchant = await this.merchantsRepository.findOneBy({
       userId,
     });
 
-    if (!merchant) return NULL_OBJECT;
-
-    return merchant;
+    return merchant || NULL_OBJECT;
   }
 }
 

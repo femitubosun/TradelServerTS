@@ -24,7 +24,7 @@ export class UserTokens extends CustomBaseEntity {
     type: "enum",
     enum: UserTokenTypesEnum,
   })
-  type: UserTokenTypesEnum;
+  tokenType: UserTokenTypesEnum;
 
   @Column({
     type: "timestamp",

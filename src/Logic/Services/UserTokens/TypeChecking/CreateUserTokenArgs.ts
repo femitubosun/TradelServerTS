@@ -4,6 +4,6 @@ import DbQueryRunner from "Logic/Services/TypeChecking/QueryRunner";
 
 export type CreateUserTokenArgs = {
   userId: number;
-  type: UserTokenTypesEnum;
+  tokenType: UserTokenTypesEnum;
   expiresOn: DateTime;
 } & DbQueryRunner;

@@ -5,14 +5,15 @@ import { InternalServerError } from "Exceptions/InternalServerError";
 import {
   EMAIL_IN_USE,
   ROLE_DOES_NOT_EXIST,
+  SUCCESS,
 } from "Helpers/Messages/SystemMessages";
 import UsersService from "Logic/Services/Users/UsersService";
 import { BadRequestError } from "Exceptions/BadRequestError";
 import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
-import UserTokensService from "Logic/Services/UserTokens/UserTokensService";
-import { EmailProviderFactory, SendEmailArgs } from "Lib/Infra/External/Email";
+import Event from "Lib/Events";
+import { eventTypes } from "Lib/Events/Listeners/eventTypes";
 
-export class MerchantOnboardingUseCase {
+export class OnboardMerchant {
   public static async execute(
     merchantOnboardingArgs: MerchantOnboardingUseCaseArgs
   ) {
@@ -47,31 +48,21 @@ export class MerchantOnboardingUseCase {
         password,
       });
 
-      // TODO Add Store Name to request Args
-      const merchant = await MerchantService.createMerchantRecord({
+      await MerchantService.createMerchantRecord({
         user,
         phoneNumber,
         storeName,
         queryRunner,
       });
 
-      const userToken = await UserTokensService.createEmailActivationToken(
-        user
-      );
-
       await queryRunner.commitTransaction();
 
-      const emailPayload: SendEmailArgs = {
-        body: userToken.token,
-        subject: "Tradel Merchant Account Activation Email",
-        to: email,
-      };
-      const emailProvider = EmailProviderFactory.build();
-      await emailProvider.sendEmail(emailPayload);
+      Event.emit(eventTypes.user.signUp, user.id);
     } catch (typeOrmError) {
       loggingProvider.error(typeOrmError);
       await queryRunner.rollbackTransaction();
       throw new InternalServerError();
     }
+    return SUCCESS;
   }
 }

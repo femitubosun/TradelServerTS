@@ -26,4 +26,8 @@ routes.get(
   AuthController.requestEmailVerificationToken
 );
 
+routes.post("Initiate/PasswordRecovery", AuthController.startPasswordRecovery);
+
+routes.post("Initiate/ChangePassword", AuthController.changePassword);
+
 export default routes;

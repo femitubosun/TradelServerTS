@@ -51,6 +51,7 @@ specifiers:
   reflect-metadata: ^0.1.13
   resolve-tspaths: ^0.8.3
   sib-api-v3-sdk: ^8.5.0
+  sprightly: ^2.0.1
   swagger-jsdoc: ^6.2.5
   swagger-ui-express: ^4.5.0
   ts-jest: ^29.0.3
@@ -98,6 +99,7 @@ dependencies:
   reflect-metadata: 0.1.13
   resolve-tspaths: 0.8.3_typescript@4.8.4
   sib-api-v3-sdk: 8.5.0
+  sprightly: 2.0.1
   swagger-jsdoc: 6.2.5_openapi-types@12.0.2
   swagger-ui-express: 4.5.0_express@4.18.2
   tsyringe: 4.7.0
@@ -2484,6 +2486,13 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
+  /get-value/3.0.1:
+    resolution: {integrity: sha512-mKZj9JLQrwMBtj5wxi6MH8Z5eSKaERpAwjg43dPtlGI1ZVEgH/qC7T8/6R2OBSUA+zzHBZgICsVJaEIV2tKTDA==}
+    engines: {node: '>=6.0'}
+    dependencies:
+      isobject: 3.0.1
+    dev: false
+
   /glob-parent/5.1.2:
     resolution: {integrity: sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==}
     engines: {node: '>= 6'}
@@ -2767,6 +2776,11 @@ packages:
   /isexe/2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
     dev: true
+
+  /isobject/3.0.1:
+    resolution: {integrity: sha512-WhB9zCku7EGTj/HQQRz5aUQEUeoQZH2bWcltRErOpymJ4boYE6wL9Tbr23krRPSZ+C5zqNSrSw+Cc7sZZ4b7vg==}
+    engines: {node: '>=0.10.0'}
+    dev: false
 
   /istanbul-lib-coverage/3.2.0:
     resolution: {integrity: sha512-eOeJ5BHCmHYvQK7xt9GkdHuzuCGS1Y6g9Gvnx3Ym33fz/HpLRYxiS0wHNr+m/MBC8B647Xt608vCDEvhl9c6Mw==}
@@ -4321,6 +4335,13 @@ packages:
   /split2/4.1.0:
     resolution: {integrity: sha512-VBiJxFkxiXRlUIeyMQi8s4hgvKCSjtknJv/LVYbrgALPwf5zSKmEwV9Lst25AkvMDnvxODugjdl6KZgwKM1WYQ==}
     engines: {node: '>= 10.x'}
+    dev: false
+
+  /sprightly/2.0.1:
+    resolution: {integrity: sha512-wzy7HByQJ/oh7TF5n8qbqIRVq3a52I+4lVChZToSA4RPpqL9AVVtgmUM8iu3zTabGhcGUFubIzMZvBHfU7z9RA==}
+    engines: {node: '>=10.0.0'}
+    dependencies:
+      get-value: 3.0.1
     dev: false
 
   /sprintf-js/1.0.3:

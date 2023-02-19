@@ -1,4 +1,4 @@
 export * from "./TypeChecking";
-export * from "./CustomerOnboardingUseCase";
-export * from "./EmailVerificationUseCase";
-export * from "./MerchantOnboardingUseCase";
+export * from "./OnboardCustomer";
+export * from "./VerifyUserEmail";
+export * from "./OnboardMerchant";

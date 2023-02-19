@@ -2,20 +2,18 @@ import SettingsUserRoleService from "Logic/Services/SettingsUserRole/SettingsUse
 import { BadRequestError, InternalServerError } from "Exceptions/index";
 import {
   CUSTOMER_ONBOARDING_SUCCESS,
+  EMAIL_IN_USE,
   ROLE_DOES_NOT_EXIST,
 } from "Helpers/Messages/SystemMessages";
 import UsersService from "Logic/Services/Users/UsersService";
 import CustomersService from "Logic/Services/Customers/CustomersService";
-import UserTokensService from "Logic/Services/UserTokens/UserTokensService";
 import CartService from "Logic/Services/Cart/CartService";
 import { CustomerOnboardingUseCaseArgs } from "Logic/UseCases/Onboarding/TypeChecking";
-import { EMAIL_IN_USE } from "Helpers/Messages/SystemMessages";
-import { EmailProviderFactory, SendEmailArgs } from "Lib/Infra/External/Email";
 import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
 import { eventTypes } from "Lib/Events/Listeners/eventTypes";
 import Event from "Lib/Events";
 
-export class CustomerOnboardingUseCase {
+export class OnboardCustomer {
   /**
    * This Use Case handles Customer Onboarding.
    *
@@ -46,7 +44,6 @@ export class CustomerOnboardingUseCase {
     if (!role) {
       throw new InternalServerError(ROLE_DOES_NOT_EXIST);
     }
-
     await queryRunner.startTransaction();
     try {
       const user = await UsersService.createUserRecord({
@@ -68,22 +65,10 @@ export class CustomerOnboardingUseCase {
         customer,
         queryRunner,
       });
-      const userToken = await UserTokensService.createEmailActivationToken({
-        userId: user.id,
-        queryRunner,
-      });
 
       await queryRunner.commitTransaction();
 
-      const emailPayload: SendEmailArgs = {
-        body: userToken.token,
-        subject: "Tradel Activation Email",
-        to: email,
-      };
-
-      Event.emit(eventTypes.user.signIn, user.id);
-      const emailProvider = EmailProviderFactory.build();
-      await emailProvider.sendEmail(emailPayload);
+      Event.emit(eventTypes.user.signUp, user.id);
 
       return CUSTOMER_ONBOARDING_SUCCESS;
     } catch (typeOrmError: any) {

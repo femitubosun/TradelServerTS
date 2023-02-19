@@ -117,3 +117,15 @@
 [ERROR] 2023-02-17 16:42:11 Invalid status code: undefined
 [ERROR] 2023-02-17 16:43:16 Invalid status code: undefined
 [ERROR] 2023-02-17 16:43:39 Invalid status code: undefined
+[ERROR] 2023-02-19 20:35:43 Unexpected token } in JSON at position 120
+[ERROR] 2023-02-19 20:48:11 read ECONNRESET
+[ERROR] 2023-02-19 20:48:11 Transaction is not started yet, start transaction before committing or rolling it back.
+[ERROR] 2023-02-19 20:51:57 Email is Already in Use
+[ERROR] 2023-02-19 21:00:53 read ECONNRESET
+[ERROR] 2023-02-19 21:00:53 Transaction is not started yet, start transaction before committing or rolling it back.
+[ERROR] 2023-02-19 21:04:05 connect ETIMEDOUT 104.17.133.96:443
+[ERROR] 2023-02-19 21:04:05 Transaction is not started yet, start transaction before committing or rolling it back.
+[ERROR] 2023-02-19 21:05:12 connect ETIMEDOUT 104.17.133.96:443
+[ERROR] 2023-02-19 21:05:12 Transaction is not started yet, start transaction before committing or rolling it back.
+[ERROR] 2023-02-19 21:12:27 Timeout of 60000ms exceeded
+[ERROR] 2023-02-19 21:12:27 Transaction is not started yet, start transaction before committing or rolling it back.

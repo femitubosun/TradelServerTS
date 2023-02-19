@@ -16,7 +16,7 @@ import { UserTokenTypesEnum } from "Entities/UserTokens";
 import { DateTime } from "luxon";
 import { InternalServerError } from "Exceptions/InternalServerError";
 
-export class EmailVerificationUseCase {
+export class VerifyUserEmail {
   /**
    * This Use Case handles Email Verification
    *
@@ -33,7 +33,7 @@ export class EmailVerificationUseCase {
     const { emailVerificationToken, user } = emailVerificationArgs;
 
     const dbEmailVerificationToken =
-      await UserTokensService.getUserTokenByToken(emailVerificationToken);
+      await UserTokensService.findUserTokenByToken(emailVerificationToken);
 
     if (!dbEmailVerificationToken) throw new BadRequestError(NO_TOKEN_RECORD);
 
@@ -52,9 +52,7 @@ export class EmailVerificationUseCase {
 
     if (resp === FAILURE) throw new InternalServerError(SOMETHING_WENT_WRONG);
 
-    const tokenResp = await userTokensService.deactivateUserToken(
-      dbEmailVerificationToken.id
-    );
+    await userTokensService.deactivateUserToken(dbEmailVerificationToken.id);
     if (resp === FAILURE) throw new InternalServerError(SOMETHING_WENT_WRONG);
 
     return EMAIL_VERIFICATION_SUCCESS;

@@ -3,7 +3,9 @@ import { keysSnakeCaseToCamelCase } from "Utils/keysSnakeCaseToCamelCase";
 import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 import {
   CustomerOnboardingUseCaseArgs,
-  CustomerOnboardingUseCase,
+  OnboardCustomer,
+  MerchantOnboardingUseCaseArgs,
+  OnboardMerchant,
 } from "Logic/UseCases/Onboarding";
 import { container } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
@@ -16,8 +18,10 @@ import {
 const dbContext = container.resolve(DbContext);
 
 class OnboardingController {
+  private statusCode: HttpStatusCodeEnum;
+
   public async onboardCustomer(req: Request, res: Response) {
-    let statusCode = HttpStatusCodeEnum.CREATED;
+    this.statusCode = HttpStatusCodeEnum.CREATED;
     const mutantOnboardCustomerRequest: any = keysSnakeCaseToCamelCase(
       req.body
     );
@@ -27,23 +31,41 @@ class OnboardingController {
       queryRunner,
     };
 
-    const results = await CustomerOnboardingUseCase.execute(
+    const results = await OnboardCustomer.execute(
       customerOnboardingUseCaseArgs
     );
 
-    return res.status(statusCode).json({
+    return res.status(this.statusCode).json({
       status: SUCCESS,
-      status_code: statusCode,
+      status_code: this.statusCode,
       message: CUSTOMER_ONBOARDING_SUCCESS,
       results,
     });
   }
 
   public async onboardMerchant(req: Request, res: Response) {
-    return res.status(HttpStatusCodeEnum.CREATED).json({
+    this.statusCode = HttpStatusCodeEnum.CREATED;
+
+    const mutantOnboardMerchantRequest: any = keysSnakeCaseToCamelCase(
+      req.body
+    );
+
+    const queryRunner = await dbContext.getTransactionalQueryRunner();
+
+    const merchantOnboardingUseCaseArgs: MerchantOnboardingUseCaseArgs = {
+      ...mutantOnboardMerchantRequest,
+      queryRunner,
+    };
+
+    const results = await OnboardMerchant.execute(
+      merchantOnboardingUseCaseArgs
+    );
+
+    return res.status(this.statusCode).json({
       status: SUCCESS,
-      status_code: HttpStatusCodeEnum.CREATED,
+      status_code: this.statusCode,
       message: MERCHANT_ONBOARDING_SUCCESS,
+      results,
     });
   }
 }

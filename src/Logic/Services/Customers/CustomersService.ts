@@ -18,6 +18,7 @@ class CustomerService {
     if (foundCustomer) return foundCustomer;
 
     const customer = new Customer();
+
     Object.assign(customer, {
       user,
       phoneNumber,
