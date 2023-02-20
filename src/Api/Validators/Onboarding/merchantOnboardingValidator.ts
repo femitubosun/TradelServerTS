@@ -3,7 +3,7 @@ import { body } from "express-validator";
 export const merchantOnboardingValidator = [
   body("email", "Email Should be an email").isEmail(),
   body("password", "Password required").isLength({
-    min: 1,
+    min: 8,
   }),
   body("first_name", "First Name required").isLength({
     min: 2,

@@ -9,7 +9,9 @@ import {
   EMAIL_VERIFICATION_SUCCESS,
   EMAIL_VERIFICATION_TOKEN_REQUEST_SUCCESS,
   FAILURE,
+  INVALID_TOKEN,
   PASSWORD_RESET_LINK_GENERATED,
+  PASSWORD_RESET_SUCCESSFULLY,
   SIGN_IN_SUCCESSFUL,
   SOMETHING_WENT_WRONG,
   SUCCESS,
@@ -17,6 +19,8 @@ import {
 import { container } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { StartPasswordRecovery } from "Logic/UseCases/Auth/StartPasswordRecovery";
+import { BadRequestError } from "Exceptions/BadRequestError";
+import { ResetPassword } from "Logic/UseCases/Auth/ResetPassword";
 
 const dbContext = container.resolve(DbContext);
 
@@ -92,7 +96,28 @@ class AuthController {
     });
   }
 
-  public async changePassword(req: Request, res: Response) {}
+  public async resetPassword(req: Request, res: Response) {
+    this.statusCode = HttpStatusCodeEnum.OK;
+    const passwordResetToken = req.params["passwordResetToken"];
+    const password = req.body.password;
+    const queryRunner = await dbContext.getTransactionalQueryRunner();
+    if (!passwordResetToken) throw new BadRequestError(INVALID_TOKEN);
+
+    const resetPasswordArgs = {
+      passwordResetToken,
+      password,
+      queryRunner,
+    };
+
+    await ResetPassword.execute(resetPasswordArgs);
+
+    res.status(this.statusCode).json({
+      status: SUCCESS,
+      status_code: this.statusCode,
+      message: PASSWORD_RESET_SUCCESSFULLY,
+      results: null,
+    });
+  }
 }
 
 export default new AuthController();

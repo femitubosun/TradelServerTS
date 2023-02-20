@@ -44,3 +44,4 @@ export const EMAIL_ACTIVATION_TOKEN_EMAIL_SUBJECT =
 export const PASSWORD_RESET_TOKEN_EMAIL_SUBJECT =
   "Bexxle's Tradel Password Reset";
 export const PASSWORD_RESET_LINK_GENERATED = "Password Recovery Link Generated";
+export const PASSWORD_RESET_SUCCESSFULLY = "Password Changed Successfully";

@@ -34,11 +34,11 @@ class UserTokensService {
     const { queryRunner } = createUserTokenArgs;
     const userToken = new UserTokens();
     let generatedToken = generateToken(businessConfig.userTokenLength);
-    let foundToken = await this.findUserTokenByToken(generatedToken);
+    let foundToken = await this.getUserTokenByToken(generatedToken);
 
     while (foundToken) {
       generatedToken = generateToken(businessConfig.userTokenLength);
-      foundToken = await this.findUserTokenByToken(generatedToken);
+      foundToken = await this.getUserTokenByToken(generatedToken);
     }
 
     Object.assign(userToken, {
@@ -65,7 +65,7 @@ class UserTokensService {
     return await this.createUserTokenRecord(createUserTokenArgs);
   }
 
-  public async findUserTokenByToken(token: string): Promise<UserTokens | null> {
+  public async getUserTokenByToken(token: string): Promise<UserTokens | null> {
     return await this.userTokenRepository.findOneBy({
       token,
     });
@@ -98,7 +98,7 @@ class UserTokensService {
     return await this.createUserTokenRecord(createUserTokenArgs);
   }
 
-  public async findUserTokenById(id: number) {
+  public async getUserTokenById(id: number) {
     return await this.userTokenRepository.findOneById(id);
   }
 
@@ -110,7 +110,7 @@ class UserTokensService {
     );
   }
 
-  public async findUserTokenByIdentifier(tokenIdentifier: string) {
+  public async getUserTokenByIdentifier(tokenIdentifier: string) {
     return await this.userTokenRepository.findOne({
       identifier: tokenIdentifier,
     });

@@ -9,6 +9,7 @@ import {
 } from "Logic/Services/Users/TypeChecking";
 import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
 import { DateTime } from "luxon";
+import { ChangePasswordArgs } from "Logic/Services/Users/TypeChecking/ChangePasswordArgs";
 
 @autoInjectable()
 class UsersService {
@@ -74,6 +75,29 @@ class UsersService {
       },
     };
     return await this.updateUserRecord(updateUserRecordArgs);
+  }
+
+  public async changeUserPassword(changePasswordArgs: ChangePasswordArgs) {
+    const { identifierType, identifier, password, queryRunner } =
+      changePasswordArgs;
+
+    const user =
+      identifierType == "id"
+        ? await this.getUserById(identifier as number)
+        : await this.getUserByIdentifier(identifier as string);
+
+    Object.assign(user, {
+      password,
+    });
+    try {
+      await queryRunner.manager.save(user);
+      return SUCCESS;
+    } catch (e) {
+      const logger = LoggingProviderFactory.build();
+      console.log(e);
+      logger.error(e);
+      return FAILURE;
+    }
   }
 
   public async updateUserRecord(

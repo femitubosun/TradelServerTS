@@ -33,7 +33,7 @@ export class VerifyUserEmail {
     const { emailVerificationToken, user } = emailVerificationArgs;
 
     const dbEmailVerificationToken =
-      await UserTokensService.findUserTokenByToken(emailVerificationToken);
+      await UserTokensService.getUserTokenByToken(emailVerificationToken);
 
     if (!dbEmailVerificationToken) throw new BadRequestError(NO_TOKEN_RECORD);
 
