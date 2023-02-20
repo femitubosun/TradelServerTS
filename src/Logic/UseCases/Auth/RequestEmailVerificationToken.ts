@@ -4,7 +4,11 @@ import { RequestEmailVerificationTokenArgs } from "Logic/UseCases/Auth/TypeSetti
 import { EmailService } from "Logic/Services/Email/EmailService";
 import UsersService from "Logic/Services/Users/UsersService";
 import { BadRequestError } from "Exceptions/BadRequestError";
-import { USER_DOES_NOT_EXIST } from "Helpers/Messages/SystemMessages";
+import {
+  FAILURE,
+  SUCCESS,
+  USER_DOES_NOT_EXIST,
+} from "Helpers/Messages/SystemMessages";
 
 export class RequestEmailVerificationToken {
   public static async execute(
@@ -35,10 +39,11 @@ export class RequestEmailVerificationToken {
         userEmail: user.email,
         activationToken: token.token,
       });
-      
+      return SUCCESS;
     } catch (typeOrmError) {
       console.log(typeOrmError);
       await queryRunner.rollbackTransaction();
+      return FAILURE;
     }
   }
 }

@@ -8,7 +8,9 @@ import { RequestEmailVerificationToken } from "Logic/UseCases/Auth/RequestEmailV
 import {
   EMAIL_VERIFICATION_SUCCESS,
   EMAIL_VERIFICATION_TOKEN_REQUEST_SUCCESS,
+  FAILURE,
   SIGN_IN_SUCCESSFUL,
+  SOMETHING_WENT_WRONG,
   SUCCESS,
 } from "Helpers/Messages/SystemMessages";
 import { container } from "tsyringe";
@@ -46,6 +48,16 @@ class AuthController {
       queryRunner,
     });
 
+    if (results !== SUCCESS) {
+      this.statusCode = HttpStatusCodeEnum.INTERNAL_SERVER_ERROR;
+
+      return res.status(this.statusCode).json({
+        status: FAILURE,
+        status_code: this.statusCode,
+        message: SOMETHING_WENT_WRONG,
+        results,
+      });
+    }
     return res.status(this.statusCode).json({
       status: SUCCESS,
       status_code: this.statusCode,
