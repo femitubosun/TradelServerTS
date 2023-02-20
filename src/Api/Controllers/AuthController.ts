@@ -9,12 +9,14 @@ import {
   EMAIL_VERIFICATION_SUCCESS,
   EMAIL_VERIFICATION_TOKEN_REQUEST_SUCCESS,
   FAILURE,
+  PASSWORD_RESET_LINK_GENERATED,
   SIGN_IN_SUCCESSFUL,
   SOMETHING_WENT_WRONG,
   SUCCESS,
 } from "Helpers/Messages/SystemMessages";
 import { container } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
+import { StartPasswordRecovery } from "Logic/UseCases/Auth/StartPasswordRecovery";
 
 const dbContext = container.resolve(DbContext);
 
@@ -78,7 +80,17 @@ class AuthController {
     });
   }
 
-  public async startPasswordRecovery(req: Request, res: Response) {}
+  public async startPasswordRecovery(req: Request, res: Response) {
+    this.statusCode = HttpStatusCodeEnum.OK;
+    const payload: any = keysSnakeCaseToCamelCase(req.body);
+    await StartPasswordRecovery.execute(payload.email);
+    res.status(this.statusCode).json({
+      status: SUCCESS,
+      status_code: this.statusCode,
+      message: PASSWORD_RESET_LINK_GENERATED,
+      results: null,
+    });
+  }
 
   public async changePassword(req: Request, res: Response) {}
 }

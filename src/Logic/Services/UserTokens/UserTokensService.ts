@@ -12,6 +12,7 @@ import { DateTime } from "luxon";
 import { businessConfig } from "Config/businessConfig";
 import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
 import { ListUserTokenForUserByTokenTypeArgs } from "Logic/Services/UserTokens/TypeChecking/ListUserTokenForUserByTokenTypeArgs";
+import { CreatePasswordRecoveryTokenArgs } from "Logic/Services/UserTokens/TypeChecking/CreatePasswordRecoveryTokenArgs";
 
 @autoInjectable()
 class UserTokensService {
@@ -70,7 +71,32 @@ class UserTokensService {
     });
   }
 
-  public async createPasswordRecoveryToken() {}
+  public async createPasswordRecoveryToken(
+    createPasswordRecoveryTokenArgs: CreatePasswordRecoveryTokenArgs
+  ) {
+    const { userId, queryRunner } = createPasswordRecoveryTokenArgs;
+    const userTokens = await this.listUserTokenForUserByTokenType({
+      userId,
+      tokenType: UserTokenTypesEnum.PASSWORD_RESET,
+    });
+
+    for (let token of userTokens) {
+      await this.deactivateUserToken(token.id);
+    }
+
+    const expiresOn = DateTime.now().plus({
+      minute: businessConfig.passwordResetTokenExpiresInMinutes,
+    });
+
+    const createUserTokenArgs: CreateUserTokenArgs = {
+      userId,
+      tokenType: UserTokenTypesEnum.PASSWORD_RESET,
+      expiresOn,
+      queryRunner,
+    };
+
+    return await this.createUserTokenRecord(createUserTokenArgs);
+  }
 
   public async findUserTokenById(id: number) {
     return await this.userTokenRepository.findOneById(id);

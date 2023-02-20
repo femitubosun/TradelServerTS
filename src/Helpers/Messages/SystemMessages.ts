@@ -41,3 +41,6 @@ export const WALLET_RESOURCE = "Wallet Resource";
 export const USER_DOES_NOT_EXIST = "User does not exist";
 export const EMAIL_ACTIVATION_TOKEN_EMAIL_SUBJECT =
   "Bexxle's Tradel Email Activation";
+export const PASSWORD_RESET_TOKEN_EMAIL_SUBJECT =
+  "Bexxle's Tradel Password Reset";
+export const PASSWORD_RESET_LINK_GENERATED = "Password Recovery Link Generated";

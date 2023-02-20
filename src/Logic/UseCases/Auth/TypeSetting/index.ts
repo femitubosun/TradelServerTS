@@ -1,2 +1,2 @@
-export * from "./SignUpUserWithRoleDTO";
-export * from "./SignInUserDTO";
+export * from "./SignUpUserWithRoleArgs";
+export * from "./SignInUserArgs";

@@ -3,6 +3,7 @@ declare global {
     interface ProcessEnv {
       USER_TOKEN_LENGTH: string;
       EMAIL_TOKEN_EXPIRES_IN_MINUTES: string;
+      PASSWORD_REST_TOKEN_EXPIRES_IN_MINUTES: string;
       EXPRESS_PORT: string;
       EXPRESS_NODE_ENV: string;
       NODE_ENV: string;
@@ -18,7 +19,7 @@ declare global {
       TEST_DATABASE_USERNAME: string;
       TEST_DATABASE_PASSWORD: string;
       TEST_DATABASE_NAME: string;
-      BCRPYT_SALT_ROUNDS: string;
+      BCRYPT_SALT_ROUNDS: string;
       EMAIL_PROVIDER: "sendinblue" | "sendgrid";
       EMAIL_FROM_EMAIL: string;
       EMAIL_FROM_NAME: string;

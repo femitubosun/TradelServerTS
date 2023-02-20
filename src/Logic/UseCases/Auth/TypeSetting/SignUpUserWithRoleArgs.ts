@@ -1,4 +1,4 @@
-export type SignUpUserWithRoleDTO = {
+export type SignUpUserWithRoleArgs = {
   firstName: string;
   lastName: string;
   email: string;
