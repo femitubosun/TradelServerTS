@@ -70,6 +70,8 @@ class UserTokensService {
     });
   }
 
+  public async createPasswordRecoveryToken() {}
+
   public async findUserTokenById(id: number) {
     return await this.userTokenRepository.findOneById(id);
   }

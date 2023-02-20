@@ -5,9 +5,9 @@ import { BadRequestError } from "Exceptions/index";
 import { CHECK_EMAIL_AND_PASSWORD } from "Helpers/Messages/SystemMessages";
 import { SignInUserWithEmailUseCaseReturnType } from "Logic/UseCases/Auth/TypeSetting/TokenPayloadType";
 import Event from "Lib/Events";
-import { eventTypes } from "Lib/Events/Listeners/eventTypes";
+import { eventTypes } from "Lib/Events/Listeners/TypeChecking/eventTypes";
 
-export class SignInUserWithEmailUseCase {
+export class SignInUserWithEmail {
   public static async execute(
     signInUserDTO: SignInUserDTO
   ): Promise<SignInUserWithEmailUseCaseReturnType> {

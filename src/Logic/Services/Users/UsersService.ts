@@ -48,25 +48,21 @@ class UsersService {
       identifier,
     });
 
-    if (!user) return NULL_OBJECT;
-    return user;
+    return user || NULL_OBJECT;
   }
 
   public async getUserByEmail(email: string) {
     const user = await this.userRepository.findOneBy({
       email,
     });
-    if (!user) return NULL_OBJECT;
-    return user;
+    return user || NULL_OBJECT;
   }
 
   public async getUserById(id: number): Promise<IUser | null> {
     const user = await this.userRepository.findOneBy({
       id,
     });
-
-    if (!user) return NULL_OBJECT;
-    return user;
+    return user || NULL_OBJECT;
   }
 
   public async activateUserEmail(id: number) {

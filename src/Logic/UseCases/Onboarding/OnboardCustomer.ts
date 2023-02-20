@@ -10,8 +10,9 @@ import CustomersService from "Logic/Services/Customers/CustomersService";
 import CartService from "Logic/Services/Cart/CartService";
 import { CustomerOnboardingUseCaseArgs } from "Logic/UseCases/Onboarding/TypeChecking";
 import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
-import { eventTypes } from "Lib/Events/Listeners/eventTypes";
+import { eventTypes } from "Lib/Events/Listeners/TypeChecking/eventTypes";
 import Event from "Lib/Events";
+import UserTokensService from "Logic/Services/UserTokens/UserTokensService";
 
 export class OnboardCustomer {
   /**
@@ -66,9 +67,17 @@ export class OnboardCustomer {
         queryRunner,
       });
 
+      const token = await UserTokensService.createEmailActivationToken({
+        userId: user.id,
+        queryRunner,
+      });
+
       await queryRunner.commitTransaction();
 
-      Event.emit(eventTypes.user.signUp, user.id);
+      Event.emit(eventTypes.user.signUp, {
+        userEmail: user.email,
+        activationToken: token.token,
+      });
 
       return CUSTOMER_ONBOARDING_SUCCESS;
     } catch (typeOrmError: any) {

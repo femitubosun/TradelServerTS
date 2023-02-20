@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { keysSnakeCaseToCamelCase } from "Utils/keysSnakeCaseToCamelCase";
 import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
-import { SignInUserWithEmailUseCase } from "Logic/UseCases/Auth/SignInUserWithEmail.UseCase";
+import { SignInUserWithEmail } from "Logic/UseCases/Auth/SignInUserWithEmail";
 import { AuthRequest } from "../TypeChecking";
 import { VerifyUserEmail } from "Logic/UseCases/Onboarding";
 import { RequestEmailVerificationToken } from "Logic/UseCases/Auth/RequestEmailVerificationToken";
@@ -57,7 +57,7 @@ class AuthController {
   public async emailSignIn(req: Request, res: Response) {
     this.statusCode = HttpStatusCodeEnum.OK;
     const payload: any = keysSnakeCaseToCamelCase(req.body);
-    const results = await SignInUserWithEmailUseCase.execute(payload);
+    const results = await SignInUserWithEmail.execute(payload);
     res.status(this.statusCode).json({
       status: SUCCESS,
       status_code: this.statusCode,

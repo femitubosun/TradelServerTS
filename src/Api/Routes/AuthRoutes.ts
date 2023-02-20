@@ -4,6 +4,7 @@ import validate from "Api/Validators/Common/validate";
 import userSignInValidator from "Api/Validators/Auth/userSignInValidator";
 import { asyncMiddlewareHandler } from "Utils/asyncMiddlewareHandler";
 import { isAuthenticated } from "Api/Middleware/isAuthenticated";
+import recoverPasswordValidator from "Api/Validators/Auth/RecoverPasswordValidator";
 
 const routes = Router();
 
@@ -26,7 +27,12 @@ routes.get(
   AuthController.requestEmailVerificationToken
 );
 
-routes.post("Initiate/PasswordRecovery", AuthController.startPasswordRecovery);
+routes.post(
+  "Initiate/PasswordRecovery",
+  recoverPasswordValidator,
+  validate,
+  AuthController.startPasswordRecovery
+);
 
 routes.post("Initiate/ChangePassword", AuthController.changePassword);
 

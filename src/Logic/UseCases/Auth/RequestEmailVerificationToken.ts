@@ -1,13 +1,20 @@
-import { User } from "Entities/User";
 import UserTokensService from "Logic/Services/UserTokens/UserTokensService";
 import { UserTokenTypesEnum } from "Entities/UserTokens";
 import { RequestEmailVerificationTokenArgs } from "Logic/UseCases/Auth/TypeSetting/RequestEmailVerficationArgs";
+import { EmailService } from "Logic/Services/Email/EmailService";
+import UsersService from "Logic/Services/Users/UsersService";
+import { BadRequestError } from "Exceptions/BadRequestError";
+import { USER_DOES_NOT_EXIST } from "Helpers/Messages/SystemMessages";
 
 export class RequestEmailVerificationToken {
   public static async execute(
     requestEmailVerificationTokenArgs: RequestEmailVerificationTokenArgs
   ) {
     const { userId, queryRunner } = requestEmailVerificationTokenArgs;
+    const user = await UsersService.getUserById(userId);
+
+    if (!user) throw new BadRequestError(USER_DOES_NOT_EXIST);
+
     const userTokens = await UserTokensService.listUserTokenForUserByTokenType({
       userId,
       tokenType: UserTokenTypesEnum.EMAIL,
@@ -24,6 +31,11 @@ export class RequestEmailVerificationToken {
         userId,
         queryRunner,
       });
+      await EmailService.sendAccountActivationEmail({
+        userEmail: user.email,
+        activationToken: token.token,
+      });
+      
     } catch (typeOrmError) {
       console.log(typeOrmError);
       await queryRunner.rollbackTransaction();

@@ -38,3 +38,6 @@ export const EMAIL_VERIFICATION_TOKEN_REQUEST_SUCCESS =
   "Email Verification Request Success";
 export const ENV_NOT_FOUND = ".env File is missing";
 export const WALLET_RESOURCE = "Wallet Resource";
+export const USER_DOES_NOT_EXIST = "User does not exist";
+export const EMAIL_ACTIVATION_TOKEN_EMAIL_SUBJECT =
+  "Bexxle's Tradel Email Activation";

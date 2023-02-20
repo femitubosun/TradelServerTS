@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { eventTypes } from "Lib/Events/Listeners/eventTypes";
+import { eventTypes } from "Lib/Events/Listeners/TypeChecking/eventTypes";
 import UserListener from "Lib/Events/Listeners/UserListener";
 
 const Event: EventEmitter = new EventEmitter();
