@@ -19,6 +19,6 @@ export class StartPasswordRecovery {
       queryRunner,
     });
 
-    await EmailService.sendPasswordResetLink();
+    // await EmailService.sendPasswordResetLink();
   }
 }

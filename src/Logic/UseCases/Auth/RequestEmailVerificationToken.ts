@@ -39,6 +39,7 @@ export class RequestEmailVerificationToken {
         userEmail: user.email,
         activationToken: token.token,
       });
+      await queryRunner.commitTransaction();
       return SUCCESS;
     } catch (typeOrmError) {
       console.log(typeOrmError);

@@ -10,11 +10,14 @@ import {
   NO_TOKEN_RECORD,
   SOMETHING_WENT_WRONG,
   TOKEN_EXPIRED,
+  UNAUTHORIZED_OPERATION,
+  USER_DOES_NOT_EXIST,
 } from "Helpers/Messages/SystemMessages";
 import { UnauthorizedError } from "Exceptions/UnauthorizedError";
 import { UserTokenTypesEnum } from "Entities/UserTokens";
 import { DateTime } from "luxon";
 import { InternalServerError } from "Exceptions/InternalServerError";
+import UsersService from "Logic/Services/Users/UsersService";
 
 export class VerifyUserEmail {
   /**
@@ -37,10 +40,20 @@ export class VerifyUserEmail {
 
     if (!dbEmailVerificationToken) throw new BadRequestError(NO_TOKEN_RECORD);
 
-    if (dbEmailVerificationToken.type != UserTokenTypesEnum.EMAIL)
+    if (dbEmailVerificationToken.tokenType != UserTokenTypesEnum.EMAIL)
       throw new BadRequestError(INVALID_TOKEN_TYPE);
 
-    if (dbEmailVerificationToken.user != user) throw new UnauthorizedError();
+    const tokenOwner = await UsersService.getUserById(
+      dbEmailVerificationToken.userId
+    );
+
+    if (!tokenOwner) throw new UnauthorizedError(USER_DOES_NOT_EXIST);
+
+    if (tokenOwner.hasVerifiedEmail) return;
+
+    if (tokenOwner.id != user.id) {
+      throw new UnauthorizedError(UNAUTHORIZED_OPERATION);
+    }
 
     if (
       dbEmailVerificationToken.expired ||
@@ -53,6 +66,7 @@ export class VerifyUserEmail {
     if (resp === FAILURE) throw new InternalServerError(SOMETHING_WENT_WRONG);
 
     await userTokensService.deactivateUserToken(dbEmailVerificationToken.id);
+
     if (resp === FAILURE) throw new InternalServerError(SOMETHING_WENT_WRONG);
 
     return EMAIL_VERIFICATION_SUCCESS;

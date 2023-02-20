@@ -131,11 +131,12 @@ class UserTokensService {
   public async updateUserTokenRecord(
     updateUserTokenRecordArgs: UpdateUserTokenRecordArgs
   ) {
-    const { identifier, updatePayload } = updateUserTokenRecordArgs;
+    const { identifier, identifierType, updatePayload } =
+      updateUserTokenRecordArgs;
 
     const userToken =
-      identifier == "id"
-        ? await this.userTokenRepository.findOneById(identifier)
+      identifierType == "id"
+        ? await this.userTokenRepository.findOneById(identifier as number)
         : await this.userTokenRepository.findOneBy({
             identifier,
           });

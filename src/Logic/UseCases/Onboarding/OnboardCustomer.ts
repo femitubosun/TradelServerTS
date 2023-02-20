@@ -2,6 +2,7 @@ import SettingsUserRoleService from "Logic/Services/SettingsUserRole/SettingsUse
 import { BadRequestError, InternalServerError } from "Exceptions/index";
 import {
   CUSTOMER_ONBOARDING_SUCCESS,
+  CUSTOMER_ROLE_NAME,
   EMAIL_IN_USE,
   ROLE_DOES_NOT_EXIST,
 } from "Helpers/Messages/SystemMessages";
@@ -22,8 +23,7 @@ export class OnboardCustomer {
    * - Creating User Record with Customer Role
    * - Create A Customer Record with the created User
    * - Create CustomerCart
-   * - Create Email Activation Token & Send to User Email
-   *
+   * - Emit User Signup Event
    */
 
   public static async execute(
@@ -34,14 +34,13 @@ export class OnboardCustomer {
     const { email, password, firstName, lastName, phoneNumber, queryRunner } =
       customerOnboardingArgs;
 
-    const foundUser = await UsersService.getUserByEmail(email);
-    if (foundUser) {
-      throw new BadRequestError(EMAIL_IN_USE);
-    }
+    const [foundUser, role] = await Promise.all([
+      UsersService.getUserByEmail(email),
+      SettingsUserRoleService.findSettingsUserRoleByName(CUSTOMER_ROLE_NAME),
+    ]);
 
-    const role = await SettingsUserRoleService.findSettingsUserRoleByName(
-      "customer"
-    );
+    if (foundUser) throw new BadRequestError(EMAIL_IN_USE);
+
     if (!role) {
       throw new InternalServerError(ROLE_DOES_NOT_EXIST);
     }

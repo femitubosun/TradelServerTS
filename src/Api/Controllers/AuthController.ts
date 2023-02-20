@@ -21,6 +21,7 @@ import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { StartPasswordRecovery } from "Logic/UseCases/Auth/StartPasswordRecovery";
 import { BadRequestError } from "Exceptions/BadRequestError";
 import { ResetPassword } from "Logic/UseCases/Auth/ResetPassword";
+import { StartPasswordRecoveryArgs } from "Logic/UseCases/Auth/TypeSetting/StartPasswordRecoveryArgs";
 
 const dbContext = container.resolve(DbContext);
 
@@ -31,6 +32,8 @@ class AuthController {
     this.statusCode = HttpStatusCodeEnum.OK;
     const user = (req as AuthRequest).user;
     const emailVerifyToken = req.params["emailVerifyToken"];
+
+    if (!emailVerifyToken) throw new BadRequestError(INVALID_TOKEN);
 
     const results = await VerifyUserEmail.execute({
       user,
@@ -87,7 +90,14 @@ class AuthController {
   public async startPasswordRecovery(req: Request, res: Response) {
     this.statusCode = HttpStatusCodeEnum.OK;
     const payload: any = keysSnakeCaseToCamelCase(req.body);
-    await StartPasswordRecovery.execute(payload.email);
+    const queryRunner = await dbContext.getTransactionalQueryRunner();
+
+    const startPasswordRecoveryArgs: StartPasswordRecoveryArgs = {
+      queryRunner,
+      userEmail: payload.email,
+    };
+    await StartPasswordRecovery.execute(startPasswordRecoveryArgs);
+
     res.status(this.statusCode).json({
       status: SUCCESS,
       status_code: this.statusCode,

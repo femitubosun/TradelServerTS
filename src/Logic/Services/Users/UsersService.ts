@@ -59,7 +59,7 @@ class UsersService {
     return user || NULL_OBJECT;
   }
 
-  public async getUserById(id: number): Promise<IUser | null> {
+  public async getUserById(id: number): Promise<User | null> {
     const user = await this.userRepository.findOneBy({
       id,
     });
@@ -89,15 +89,8 @@ class UsersService {
     Object.assign(user, {
       password,
     });
-    try {
-      await queryRunner.manager.save(user);
-      return SUCCESS;
-    } catch (e) {
-      const logger = LoggingProviderFactory.build();
-      console.log(e);
-      logger.error(e);
-      return FAILURE;
-    }
+    await queryRunner.manager.save(user);
+    return SUCCESS;
   }
 
   public async updateUserRecord(

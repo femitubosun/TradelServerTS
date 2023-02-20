@@ -3,7 +3,7 @@ type SignInUserWithEmailUseCaseReturnTypeUser = {
   email: string;
 };
 
-export type SignInUserWithEmailUseCaseReturnType = {
+export type SignInUserWithEmailReturnType = {
   user: SignInUserWithEmailUseCaseReturnTypeUser;
   token: string;
 };

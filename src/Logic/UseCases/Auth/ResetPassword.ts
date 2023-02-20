@@ -6,23 +6,28 @@ import {
   INVALID_TOKEN,
   INVALID_TOKEN_TYPE,
   SUCCESS,
+  TOKEN_EXPIRED,
   USER_DOES_NOT_EXIST,
 } from "Helpers/Messages/SystemMessages";
 import { UserTokenTypesEnum } from "Entities/UserTokens";
 import UsersService from "Logic/Services/Users/UsersService";
 import { ChangePasswordArgs } from "Logic/Services/Users/TypeChecking/ChangePasswordArgs";
+import { DateTime } from "luxon";
 
 export class ResetPassword {
   public static async execute(resetPasswordArgs: ResetPasswordArgs) {
     const { password, passwordResetToken, queryRunner } = resetPasswordArgs;
+
     const token = await UserTokensService.getUserTokenByToken(
       passwordResetToken
     );
     if (!token) throw new BadRequestError(INVALID_TOKEN);
+
     if (token.tokenType != UserTokenTypesEnum.PASSWORD_RESET)
       throw new BadRequestError(INVALID_TOKEN_TYPE);
 
-    //  Check expires
+    if (token.expired || DateTime.now() > token.expiresOn)
+      throw new BadRequestError(TOKEN_EXPIRED);
 
     const user = await UsersService.getUserById(token.userId);
 
@@ -39,6 +44,7 @@ export class ResetPassword {
       };
       await UsersService.changeUserPassword(changePasswordArgs);
       await UserTokensService.deactivateUserToken(token.id);
+      await queryRunner.commitTransaction();
       return SUCCESS;
     } catch (typeOrmError) {
       await queryRunner.rollbackTransaction();
