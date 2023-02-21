@@ -42,24 +42,21 @@ class MerchantService {
 
   public async getMerchantById(merchantId: number): Promise<Merchant | null> {
     const merchant = this.merchantsRepository.findOneById(merchantId);
-    if (!merchant) return NULL_OBJECT;
-    return merchant;
+    return merchant || NULL_OBJECT;
   }
 
   public async getMerchantByIdentifier(merchantIdentifier: string) {
     const merchant = this.merchantsRepository.findOneBy({
       identifier: merchantIdentifier,
     });
-    if (!merchant) return NULL_OBJECT;
-    return merchant;
+    return merchant || NULL_OBJECT;
   }
 
   public async getMerchantByStoreSlug(storeSlug: string) {
     const merchant = this.merchantsRepository.findOneBy({
       storeNameSlug: storeSlug,
     });
-    if (!merchant) return NULL_OBJECT;
-    return merchant;
+    return merchant || NULL_OBJECT;
   }
 
   public async updateMerchantRecord(

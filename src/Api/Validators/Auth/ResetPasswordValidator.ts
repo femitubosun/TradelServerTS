@@ -1,7 +1,7 @@
 import { param, body } from "express-validator";
 import { businessConfig } from "Config/businessConfig";
 
-export const resetPasswordValidator = [
+ const resetPasswordValidator = [
   param("passwordResetToken").isLength({
     min: businessConfig.userTokenLength,
     max: businessConfig.userTokenLength,
@@ -11,3 +11,6 @@ export const resetPasswordValidator = [
     min: 8,
   }),
 ];
+
+
+export default resetPasswordValidator
