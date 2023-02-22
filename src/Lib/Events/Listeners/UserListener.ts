@@ -1,4 +1,4 @@
-import UsersService from "Logic/Services/Users/UsersService";
+import UsersService from "Logic/Services/UsersService";
 import { EmailService } from "Logic/Services/Email/EmailService";
 import { OnSignUpEventListenerArgs } from "Lib/Events/Listeners/TypeChecking/OnSignUpEventListenerArgs";
 

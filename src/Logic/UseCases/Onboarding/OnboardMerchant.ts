@@ -1,18 +1,18 @@
 import { MerchantOnboardingUseCaseArgs } from "Logic/UseCases/Onboarding/TypeChecking";
-import SettingsUserRoleService from "Logic/Services/SettingsUserRole/SettingsUserRoleService";
-import MerchantService from "Logic/Services/Merchant/MerchantService";
+import SettingsUserRoleService from "Logic/Services/SettingsUserRoleService";
+import MerchantService from "Logic/Services/MerchantService";
 import { InternalServerError } from "Exceptions/InternalServerError";
 import {
   EMAIL_IN_USE,
   ROLE_DOES_NOT_EXIST,
   SUCCESS,
 } from "Helpers/Messages/SystemMessages";
-import UsersService from "Logic/Services/Users/UsersService";
+import UsersService from "Logic/Services/UsersService";
 import { BadRequestError } from "Exceptions/BadRequestError";
 import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
 import Event from "Lib/Events";
 import { eventTypes } from "Lib/Events/Listeners/TypeChecking/eventTypes";
-import UserTokensService from "Logic/Services/UserTokens/UserTokensService";
+import UserTokensService from "Logic/Services/UserTokensService";
 
 export class OnboardMerchant {
   public static async execute(

@@ -1,7 +1,7 @@
 import { EmailVerificationArgs } from "Logic/UseCases/Onboarding/";
-import UserTokensService from "Logic/Services/UserTokens/UserTokensService";
-import userTokensService from "Logic/Services/UserTokens/UserTokensService";
-import usersService from "Logic/Services/Users/UsersService";
+import UserTokensService from "Logic/Services/UserTokensService";
+import userTokensService from "Logic/Services/UserTokensService";
+import usersService from "Logic/Services/UsersService";
 import { BadRequestError } from "Exceptions/BadRequestError";
 import {
   EMAIL_VERIFICATION_SUCCESS,
@@ -17,7 +17,7 @@ import { UnauthorizedError } from "Exceptions/UnauthorizedError";
 import { UserTokenTypesEnum } from "Entities/UserTokens";
 import { DateTime } from "luxon";
 import { InternalServerError } from "Exceptions/InternalServerError";
-import UsersService from "Logic/Services/Users/UsersService";
+import UsersService from "Logic/Services/UsersService";
 
 export class VerifyUserEmail {
   /**

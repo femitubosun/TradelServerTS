@@ -1,8 +1,8 @@
-import UserTokensService from "Logic/Services/UserTokens/UserTokensService";
+import UserTokensService from "Logic/Services/UserTokensService";
 import { UserTokenTypesEnum } from "Entities/UserTokens";
 import { RequestEmailVerificationTokenArgs } from "Logic/UseCases/Auth/TypeSetting/RequestEmailVerficationArgs";
 import { EmailService } from "Logic/Services/Email/EmailService";
-import UsersService from "Logic/Services/Users/UsersService";
+import UsersService from "Logic/Services/UsersService";
 import { BadRequestError } from "Exceptions/BadRequestError";
 import {
   FAILURE,

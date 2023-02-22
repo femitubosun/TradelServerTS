@@ -38,6 +38,9 @@
       ],
       "Templates/*": [
         "./src/Templates/*"
+      ],
+      "TypeChecking/*": [
+        "./src/TypeChecking/*"
       ]
     },
     "outDir": "./dist",

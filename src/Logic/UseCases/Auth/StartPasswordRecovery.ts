@@ -1,7 +1,7 @@
-import UsersService from "Logic/Services/Users/UsersService";
+import UsersService from "Logic/Services/UsersService";
 import { BadRequestError } from "Exceptions/BadRequestError";
 import { USER_DOES_NOT_EXIST } from "Helpers/Messages/SystemMessages";
-import UserTokensService from "Logic/Services/UserTokens/UserTokensService";
+import UserTokensService from "Logic/Services/UserTokensService";
 import { StartPasswordRecoveryArgs } from "Logic/UseCases/Auth/TypeSetting/StartPasswordRecoveryArgs";
 import { EmailService } from "Logic/Services/Email/EmailService";
 

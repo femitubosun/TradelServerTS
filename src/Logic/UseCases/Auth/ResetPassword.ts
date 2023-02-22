@@ -1,5 +1,5 @@
 import { ResetPasswordArgs } from "Logic/UseCases/Auth/TypeSetting/ResetPasswordArgs";
-import UserTokensService from "Logic/Services/UserTokens/UserTokensService";
+import UserTokensService from "Logic/Services/UserTokensService";
 import { BadRequestError } from "Exceptions/BadRequestError";
 import {
   FAILURE,
@@ -10,8 +10,8 @@ import {
   USER_DOES_NOT_EXIST,
 } from "Helpers/Messages/SystemMessages";
 import { UserTokenTypesEnum } from "Entities/UserTokens";
-import UsersService from "Logic/Services/Users/UsersService";
-import { ChangePasswordArgs } from "Logic/Services/Users/TypeChecking/ChangePasswordArgs";
+import UsersService from "Logic/Services/UsersService";
+import { ChangePasswordDto } from "TypeChecking/Users/ChangePasswordDto";
 import { DateTime } from "luxon";
 
 export class ResetPassword {
@@ -36,7 +36,7 @@ export class ResetPassword {
     await queryRunner.startTransaction();
 
     try {
-      const changePasswordArgs: ChangePasswordArgs = {
+      const changePasswordArgs: ChangePasswordDto = {
         identifier: user.id,
         identifierType: "id",
         password,

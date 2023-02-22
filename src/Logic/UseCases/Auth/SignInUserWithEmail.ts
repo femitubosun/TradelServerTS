@@ -1,5 +1,5 @@
 import { JwtHelper, PasswordEncryptionHelper } from "Helpers/index";
-import UsersService from "Logic/Services/Users/UsersService";
+import UsersService from "Logic/Services/UsersService";
 import { SignInUserArgs } from "Logic/UseCases/Auth/TypeSetting";
 import { BadRequestError } from "Exceptions/index";
 import { CHECK_EMAIL_AND_PASSWORD } from "Helpers/Messages/SystemMessages";

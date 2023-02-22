@@ -1,4 +1,4 @@
-import SettingsUserRoleService from "Logic/Services/SettingsUserRole/SettingsUserRoleService";
+import SettingsUserRoleService from "Logic/Services/SettingsUserRoleService";
 import { BadRequestError, InternalServerError } from "Exceptions/index";
 import {
   CUSTOMER_ONBOARDING_SUCCESS,
@@ -6,14 +6,14 @@ import {
   EMAIL_IN_USE,
   ROLE_DOES_NOT_EXIST,
 } from "Helpers/Messages/SystemMessages";
-import UsersService from "Logic/Services/Users/UsersService";
-import CustomersService from "Logic/Services/Customers/CustomersService";
+import UsersService from "Logic/Services/UsersService";
+import CustomersService from "Logic/Services/CustomersService";
 import CartService from "Logic/Services/Cart/CartService";
 import { CustomerOnboardingUseCaseArgs } from "Logic/UseCases/Onboarding/TypeChecking";
 import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
 import { eventTypes } from "Lib/Events/Listeners/TypeChecking/eventTypes";
 import Event from "Lib/Events";
-import UserTokensService from "Logic/Services/UserTokens/UserTokensService";
+import UserTokensService from "Logic/Services/UserTokensService";
 
 export class OnboardCustomer {
   /**

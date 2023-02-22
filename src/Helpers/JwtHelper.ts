@@ -1,6 +1,6 @@
 import { jwtConfig } from "Config/index";
 import jwt from "jsonwebtoken";
-import { IUser } from "Logic/Services/Users/TypeChecking";
+import { IUser } from "TypeChecking/Users";
 import { UnauthenticatedError } from "Exceptions/UnauthenticatedError";
 
 export class JwtHelper {
