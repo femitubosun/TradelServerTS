@@ -8,7 +8,7 @@ import {
 } from "Helpers/Messages/SystemMessages";
 import UsersService from "Logic/Services/UsersService";
 import CustomersService from "Logic/Services/CustomersService";
-import CartService from "Logic/Services/Cart/CartService";
+import CartService from "Logic/Services/CartService";
 import { CustomerOnboardingUseCaseArgs } from "Logic/UseCases/Onboarding/TypeChecking";
 import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
 import { eventTypes } from "Lib/Events/Listeners/TypeChecking/eventTypes";
@@ -56,7 +56,7 @@ export class OnboardCustomer {
       });
 
       const customer = await CustomersService.createCustomerRecord({
-        user,
+        userId: user.id,
         phoneNumber,
         queryRunner,
       });

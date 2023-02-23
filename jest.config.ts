@@ -16,5 +16,6 @@ export default {
     "^Helpers/(.*)$": "<rootDir>/src/Helpers/$1",
     "^Exceptions/(.*)$": "<rootDir>/src/Exceptions/$1",
     "^Entities/(.*)$": "<rootDir>/src/Entities/$1",
+    "^TypeChecking/(.*)$": "<rootDir>/src/TypeChecking/$1",
   },
 };

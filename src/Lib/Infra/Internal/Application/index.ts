@@ -5,16 +5,19 @@ import { SERVER_STARTED } from "Helpers/Messages/SystemMessages";
 import { DependencyContainer } from "tsyringe";
 import "Lib/Events/index";
 
-class Application {
+export class Application {
   server: any;
   express: Express;
   container: DependencyContainer;
 
   constructor(container: DependencyContainer) {
-    console.clear();
     this.container = container;
     const dbContext: DbContext = this.container.resolve(DbContext);
     this.express = new Express(dbContext);
+  }
+
+  startApp() {
+    console.clear();
     const port = expressConfig.port;
     this.server = this.express.app.listen(port, () => {
       this.express.loggingProvider.info(`${SERVER_STARTED} PORT: ${port}`);
@@ -22,5 +25,3 @@ class Application {
     });
   }
 }
-
-export default Application;
