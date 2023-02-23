@@ -1,10 +1,10 @@
 import { autoInjectable } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { Merchant } from "Entities/Merchant";
-import { CreateMerchantRecordArgs } from "TypeChecking/Merchant/CreateMerchantRecordArgs";
 import { FAILURE, NULL_OBJECT, SUCCESS } from "Helpers/Messages/SystemMessages";
 import {
   DeleteMerchantArgs,
+  CreateMerchantRecordArgs,
   DisableMerchantRecordArgs,
   UpdateMerchantRecordArgs,
 } from "TypeChecking/Merchant";
@@ -21,16 +21,16 @@ class MerchantService {
   public async createMerchantRecord(
     createMerchantRecordArgs: CreateMerchantRecordArgs
   ) {
-    const { user, queryRunner, phoneNumber, storeName } =
+    const { userId, queryRunner, phoneNumber, storeName } =
       createMerchantRecordArgs;
-    const foundMerchant = await this.findMerchantByUserId(user.id);
+    const foundMerchant = await this.findMerchantByUserId(userId);
 
     if (foundMerchant) return foundMerchant;
 
     const merchant = new Merchant();
 
     Object.assign(merchant, {
-      user,
+      userId,
       phoneNumber,
       storeName,
     });

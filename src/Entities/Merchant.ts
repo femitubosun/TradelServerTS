@@ -1,12 +1,16 @@
-import { CustomBaseEntity } from "Entities/Base";
-import { Entity, OneToOne, Column, JoinColumn } from "typeorm";
-import { User } from "Entities/User";
+import { BaseEntity } from "Entities/Base";
+import { BeforeInsert, BeforeUpdate, Column, Entity } from "typeorm";
+import slugify from "slugify";
+import { DateTime } from "luxon";
+import { businessConfig } from "Config/businessConfig";
 
 @Entity()
-export class Merchant extends CustomBaseEntity {
-  @OneToOne(() => User)
-  @JoinColumn()
-  user: User;
+export class Merchant extends BaseEntity {
+  @Column()
+  storeName: string;
+
+  @Column()
+  storeNameSlug: string;
 
   @Column()
   phoneNumber: string;
@@ -14,11 +18,19 @@ export class Merchant extends CustomBaseEntity {
   @Column({
     nullable: true,
   })
-  storeNameSlug: string;
-
-  @Column()
-  storeName: string;
+  photoUrl: string;
 
   @Column({ nullable: true })
   userId: number;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  generateSlug() {
+    if (this.storeName) {
+      this.storeNameSlug =
+        slugify(this.storeName, { lower: true }) +
+        "-" +
+        businessConfig.currentDateTime.toUTC();
+    }
+  }
 }

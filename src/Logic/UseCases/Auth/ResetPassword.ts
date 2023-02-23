@@ -9,7 +9,7 @@ import {
   TOKEN_EXPIRED,
   USER_DOES_NOT_EXIST,
 } from "Helpers/Messages/SystemMessages";
-import { UserTokenTypesEnum } from "Entities/UserTokens";
+import { UserTokenTypesEnum } from "TypeChecking/UserTokens";
 import UsersService from "Logic/Services/UsersService";
 import { ChangePasswordDto } from "TypeChecking/Users/ChangePasswordDto";
 import { DateTime } from "luxon";

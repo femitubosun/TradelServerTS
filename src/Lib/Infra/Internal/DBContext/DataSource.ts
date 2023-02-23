@@ -6,8 +6,10 @@ import {
   Customer,
   UserTokens,
   Cart,
+  Merchant,
+  ProductCategory,
+  Product,
 } from "Entities/index";
-import { Merchant } from "Entities/Merchant";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -16,7 +18,16 @@ export const AppDataSource = new DataSource({
   username: dbConfig.username,
   password: dbConfig.password,
   database: dbConfig.dbName,
-  entities: [SettingsUserRoles, User, Customer, UserTokens, Cart, Merchant],
+  entities: [
+    SettingsUserRoles,
+    User,
+    Customer,
+    UserTokens,
+    Cart,
+    Merchant,
+    ProductCategory,
+    Product,
+  ],
   synchronize: true,
 });
 

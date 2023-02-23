@@ -1,18 +1,18 @@
 import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne } from "typeorm";
-import { CustomBaseEntity } from "./Base";
+import { BaseEntity } from "./Base";
 import { SettingsUserRoles } from "./SettingsUserRoles";
 import { PasswordEncryptionHelper } from "Helpers/PasswordEncryptionHelper";
 
 @Entity()
-export class User extends CustomBaseEntity {
-  @Column()
-  email: string;
-
+export class User extends BaseEntity {
   @Column()
   firstName: string;
 
   @Column()
   lastName: string;
+
+  @Column()
+  email: string;
 
   @Column()
   password: string;
@@ -32,8 +32,8 @@ export class User extends CustomBaseEntity {
   })
   lastLoginDate: Date;
 
-  @ManyToOne(() => SettingsUserRoles)
-  role: SettingsUserRoles;
+  @Column()
+  roleId: number;
 
   @BeforeInsert()
   @BeforeUpdate()

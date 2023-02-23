@@ -44,13 +44,13 @@ export class OnboardMerchant {
         firstName,
         lastName,
         email,
-        role: merchantRole,
+        roleId: merchantRole.id,
         queryRunner,
         password,
       });
 
       await MerchantService.createMerchantRecord({
-        user,
+        userId: user.id,
         phoneNumber,
         storeName,
         queryRunner,

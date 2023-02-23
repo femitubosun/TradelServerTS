@@ -1,5 +1,5 @@
 import { Router } from "express";
-import OnboardingController from "Api/Controllers/OnboardingController";
+import OnboardingController from "Api/Controllers/Onboarding/OnboardingController";
 import validate from "Api/Validators/Common/validate";
 import {
   customerOnboardingValidator,
@@ -9,7 +9,7 @@ import {
 const routes = Router();
 
 routes.post(
-  "/Initiate/CustomerOnboarding",
+  "/Create/Customer",
   customerOnboardingValidator,
   validate,
   OnboardingController.onboardCustomer

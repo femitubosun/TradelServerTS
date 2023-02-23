@@ -14,10 +14,10 @@ import {
   USER_DOES_NOT_EXIST,
 } from "Helpers/Messages/SystemMessages";
 import { UnauthorizedError } from "Exceptions/UnauthorizedError";
-import { UserTokenTypesEnum } from "Entities/UserTokens";
 import { DateTime } from "luxon";
 import { InternalServerError } from "Exceptions/InternalServerError";
 import UsersService from "Logic/Services/UsersService";
+import { UserTokenTypesEnum } from "TypeChecking/UserTokens";
 
 export class VerifyUserEmail {
   /**

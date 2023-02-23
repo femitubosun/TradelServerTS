@@ -1,5 +1,5 @@
 import UserTokensService from "Logic/Services/UserTokensService";
-import { UserTokenTypesEnum } from "Entities/UserTokens";
+import { UserTokenTypesEnum } from "TypeChecking/UserTokens";
 import { RequestEmailVerificationTokenArgs } from "Logic/UseCases/Auth/TypeSetting/RequestEmailVerficationArgs";
 import { EmailService } from "Logic/Services/Email/EmailService";
 import UsersService from "Logic/Services/UsersService";

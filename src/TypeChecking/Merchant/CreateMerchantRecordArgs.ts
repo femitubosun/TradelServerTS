@@ -3,7 +3,7 @@ import { User } from "Entities/User";
 import DbQueryRunner from "TypeChecking/QueryRunner";
 
 export type CreateMerchantRecordArgs = {
-  user: User;
+  userId: number;
   phoneNumber: string;
   storeName: string;
 } & DbQueryRunner;

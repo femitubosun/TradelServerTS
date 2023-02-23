@@ -51,7 +51,7 @@ export class OnboardCustomer {
         lastName,
         email,
         password,
-        role,
+        roleId: role.id,
         queryRunner,
       });
 

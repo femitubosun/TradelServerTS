@@ -1,4 +1,4 @@
-import { UserTokenTypesEnum } from "TypeChecking/UserTokens/UserTokenTypesEnum";
+import { UserTokenTypesEnum } from "TypeChecking/UserTokens";
 
 export type ListUserTokenForUserByTokenTypeArgs = {
   userId: number;

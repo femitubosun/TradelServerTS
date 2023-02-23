@@ -1,8 +1,8 @@
 import { Entity, Column } from "typeorm";
-import { CustomBaseEntity } from "./Base";
+import { BaseEntity } from "./Base";
 
 @Entity()
-export class SettingsUserRoles extends CustomBaseEntity {
+export class SettingsUserRoles extends BaseEntity {
   @Column()
   name: string;
 }

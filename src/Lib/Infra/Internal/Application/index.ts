@@ -11,13 +11,13 @@ export class Application {
   container: DependencyContainer;
 
   constructor(container: DependencyContainer) {
+    console.clear();
     this.container = container;
     const dbContext: DbContext = this.container.resolve(DbContext);
     this.express = new Express(dbContext);
   }
 
   startApp() {
-    console.clear();
     const port = expressConfig.port;
     this.server = this.express.app.listen(port, () => {
       this.express.loggingProvider.info(`${SERVER_STARTED} PORT: ${port}`);

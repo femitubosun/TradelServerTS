@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-export abstract class CustomBaseEntity {
+export abstract class BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -14,11 +14,11 @@ export abstract class CustomBaseEntity {
   @Generated("uuid")
   identifier: string;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
-
   @CreateDateColumn()
   createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   @Column({
     default: true,

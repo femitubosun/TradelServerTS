@@ -1,11 +1,11 @@
-import { CustomBaseEntity } from "Entities/Base";
+import { BaseEntity } from "Entities/Base";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { User } from "./User";
 import { DateTime } from "luxon";
-import { UserTokenTypesEnum } from "src/TypeChecking/UserTokens/UserTokenTypesEnum";
+import { UserTokenTypesEnum } from "TypeChecking/UserTokens";
 
 @Entity()
-export class UserTokens extends CustomBaseEntity {
+export class UserTokens extends BaseEntity {
   @ManyToOne(() => User)
   @JoinColumn()
   user: User;

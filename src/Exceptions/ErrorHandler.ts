@@ -33,10 +33,10 @@ class ErrorHandler {
     response: Response
   ): void {
     response.status(error.httpCode).json({
-      results: error.message,
-      message: ERROR,
-      status: ERROR,
       status_code: error.httpCode,
+      status: ERROR,
+      message: ERROR,
+      results: error.message,
     });
   }
 

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { keysSnakeCaseToCamelCase } from "Utils/keysSnakeCaseToCamelCase";
 import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 import { SignInUserWithEmail } from "Logic/UseCases/Auth/SignInUserWithEmail";
-import { AuthRequest } from "../TypeChecking";
+import { AuthRequest } from "../../TypeChecking";
 import { VerifyUserEmail } from "Logic/UseCases/Onboarding";
 import { RequestEmailVerificationToken } from "Logic/UseCases/Auth/RequestEmailVerificationToken";
 import {
@@ -31,7 +31,7 @@ class AuthController {
   public async verifyEmail(req: Request, res: Response) {
     this.statusCode = HttpStatusCodeEnum.OK;
     const user = (req as AuthRequest).user;
-    const emailVerifyToken = req.params["emailVerifyToken"];
+    const emailVerifyToken = req.body.otp_token;
 
     if (!emailVerifyToken) throw new BadRequestError(INVALID_TOKEN);
 

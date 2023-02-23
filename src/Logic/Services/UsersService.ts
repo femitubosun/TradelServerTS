@@ -20,14 +20,14 @@ class UsersService {
   }
 
   public async createUserRecord(createUserRecordArgs: CreateUserRecordDto) {
-    const { email, firstName, lastName, password, role, queryRunner } =
+    const { email, firstName, lastName, password, roleId, queryRunner } =
       createUserRecordArgs;
     const newUserData = {
       email,
       firstName,
       lastName,
       password,
-      role,
+      roleId,
     };
 
     const user = new User();

@@ -6,5 +6,5 @@ export type CreateUserRecordDto = {
   firstName: string;
   lastName: string;
   password: string;
-  role: SettingsUserRoles;
+  roleId: number;
 } & DbQueryRunner;

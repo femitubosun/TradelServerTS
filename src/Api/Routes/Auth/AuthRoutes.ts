@@ -1,5 +1,5 @@
 import { Router } from "express";
-import AuthController from "Api/Controllers/AuthController";
+import AuthController from "Api/Controllers/Auth/AuthController";
 import validate from "Api/Validators/Common/validate";
 import userSignInValidator from "Api/Validators/Auth/userSignInValidator";
 import { asyncMiddlewareHandler } from "Utils/asyncMiddlewareHandler";
@@ -7,6 +7,7 @@ import { isAuthenticated } from "Api/Middleware/isAuthenticated";
 import recoverPasswordValidator from "Api/Validators/Auth/RecoverPasswordValidator";
 import passwordResetMail from "Logic/Services/Template/templates/passwordResetMail";
 import resetPasswordValidator from "Api/Validators/Auth/ResetPasswordValidator";
+import { emailVerificationValidator } from "Api/Validators/Onboarding";
 
 const routes = Router();
 
@@ -17,9 +18,11 @@ routes.post(
   AuthController.emailSignIn
 );
 
-routes.get(
-  "/Initiate/EmailVerification/:emailVerifyToken",
+routes.post(
+  "/Process/EmailVerification/",
   asyncMiddlewareHandler(isAuthenticated),
+  emailVerificationValidator,
+  validate,
   AuthController.verifyEmail
 );
 
