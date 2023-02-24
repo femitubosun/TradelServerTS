@@ -3,7 +3,7 @@ import ProductCategoryService from "Logic/Services/ProductCategoryService";
 import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 import {
   SUCCESS,
-  CATEGORY_RESOURCE,
+  PRODUCT_CATEGORY_RESOURCE,
   FAILURE,
   NULL_OBJECT,
 } from "Helpers/Messages/SystemMessages";
@@ -26,7 +26,7 @@ class ProductCategoryController {
     return response.status(statusCode).json({
       status_code: statusCode,
       status: SUCCESS,
-      message: RESOURCE_FETCHED_SUCCESSFULLY(CATEGORY_RESOURCE),
+      message: RESOURCE_FETCHED_SUCCESSFULLY(PRODUCT_CATEGORY_RESOURCE),
       results: productCategories,
     });
   }
@@ -47,7 +47,7 @@ class ProductCategoryController {
       return response.status(statusCode).json({
         status_code: statusCode,
         status: FAILURE,
-        message: RESOURCE_NOT_FOUND(CATEGORY_RESOURCE),
+        message: RESOURCE_NOT_FOUND(PRODUCT_CATEGORY_RESOURCE),
       });
     }
     const IS_INACTIVE = false;
@@ -58,7 +58,7 @@ class ProductCategoryController {
       return response.status(statusCode).json({
         status_code: statusCode,
         status: FAILURE,
-        message: RESOURCE_NOT_FOUND(CATEGORY_RESOURCE),
+        message: RESOURCE_NOT_FOUND(PRODUCT_CATEGORY_RESOURCE),
       });
     }
 
@@ -88,7 +88,7 @@ class ProductCategoryController {
     return response.status(statusCode).json({
       status_code: statusCode,
       status: SUCCESS,
-      message: RESOURCE_FETCHED_SUCCESSFULLY(CATEGORY_RESOURCE),
+      message: RESOURCE_FETCHED_SUCCESSFULLY(PRODUCT_CATEGORY_RESOURCE),
       results: {
         category: {
           identifier: productCategory.identifier,

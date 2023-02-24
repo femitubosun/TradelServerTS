@@ -149,6 +149,12 @@ class UserTokensService {
       return FAILURE;
     }
   }
+
+  public getEmailTokenExpiresOn() {
+    return DateTime.now().plus({
+      minute: businessConfig.emailTokenExpiresInMinutes,
+    });
+  }
 }
 
 export default new UserTokensService();

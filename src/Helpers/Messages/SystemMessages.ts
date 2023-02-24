@@ -53,4 +53,8 @@ export const CUSTOMER_ROLE_NAME = "customer";
 /* ----------------------------- Resource Labels ---------------------------- */
 
 export const PRODUCT_RESOURCE = "Product Resource";
-export const CATEGORY_RESOURCE = "Category Resource";
+export const PRODUCT_CATEGORY_RESOURCE = "Product Category Resource";
+
+/* ------------------------------ Generic Messages  ------------------------- */
+
+export const WELCOME_TO_API = "Welcome to Tradel Server API";

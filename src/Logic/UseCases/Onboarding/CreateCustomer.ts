@@ -64,7 +64,7 @@ export class CreateCustomer {
         customer,
         queryRunner,
       });
-      const token = generateStringOfLength(businessConfig.userTokenLength);
+      const token = generateStringOfLength(businessConfig.emailTokenLength);
       const otpToken = await UserTokensService.createEmailActivationToken({
         userId: user.id,
         queryRunner,

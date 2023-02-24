@@ -4,8 +4,8 @@ import { businessConfig } from "Config/businessConfig";
 const resetPasswordValidator = [
   param("passwordResetToken")
     .isLength({
-      min: businessConfig.userTokenLength,
-      max: businessConfig.userTokenLength,
+      min: businessConfig.emailTokenLength,
+      max: businessConfig.emailTokenLength,
     })
     .trim()
     .escape(),

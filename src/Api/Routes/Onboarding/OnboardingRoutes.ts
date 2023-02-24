@@ -16,7 +16,7 @@ routes.post(
 );
 
 routes.post(
-  "/Initiate/MerchantOnboarding",
+  "/Create/Customer",
   merchantOnboardingValidator,
   validate,
   OnboardingController.onboardMerchant

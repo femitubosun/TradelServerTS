@@ -12,6 +12,9 @@ import { BadRequestError } from "Exceptions/BadRequestError";
 import Event from "Lib/Events";
 import { eventTypes } from "Lib/Events/Listeners/TypeChecking/eventTypes";
 import UserTokensService from "Logic/Services/UserTokensService";
+import { UserTokenTypesEnum } from "TypeChecking/UserTokens";
+import { generateStringOfLength } from "Utils/generateStringOfLength";
+import { businessConfig } from "Config/businessConfig";
 
 export class OnboardMerchant {
   public static async execute(
@@ -53,15 +56,21 @@ export class OnboardMerchant {
         storeName,
         queryRunner,
       });
-      const token = await UserTokensService.createEmailActivationToken({
+
+      const token = generateStringOfLength(businessConfig.emailTokenLength);
+
+      const otpToken = await UserTokensService.createUserTokenRecord({
         userId: user.id,
         queryRunner,
+        expiresOn: UserTokensService.getEmailTokenExpiresOn(),
+        tokenType: UserTokenTypesEnum.EMAIL,
+        token,
       });
       await queryRunner.commitTransaction();
 
       Event.emit(eventTypes.user.signUp, {
         userEmail: user.email,
-        activationToken: token.token,
+        activationToken: otpToken.token,
       });
     } catch (typeOrmError) {
       console.error(typeOrmError);

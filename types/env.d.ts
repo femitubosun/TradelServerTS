@@ -1,7 +1,7 @@
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      USER_TOKEN_LENGTH: string;
+      EMAIL_TOKEN_LENGTH: string;
       EMAIL_TOKEN_EXPIRES_IN_MINUTES: string;
       PASSWORD_RESET_TOKEN_LENGTH: string;
       PASSWORD_RESET_TOKEN_EXPIRES_IN_MINUTES: string;

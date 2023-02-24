@@ -33,7 +33,7 @@ export class RequestEmailVerificationToken {
     }
     await queryRunner.startTransaction();
     try {
-      const token = generateStringOfLength(businessConfig.userTokenLength);
+      const token = generateStringOfLength(businessConfig.emailTokenLength);
 
       const otpToken = await UserTokensService.createEmailActivationToken({
         userId,

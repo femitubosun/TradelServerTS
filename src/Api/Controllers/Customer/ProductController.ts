@@ -1,7 +1,7 @@
 import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 import { Request, Response } from "express";
 import {
-  CATEGORY_RESOURCE,
+  PRODUCT_CATEGORY_RESOURCE,
   FAILURE,
   NULL_OBJECT,
   PRODUCT_RESOURCE,
@@ -63,7 +63,7 @@ class ProductController {
       return response.status(statusCode).json({
         status_code: statusCode,
         status: FAILURE,
-        message: RESOURCE_NOT_FOUND(CATEGORY_RESOURCE),
+        message: RESOURCE_NOT_FOUND(PRODUCT_CATEGORY_RESOURCE),
       });
     }
 
@@ -75,7 +75,7 @@ class ProductController {
       return response.status(statusCode).json({
         status_code: statusCode,
         status: FAILURE,
-        message: RESOURCE_NOT_FOUND(CATEGORY_RESOURCE),
+        message: RESOURCE_NOT_FOUND(PRODUCT_CATEGORY_RESOURCE),
       });
     }
     const productMerchant = await MerchantService.getMerchantById(

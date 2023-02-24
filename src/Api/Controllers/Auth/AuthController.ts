@@ -27,10 +27,10 @@ const dbContext = container.resolve(DbContext);
 class AuthController {
   public statusCode: HttpStatusCodeEnum;
 
-  public async verifyEmail(req: Request, res: Response) {
+  public async verifyEmail(request: Request, response: Response) {
     this.statusCode = HttpStatusCodeEnum.OK;
-    const user = (req as AuthRequest).user;
-    const { otp_token: emailVerifyToken } = req.body;
+    const user = (request as AuthRequest).user;
+    const { otp_token: emailVerifyToken } = request.body;
 
     if (!emailVerifyToken) throw new BadRequestError(INVALID_TOKEN);
 
@@ -39,7 +39,7 @@ class AuthController {
       emailVerificationToken: emailVerifyToken,
     });
 
-    return res.status(this.statusCode).json({
+    return response.status(this.statusCode).json({
       status: SUCCESS,
       status_code: this.statusCode,
       message: EMAIL_VERIFICATION_SUCCESS,

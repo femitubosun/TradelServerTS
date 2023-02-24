@@ -190,3 +190,9 @@
 [ERROR] 2023-02-23 16:55:20 QueryFailedError: syntax error at or near "NOT"
 [ERROR] 2023-02-23 16:55:43 QueryFailedError: syntax error at or near "NOT"
 [ERROR] 2023-02-23 16:56:20 QueryFailedError: syntax error at or near "NOT"
+[ERROR] 2023-02-24 16:48:05 No metadata for "ProductCategory" was found.
+[ERROR] 2023-02-24 16:48:05 No metadata for "ProductCategory" was found.
+[ERROR] 2023-02-24 16:50:54 No metadata for "ProductCategory" was found.
+[ERROR] 2023-02-24 16:52:20 No metadata for "ProductCategory" was found.
+[ERROR] 2023-02-24 16:53:47 No metadata for "ProductCategory" was found.
+[ERROR] 2023-02-24 16:55:01 No metadata for "ProductCategory" was found.

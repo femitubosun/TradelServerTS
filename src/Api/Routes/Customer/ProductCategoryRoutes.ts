@@ -4,7 +4,7 @@ import ProductCategoryController from "Api/Controllers/Customer/ProductCategoryC
 const routes = Router();
 
 routes.get(
-  "/Fetch/ProductCategories",
+  "/Fetch/ActiveProductCategories",
   ProductCategoryController.listActiveProductCategories
 );
 

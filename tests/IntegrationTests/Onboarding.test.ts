@@ -1,7 +1,7 @@
 import supertest from "supertest";
-import { Application } from "Lib/Infra/Internal/Application/index";
+import { Application } from "Lib/Infra/Internal/Application";
 import { container } from "tsyringe";
-import { HttpStatusCodeEnum } from "../src/Utils/HttpStatusCodeEnum";
+import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 
 const app = new Application(container);
 
