@@ -22,12 +22,21 @@ class OnboardingController {
 
   public async onboardCustomer(req: Request, res: Response) {
     this.statusCode = HttpStatusCodeEnum.CREATED;
-    const mutantOnboardCustomerRequest: any = keysSnakeCaseToCamelCase(
-      req.body
-    );
+    const {
+      first_name: firstName,
+      last_name: lastName,
+      password,
+      phone_number: phoneNumber,
+      email,
+    } = req.body;
+
     const queryRunner = await dbContext.getTransactionalQueryRunner();
     const customerOnboardingUseCaseArgs: CustomerOnboardingUseCaseArgs = {
-      ...mutantOnboardCustomerRequest,
+      email,
+      firstName,
+      lastName,
+      password,
+      phoneNumber,
       queryRunner,
     };
 
@@ -46,19 +55,17 @@ class OnboardingController {
   public async onboardMerchant(req: Request, res: Response) {
     this.statusCode = HttpStatusCodeEnum.CREATED;
 
-    const mutantOnboardMerchantRequest: any = keysSnakeCaseToCamelCase(
-      req.body
-    );
+    const mutantOnboardMerchantRequest = keysSnakeCaseToCamelCase(req.body);
 
     const queryRunner = await dbContext.getTransactionalQueryRunner();
 
-    const merchantOnboardingUseCaseArgs: MerchantOnboardingUseCaseArgs = {
+    const merchantOnboardingUseCaseArgs = {
       ...mutantOnboardMerchantRequest,
       queryRunner,
     };
 
     const results = await OnboardMerchant.execute(
-      merchantOnboardingUseCaseArgs
+      merchantOnboardingUseCaseArgs as MerchantOnboardingUseCaseArgs
     );
 
     return res.status(this.statusCode).json({

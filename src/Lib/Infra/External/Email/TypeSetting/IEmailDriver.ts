@@ -2,7 +2,7 @@ import { SendEmailArgs } from "Lib/Infra/External/Email/TypeSetting/SendEmailArg
 import { SendBulkEmailArgs } from "Lib/Infra/External/Email/TypeSetting/SendBulkEmailArgs";
 
 export interface IEmailDriver {
-  sendEmail(sendEmailArgs: SendEmailArgs): any;
+  sendEmail(sendEmailArgs: SendEmailArgs): null;
 
-  sendBulkEmail(sendBulkEmailArgs: SendBulkEmailArgs): any;
+  sendBulkEmail(sendBulkEmailArgs: SendBulkEmailArgs): null;
 }

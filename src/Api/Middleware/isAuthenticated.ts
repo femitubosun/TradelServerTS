@@ -10,13 +10,15 @@ export const isAuthenticated = async (
   res: Response,
   next: NextFunction
 ) => {
-  let token = await req.header("Authorization")?.replace("Bearer ", "")!;
+  const token = await req.header("Authorization")?.replace("Bearer ", "");
 
   if (!token) throw new UnauthenticatedError();
 
-  const decoded: any = JwtHelper.verifyToken(token);
+  const decoded = JwtHelper.verifyToken(token);
 
-  const user = await UsersService.getUserByEmail(decoded.email);
+  const { email } = decoded;
+
+  const user = await UsersService.getUserByEmail(email);
 
   if (!user) throw new UnauthenticatedError();
 

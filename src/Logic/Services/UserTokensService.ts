@@ -1,7 +1,7 @@
 import { autoInjectable } from "tsyringe";
 import { UserTokens } from "Entities/UserTokens";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
-import { FAILURE, SUCCESS } from "Helpers/Messages/SystemMessages";
+import { FAILURE, NULL_OBJECT, SUCCESS } from "Helpers/Messages/SystemMessages";
 import {
   CreateEmailActivationTokenArgs,
   CreateUserTokenArgs,
@@ -14,13 +14,16 @@ import { businessConfig } from "Config/businessConfig";
 import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
 import { ListUserTokenForUserByTokenTypeArgs } from "TypeChecking/UserTokens/ListUserTokenForUserByTokenTypeArgs";
 import { CreatePasswordRecoveryTokenArgs } from "TypeChecking/UserTokens/CreatePasswordRecoveryTokenArgs";
+import { Repository } from "typeorm";
 
 @autoInjectable()
 class UserTokensService {
-  private userTokenRepository: any;
+  private userTokenRepository;
 
   constructor(private dbContext?: DbContext) {
-    this.userTokenRepository = dbContext?.getEntityRepository(UserTokens);
+    this.userTokenRepository = dbContext?.getEntityRepository(
+      UserTokens
+    ) as Repository<UserTokens>;
   }
 
   /*
@@ -81,7 +84,7 @@ class UserTokensService {
       tokenType: UserTokenTypesEnum.PASSWORD_RESET,
     });
 
-    for (let token of userTokens) {
+    for (const token of userTokens) {
       await this.deactivateUserToken(token.id);
     }
 
@@ -106,13 +109,13 @@ class UserTokensService {
   public async listUserTokenForUserByTokenType(
     listUserTokenForUserByTokenTypeArgs: ListUserTokenForUserByTokenTypeArgs
   ) {
-    return await this.userTokenRepository.find(
+    return await this.userTokenRepository.findBy(
       listUserTokenForUserByTokenTypeArgs
     );
   }
 
   public async getUserTokenByIdentifier(tokenIdentifier: string) {
-    return await this.userTokenRepository.findOne({
+    return await this.userTokenRepository.findOneBy({
       identifier: tokenIdentifier,
     });
   }
@@ -139,8 +142,10 @@ class UserTokensService {
       identifierType == "id"
         ? await this.userTokenRepository.findOneById(identifier as number)
         : await this.userTokenRepository.findOneBy({
-            identifier,
+            identifier: identifier as string,
           });
+
+    if (userToken == NULL_OBJECT) return;
 
     Object.assign(userToken, updatePayload);
 

@@ -10,3 +10,5 @@ const emailVerificationValidator = [
     .trim()
     .escape(),
 ];
+
+export default emailVerificationValidator;

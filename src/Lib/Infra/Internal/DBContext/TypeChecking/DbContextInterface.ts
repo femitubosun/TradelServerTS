@@ -1,9 +1,11 @@
+import { QueryRunner } from "typeorm";
+
 export interface DbContextInterface {
-  connect(): any;
+  connect(): null;
 
-  populateDb(): any;
+  populateDb(): null;
 
-  getEntityRepository(entity: any): any;
+  getEntityRepository(entity: unknown): unknown;
 
-  getTransactionalQueryRunner(): any;
+  getTransactionalQueryRunner(): QueryRunner;
 }

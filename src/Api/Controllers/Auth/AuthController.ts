@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
-import { keysSnakeCaseToCamelCase } from "Utils/keysSnakeCaseToCamelCase";
 import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 import { SignInUserWithEmail } from "Logic/UseCases/Auth/SignInUserWithEmail";
-import { AuthRequest } from "../../TypeChecking";
+import { AuthRequest } from "Api/TypeChecking";
 import { VerifyUserEmail } from "Logic/UseCases/Onboarding";
 import { RequestEmailVerificationToken } from "Logic/UseCases/Auth/RequestEmailVerificationToken";
 import {
@@ -77,8 +76,13 @@ class AuthController {
 
   public async emailSignIn(req: Request, res: Response) {
     this.statusCode = HttpStatusCodeEnum.OK;
-    const payload: any = keysSnakeCaseToCamelCase(req.body);
-    const results = await SignInUserWithEmail.execute(payload);
+
+    const { email, password } = req.body;
+
+    const results = await SignInUserWithEmail.execute({
+      email,
+      password,
+    });
     res.status(this.statusCode).json({
       status: SUCCESS,
       status_code: this.statusCode,
@@ -89,12 +93,12 @@ class AuthController {
 
   public async startPasswordRecovery(req: Request, res: Response) {
     this.statusCode = HttpStatusCodeEnum.OK;
-    const payload: any = keysSnakeCaseToCamelCase(req.body);
+    const { email } = req.body;
     const queryRunner = await dbContext.getTransactionalQueryRunner();
 
     const startPasswordRecoveryArgs: StartPasswordRecoveryArgs = {
       queryRunner,
-      userEmail: payload.email,
+      userEmail: email,
     };
     await StartPasswordRecovery.execute(startPasswordRecoveryArgs);
 

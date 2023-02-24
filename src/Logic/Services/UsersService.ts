@@ -2,21 +2,20 @@ import { autoInjectable } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { User } from "Entities/User";
 import { FAILURE, NULL_OBJECT, SUCCESS } from "Helpers/Messages/SystemMessages";
-import {
-  CreateUserRecordDto,
-  IUser,
-  UpdateUserRecordArgs,
-} from "TypeChecking/Users";
+import { CreateUserRecordDto, UpdateUserRecordArgs } from "TypeChecking/Users";
 import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
 import { DateTime } from "luxon";
 import { ChangePasswordDto } from "TypeChecking/Users/ChangePasswordDto";
+import { Repository } from "typeorm";
 
 @autoInjectable()
 class UsersService {
-  private userRepository: any;
+  private userRepository;
 
   constructor(private dbContext?: DbContext) {
-    this.userRepository = dbContext?.getEntityRepository(User);
+    this.userRepository = dbContext?.getEntityRepository(
+      User
+    ) as Repository<User>;
   }
 
   public async createUserRecord(createUserRecordArgs: CreateUserRecordDto) {
@@ -38,13 +37,13 @@ class UsersService {
     return user;
   }
 
-  public async listActiveUserRecord(): Promise<Iterable<IUser>> {
+  public async listActiveUserRecord(): Promise<Iterable<User>> {
     return await this.userRepository.findBy({
-      active: true,
+      isActive: true,
     });
   }
 
-  public async getUserByIdentifier(identifier: string): Promise<any> {
+  public async getUserByIdentifier(identifier: string): Promise<User | null> {
     const user = await this.userRepository.findOneBy({
       identifier,
     });
@@ -86,6 +85,8 @@ class UsersService {
         ? await this.getUserById(identifier as number)
         : await this.getUserByIdentifier(identifier as string);
 
+    if (user == NULL_OBJECT) return;
+
     Object.assign(user, {
       password,
     });
@@ -95,15 +96,19 @@ class UsersService {
 
   public async updateUserRecord(
     updateUserRecordArgs: UpdateUserRecordArgs
-  ): Promise<string> {
+  ): Promise<string | null> {
     const { identifierType, identifier, updateUserRecordPayload } =
       updateUserRecordArgs;
+
     const user =
       identifierType == "id"
         ? await this.getUserById(identifier as number)
         : await this.getUserByIdentifier(identifier as string);
 
+    if (user == NULL_OBJECT) return FAILURE;
+
     Object.assign(user, updateUserRecordPayload);
+
     try {
       await this.userRepository.save(user);
       return SUCCESS;
@@ -115,11 +120,15 @@ class UsersService {
     }
   }
 
-  public async disableUserRecord(id: number): Promise<any> {
-    const user = (await this.getUserById(id))!;
+  public async disableUserRecord(id: number) {
+    const user = await this.getUserById(id);
+
+    if (user == NULL_OBJECT) return;
+
     user.isDeleted = true;
     user.isActive = false;
-    this.userRepository.save(user);
+
+    await this.userRepository.save(user);
   }
 
   public async updateUserLastLoginDate(userId: number) {

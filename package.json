@@ -9,7 +9,9 @@
     "test": "jest",
     "build": "tsc && resolve-tspaths",
     "test:watch": "jest --watch --verbose",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --write .",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
@@ -31,9 +33,10 @@
     "@types/nodemailer": "^6.4.7",
     "@types/supertest": "^2.0.12",
     "@types/uuid": "^9.0.0",
-    "@typescript-eslint/eslint-plugin": "^5.40.0",
-    "@typescript-eslint/parser": "^5.40.0",
+    "@typescript-eslint/eslint-plugin": "^5.53.0",
+    "@typescript-eslint/parser": "^5.53.0",
     "eslint": "8.22.0",
+    "husky": "^8.0.3",
     "jest": "^29.2.2",
     "prettier": "^2.7.1",
     "supertest": "^6.3.3",

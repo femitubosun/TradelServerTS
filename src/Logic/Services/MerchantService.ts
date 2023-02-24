@@ -9,13 +9,16 @@ import {
   UpdateMerchantRecordArgs,
 } from "TypeChecking/Merchant";
 import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
+import { Repository } from "typeorm";
 
 @autoInjectable()
 class MerchantService {
-  private merchantsRepository: any;
+  private merchantsRepository;
 
   constructor(private dbContext?: DbContext) {
-    this.merchantsRepository = dbContext?.getEntityRepository(Merchant);
+    this.merchantsRepository = dbContext?.getEntityRepository(
+      Merchant
+    ) as Repository<Merchant>;
   }
 
   public async createMerchantRecord(
@@ -41,19 +44,19 @@ class MerchantService {
   }
 
   public async getMerchantById(merchantId: number): Promise<Merchant | null> {
-    const merchant = this.merchantsRepository.findOneById(merchantId);
+    const merchant = this.merchantsRepository?.findOneById(merchantId);
     return merchant || NULL_OBJECT;
   }
 
   public async getMerchantByIdentifier(merchantIdentifier: string) {
-    const merchant = this.merchantsRepository.findOneBy({
+    const merchant = this.merchantsRepository?.findOneBy({
       identifier: merchantIdentifier,
     });
     return merchant || NULL_OBJECT;
   }
 
   public async getMerchantByStoreSlug(storeSlug: string) {
-    const merchant = this.merchantsRepository.findOneBy({
+    const merchant = this.merchantsRepository?.findOneBy({
       storeNameSlug: storeSlug,
     });
     return merchant || NULL_OBJECT;
@@ -70,6 +73,7 @@ class MerchantService {
         ? await this.getMerchantById(identifierValue as number)
         : await this.getMerchantByIdentifier(identifierValue as string);
 
+    if (merchant == NULL_OBJECT) return;
     Object.assign(merchant, updatePayload);
     try {
       await this.merchantsRepository.save(merchant);
@@ -90,6 +94,8 @@ class MerchantService {
       identifierType == "id"
         ? await this.getMerchantById(identifierValue as number)
         : await this.getMerchantByIdentifier(identifierValue as string);
+
+    if (merchant == NULL_OBJECT) return;
 
     merchant.isDeleted = true;
     merchant.isActive = false;
@@ -121,6 +127,7 @@ class MerchantService {
         ? await this.getMerchantById(identifierValue as number)
         : await this.getMerchantByIdentifier(identifierValue as string);
 
+    if (merchant == NULL_OBJECT) return;
     merchant.isActive = false;
     await this.merchantsRepository.save(merchant);
   }

@@ -2,13 +2,16 @@ import { autoInjectable } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { Customer } from "Entities/Customer";
 import { CreateCustomerArgs } from "TypeChecking/Customers/CreateCustomerArgs";
+import { Repository } from "typeorm";
 
 @autoInjectable()
 class CustomerService {
-  private customersRepository: any;
+  private customersRepository;
 
   constructor(private dbContext?: DbContext) {
-    this.customersRepository = dbContext?.getEntityRepository(Customer);
+    this.customersRepository = dbContext?.getEntityRepository(
+      Customer
+    ) as Repository<Customer>;
   }
 
   public async createCustomerRecord(createCustomerArgs: CreateCustomerArgs) {
@@ -29,7 +32,7 @@ class CustomerService {
     return customer;
   }
 
-  public async findCustomerByUserId(userId: any) {
+  public async findCustomerByUserId(userId: number) {
     return await this.customersRepository.findOneBy({ userId });
   }
 }

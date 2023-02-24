@@ -3,13 +3,16 @@ import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { Cart } from "Entities/Cart";
 import { NULL_OBJECT } from "Helpers/Messages/SystemMessages";
 import { CreateCartRecordDto } from "TypeChecking/Cart";
+import { Repository } from "typeorm";
 
 @autoInjectable()
 export class CartService {
-  private cartRepository: any;
+  private cartRepository: Repository<Cart>;
 
   constructor(private dbContext?: DbContext) {
-    this.cartRepository = dbContext?.getEntityRepository(Cart);
+    this.cartRepository = dbContext?.getEntityRepository(
+      Cart
+    ) as Repository<Cart>;
   }
 
   /**

@@ -2,15 +2,16 @@ import { autoInjectable } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { ProductCategory } from "Entities/ProductCategory";
 import { CreateProductCategoryDtoType } from "TypeChecking/ProductCategory/CreateProductCategoryDtoType";
-import { assignWith } from "lodash";
+import { Repository } from "typeorm";
 
 @autoInjectable()
 class ProductCategoryService {
-  private productCategoryRepository: any;
+  private productCategoryRepository;
 
   constructor(private dbContext?: DbContext) {
-    this.productCategoryRepository =
-      dbContext?.getEntityRepository(ProductCategory);
+    this.productCategoryRepository = dbContext?.getEntityRepository(
+      ProductCategory
+    ) as Repository<ProductCategory>;
   }
 
   public async createProductCategoryRecord(

@@ -1,9 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2021",
-    "lib": [
-      "es2021"
-    ],
+    "lib": ["es2021"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "noEmit": false,
@@ -12,36 +10,16 @@
     "sourceMap": true,
     "module": "commonjs",
     "paths": {
-      "Lib/*": [
-        "./src/Lib/*"
-      ],
-      "Utils/*": [
-        "./src/Utils/*"
-      ],
-      "Logic/*": [
-        "./src/Logic/*"
-      ],
-      "Api/*": [
-        "./src/Api/*"
-      ],
-      "Config/*": [
-        "./src/Config/*"
-      ],
-      "Helpers/*": [
-        "./src/Helpers/*"
-      ],
-      "Exceptions/*": [
-        "./src/Exceptions/*"
-      ],
-      "Entities/*": [
-        "./src/Entities/*"
-      ],
-      "Templates/*": [
-        "./src/Templates/*"
-      ],
-      "TypeChecking/*": [
-        "./src/TypeChecking/*"
-      ]
+      "Lib/*": ["./src/Lib/*"],
+      "Utils/*": ["./src/Utils/*"],
+      "Logic/*": ["./src/Logic/*"],
+      "Api/*": ["./src/Api/*"],
+      "Config/*": ["./src/Config/*"],
+      "Helpers/*": ["./src/Helpers/*"],
+      "Exceptions/*": ["./src/Exceptions/*"],
+      "Entities/*": ["./src/Entities/*"],
+      "Templates/*": ["./src/Templates/*"],
+      "TypeChecking/*": ["./src/TypeChecking/*"]
     },
     "outDir": "./dist",
     "baseUrl": ".",
@@ -51,12 +29,6 @@
     "strictPropertyInitialization": false,
     "skipLibCheck": true
   },
-  "include": [
-    "./src/**/*",
-    "./types/"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "include": ["./src/**/*", "./types/"],
+  "exclude": ["node_modules", "dist"]
 }

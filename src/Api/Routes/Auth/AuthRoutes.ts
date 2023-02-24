@@ -5,9 +5,8 @@ import userSignInValidator from "Api/Validators/Auth/userSignInValidator";
 import { asyncMiddlewareHandler } from "Utils/asyncMiddlewareHandler";
 import { isAuthenticated } from "Api/Middleware/isAuthenticated";
 import recoverPasswordValidator from "Api/Validators/Auth/RecoverPasswordValidator";
-import passwordResetMail from "Logic/Services/Template/templates/passwordResetMail";
 import resetPasswordValidator from "Api/Validators/Auth/ResetPasswordValidator";
-import { emailVerificationValidator } from "Api/Validators/Onboarding";
+import emailVerificationValidator from "Api/Validators/Auth/EmailVerificationValidator";
 
 const routes = Router();
 

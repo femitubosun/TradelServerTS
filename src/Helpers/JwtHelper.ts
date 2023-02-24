@@ -3,9 +3,14 @@ import jwt from "jsonwebtoken";
 import { IUser } from "TypeChecking/Users";
 import { UnauthenticatedError } from "Exceptions/UnauthenticatedError";
 
+type JwtPayload = {
+  identifier: string;
+  email: string;
+};
+
 export class JwtHelper {
   public static signUser(user: IUser) {
-    const token = jwt.sign(
+    return jwt.sign(
       {
         identifier: user.identifier,
         email: user.email,
@@ -16,18 +21,14 @@ export class JwtHelper {
         algorithm: "HS256",
       }
     );
-    const decoded = this.verifyToken(token);
-
-    return token;
   }
 
-  public static verifyToken(token: string) {
+  public static verifyToken(token: string): JwtPayload {
     const secret = jwtConfig.jwtSecret;
     try {
-      const decoded = jwt.verify(token, secret, {
+      return jwt.verify(token, secret, {
         algorithms: ["HS256"],
-      });
-      return decoded;
+      }) as JwtPayload;
     } catch (err) {
       throw new UnauthenticatedError();
     }

@@ -1,7 +1,15 @@
-import { DataSource } from "typeorm";
+import {
+  DataSource,
+  EntityTarget,
+  ObjectLiteral,
+  QueryRunner,
+  Repository,
+} from "typeorm";
 import { AppDataSource } from "Lib/Infra/Internal/DBContext/DataSource";
 import { SettingsUserRoles } from "Entities/SettingsUserRoles";
 import { inject, singleton, container } from "tsyringe";
+import { NULL_OBJECT } from "Helpers/Messages/SystemMessages";
+import { InternalServerError } from "Exceptions/InternalServerError";
 
 container.register("DataSource", { useValue: AppDataSource });
 
@@ -22,16 +30,23 @@ export class DbContext {
     // TODO refactor to .env
     const roles = ["super_admin", "data_admin", "merchant", "customer"];
 
-    for (let role of roles) {
+    for (const role of roles) {
       await this._createRoleIfNotExist(role);
     }
   }
 
-  public getEntityRepository(entity: any) {
-    return this._dbSource.getRepository(entity);
+  public getEntityRepository(
+    entity: EntityTarget<ObjectLiteral>
+  ): Repository<ObjectLiteral> {
+    const entityRepository = this._dbSource.getRepository(entity);
+
+    if (entityRepository === NULL_OBJECT)
+      throw new InternalServerError("Entity Repository does not exist");
+
+    return entityRepository;
   }
 
-  public async getTransactionalQueryRunner() {
+  public async getTransactionalQueryRunner(): Promise<QueryRunner> {
     const queryRunner = await this._dbSource.createQueryRunner();
     await queryRunner.connect();
     return queryRunner;

@@ -5,7 +5,8 @@ import { RESOURCE_FETCHED_SUCCESSFULLY } from "Helpers/Messages/SystemMessageFun
 
 class ProductController {
   private oK = HttpStatusCodeEnum.OK;
-  private internalServerError = HttpStatusCodeEnum.INTERNAL_SERVER_ERROR;
+
+  // private internalServerError = HttpStatusCodeEnum.INTERNAL_SERVER_ERROR;
 
   public async listActiveProducts(req: Request, res: Response) {
     this.oK = HttpStatusCodeEnum.OK;

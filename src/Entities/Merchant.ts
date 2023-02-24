@@ -1,7 +1,6 @@
 import { BaseEntity } from "Entities/Base";
 import { BeforeInsert, BeforeUpdate, Column, Entity } from "typeorm";
 import slugify from "slugify";
-import { DateTime } from "luxon";
 import { businessConfig } from "Config/businessConfig";
 
 @Entity()

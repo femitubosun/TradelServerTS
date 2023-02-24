@@ -2,14 +2,16 @@ import { autoInjectable } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { SettingsUserRoles } from "Entities/SettingsUserRoles";
 import { ISettingsUserRole } from "TypeChecking/SettingsUserRole";
+import { Repository } from "typeorm";
 
 @autoInjectable()
 export class SettingsUserRoleService {
-  private settingsUserRoleRepository: any;
+  private settingsUserRoleRepository;
 
   constructor(private dbContext?: DbContext) {
-    this.settingsUserRoleRepository =
-      dbContext?.getEntityRepository(SettingsUserRoles);
+    this.settingsUserRoleRepository = dbContext?.getEntityRepository(
+      SettingsUserRoles
+    ) as Repository<SettingsUserRoles>;
   }
 
   public async findSettingsUserRoleById(
@@ -34,7 +36,9 @@ export class SettingsUserRoleService {
     });
   }
 
-  public async createSettingsUserRoleRecord(name: string): Promise<boolean> {
+  public async createSettingsUserRoleRecord(
+    name: string
+  ): Promise<SettingsUserRoles> {
     const newRole = new SettingsUserRoles();
     newRole.name = name;
     return await this.settingsUserRoleRepository.save(newRole);

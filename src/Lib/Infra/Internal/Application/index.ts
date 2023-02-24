@@ -6,7 +6,6 @@ import { DependencyContainer } from "tsyringe";
 import "Lib/Events/index";
 
 export class Application {
-  server: any;
   express: Express;
   container: DependencyContainer;
 
@@ -19,7 +18,7 @@ export class Application {
 
   startApp() {
     const port = expressConfig.port;
-    this.server = this.express.app.listen(port, () => {
+    this.express.app.listen(port, () => {
       this.express.loggingProvider.info(`${SERVER_STARTED} PORT: ${port}`);
       this.express.loggingProvider.info(`HEALTH: ${port}/ping`);
     });

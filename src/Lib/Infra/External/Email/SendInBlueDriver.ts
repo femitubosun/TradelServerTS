@@ -8,7 +8,7 @@ import {
 import { emailConfig } from "Config/emailConfig";
 
 export class SendInBlueDriver implements IEmailDriver {
-  transactionEmailApi: any;
+  transactionEmailApi;
 
   constructor() {
     SibApiV3Sdk.ApiClient.instance.authentications["api-key"].apiKey =
@@ -17,10 +17,11 @@ export class SendInBlueDriver implements IEmailDriver {
   }
 
   sendBulkEmail(sendBulkEmailArgs: SendBulkEmailArgs): null {
+    console.log(sendBulkEmailArgs);
     return null;
   }
 
-  public async sendEmail(sendEmailArgs: SendEmailArgs): Promise<any> {
+  public async sendEmail(sendEmailArgs: SendEmailArgs): Promise<null> {
     const { subject, body, to } = sendEmailArgs;
 
     return await this.transactionEmailApi.sendTransacEmail({
