@@ -1,6 +1,6 @@
 import { QueryRunner } from "typeorm";
 
-export type CustomerOnboardingUseCaseArgs = {
+export type CreateCustomerUseCaseDtoType = {
   firstName: string;
   lastName: string;
   phoneNumber: string;

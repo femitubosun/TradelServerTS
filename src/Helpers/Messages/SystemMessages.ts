@@ -1,5 +1,3 @@
-import { RESOURCE_NOT_FOUND } from "./SystemMessageFunctions";
-
 export const NULL_OBJECT = null;
 export const PROVIDER_NOT_FOUND = "Provider Was Not Found";
 export const MIDDLEWARE_ATTACHED = "Middleware Attached Successfully";
@@ -54,6 +52,7 @@ export const CUSTOMER_ROLE_NAME = "customer";
 
 export const PRODUCT_RESOURCE = "Product Resource";
 export const PRODUCT_CATEGORY_RESOURCE = "Product Category Resource";
+export const MERCHANT_RESOURCE = "Merchant Resource";
 
 /* ------------------------------ Generic Messages  ------------------------- */
 

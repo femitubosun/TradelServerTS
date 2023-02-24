@@ -48,7 +48,10 @@ class ProductController {
     });
   }
 
-  public async getProductByIdentifier(request: Request, response: Response) {
+  public async getActiveProductByIdentifier(
+    request: Request,
+    response: Response
+  ) {
     let statusCode = HttpStatusCodeEnum.OK;
 
     const { productIdentifier } = request.params;
@@ -68,8 +71,9 @@ class ProductController {
     }
 
     const IS_INACTIVE = false;
+    const IS_DELETED = true;
 
-    if (product.isActive == IS_INACTIVE) {
+    if (product.isActive == IS_INACTIVE || product.isDeleted == IS_DELETED) {
       statusCode = HttpStatusCodeEnum.NOT_FOUND;
 
       return response.status(statusCode).json({
@@ -78,6 +82,7 @@ class ProductController {
         message: RESOURCE_NOT_FOUND(PRODUCT_CATEGORY_RESOURCE),
       });
     }
+
     const productMerchant = await MerchantService.getMerchantById(
       product.merchantId
     );
@@ -95,6 +100,7 @@ class ProductController {
         photo_url: product.photoUrl,
         meta: {
           merchant_identifier: productMerchant?.identifier,
+          product_variants: [],
         },
       },
     });

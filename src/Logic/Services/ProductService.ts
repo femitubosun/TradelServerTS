@@ -18,8 +18,9 @@ class ProductService {
     throw new Error("Method not implemented");
   }
 
-  public async getProductById() {
-    throw new Error("Method not implemented");
+  public async getProductById(productId: number): Promise<Product | null> {
+    const productInfo = await this.productsRepository.findOneById(productId);
+    return productInfo || NULL_OBJECT;
   }
 
   public async getProductByIdentifier(
@@ -32,8 +33,19 @@ class ProductService {
     return productInfo || NULL_OBJECT;
   }
 
-  public async listProductsByMerchantId() {
-    throw new Error("Method not implemented");
+  public async getProductBySlug(productSlug: string) {
+    const productInfo = this.productsRepository.findOneBy({
+      nameSlug: productSlug,
+    });
+
+    return productInfo || NULL_OBJECT;
+  }
+
+  public async listActiveProductsByMerchantId(merchantId: number) {
+    return await this.productsRepository.findBy({
+      isActive: true,
+      merchantId,
+    });
   }
 
   public async listActiveProductsByCategoryId(categoryId: number) {

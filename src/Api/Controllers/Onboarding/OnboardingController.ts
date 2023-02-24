@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { keysSnakeCaseToCamelCase } from "Utils/keysSnakeCaseToCamelCase";
 import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 import {
-  CustomerOnboardingUseCaseArgs,
+  CreateCustomerUseCaseDtoType,
   CreateCustomer,
   MerchantOnboardingUseCaseArgs,
   OnboardMerchant,
@@ -31,7 +31,7 @@ class OnboardingController {
     } = req.body;
 
     const queryRunner = await dbContext.getTransactionalQueryRunner();
-    const customerOnboardingUseCaseArgs: CustomerOnboardingUseCaseArgs = {
+    const customerOnboardingUseCaseArgs: CreateCustomerUseCaseDtoType = {
       email,
       firstName,
       lastName,

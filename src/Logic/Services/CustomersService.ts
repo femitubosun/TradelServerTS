@@ -33,7 +33,7 @@ class CustomerService {
   }
 
   public async findCustomerByUserId(userId: number) {
-    return await this.customersRepository.findOneBy({ userId });
+    return await this.customersRepository.findOneBy({ id: userId });
   }
 }
 

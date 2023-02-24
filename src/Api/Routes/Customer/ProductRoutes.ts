@@ -13,7 +13,7 @@ routes.get(
 
 routes.get(
   "/Fetch/Products/:productIdentifier",
-  ProductController.getProductByIdentifier
+  ProductController.getActiveProductByIdentifier
 );
 
 export default routes;

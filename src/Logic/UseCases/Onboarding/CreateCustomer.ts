@@ -9,29 +9,24 @@ import {
 import UsersService from "Logic/Services/UsersService";
 import CustomersService from "Logic/Services/CustomersService";
 import CartService from "Logic/Services/CartService";
-import { CustomerOnboardingUseCaseArgs } from "Logic/UseCases/Onboarding/TypeChecking";
+import { CreateCustomerUseCaseDtoType } from "Logic/UseCases/Onboarding/TypeChecking";
 import { eventTypes } from "Lib/Events/Listeners/TypeChecking/eventTypes";
 import Event from "Lib/Events";
 import UserTokensService from "Logic/Services/UserTokensService";
-import { generateStringOfLength } from "../../../Utils/generateStringOfLength";
-import { businessConfig } from "../../../Config/businessConfig";
+import { generateStringOfLength } from "Utils/generateStringOfLength";
+import { businessConfig } from "Config/businessConfig";
 
 export class CreateCustomer {
   /**
-   * This Use Case handles Customer Onboarding.
-   *
-   * The Customer Onboarding Process includes
-   * - Creating User Record with Customer Role
-   * - Create A Customer Record with the created User
-   * - Create CustomerCart
-   * - Emit User Signup Event
+   * @description This Use Case handles Customer Onboarding.
+   * @memberOf CreateCustomer
+   * @param {CreateCustomerUseCaseDtoType} createCustomerDto
    */
-
   public static async execute(
-    customerOnboardingArgs: CustomerOnboardingUseCaseArgs
+    createCustomerDto: CreateCustomerUseCaseDtoType
   ): Promise<string> {
     const { email, password, firstName, lastName, phoneNumber, queryRunner } =
-      customerOnboardingArgs;
+      createCustomerDto;
 
     const [foundUser, role] = await Promise.all([
       UsersService.getUserByEmail(email),

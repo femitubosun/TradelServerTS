@@ -51,8 +51,12 @@ class ProductCategoryController {
       });
     }
     const IS_INACTIVE = false;
+    const IS_DELETED = true;
 
-    if (productCategory.isActive == IS_INACTIVE) {
+    if (
+      productCategory.isActive == IS_INACTIVE ||
+      productCategory.isDeleted == IS_DELETED
+    ) {
       statusCode = HttpStatusCodeEnum.NOT_FOUND;
 
       return response.status(statusCode).json({
