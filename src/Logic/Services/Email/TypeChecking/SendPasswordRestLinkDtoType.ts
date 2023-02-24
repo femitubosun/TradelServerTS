@@ -1,4 +1,4 @@
-export type SendPasswordRestLinkArgs = {
+export type SendPasswordResetLinkDtoType = {
   userEmail: string;
   passwordResetLink: string;
 };

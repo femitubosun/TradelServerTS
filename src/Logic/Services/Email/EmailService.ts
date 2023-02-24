@@ -4,7 +4,7 @@ import {
   EMAIL_ACTIVATION_TOKEN_EMAIL_SUBJECT,
   PASSWORD_RESET_TOKEN_EMAIL_SUBJECT,
 } from "Helpers/Messages/SystemMessages";
-import { SendPasswordRestLinkArgs } from "Logic/Services/Email/TypeChecking/SendPasswordRestLinkArgs";
+import { SendPasswordResetLinkDtoType } from "Logic/Services/Email/TypeChecking/SendPasswordRestLinkDtoType";
 import { SendAccountActivationEmailArgs } from "Logic/Services/Email/TypeChecking/SendAccountActivationEmailArgs";
 
 export class EmailService {
@@ -20,12 +20,11 @@ export class EmailService {
       subject: EMAIL_ACTIVATION_TOKEN_EMAIL_SUBJECT,
       to: userEmail,
     };
-    const resp = await emailProvider.sendEmail(activationEmailArgs);
-    console.log(resp);
+    await emailProvider.sendEmail(activationEmailArgs);
   }
 
   public static async sendPasswordResetLink(
-    sendPasswordRestLinkArgs: SendPasswordRestLinkArgs
+    sendPasswordRestLinkArgs: SendPasswordResetLinkDtoType
   ) {
     const { userEmail, passwordResetLink } = sendPasswordRestLinkArgs;
     const emailProvider = EmailProviderFactory.build();
@@ -39,9 +38,7 @@ export class EmailService {
       to: userEmail,
     };
 
-    const resp = await emailProvider.sendEmail(passwordResetEmailArgs);
-
-    console.log(resp);
+    await emailProvider.sendEmail(passwordResetEmailArgs);
   }
 
   public static sendEmail() {

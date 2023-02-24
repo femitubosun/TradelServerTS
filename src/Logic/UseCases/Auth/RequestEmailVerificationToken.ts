@@ -4,6 +4,8 @@ import { RequestEmailVerificationTokenArgs } from "Logic/UseCases/Auth/TypeSetti
 import { EmailService } from "Logic/Services/Email/EmailService";
 import UsersService from "Logic/Services/UsersService";
 import { BadRequestError } from "Exceptions/BadRequestError";
+import { generateStringOfLength } from "Utils/generateStringOfLength";
+import { businessConfig } from "Config/index";
 import {
   FAILURE,
   SUCCESS,
@@ -31,15 +33,19 @@ export class RequestEmailVerificationToken {
     }
     await queryRunner.startTransaction();
     try {
-      const token = await UserTokensService.createEmailActivationToken({
+      const token = generateStringOfLength(businessConfig.userTokenLength);
+
+      const otpToken = await UserTokensService.createEmailActivationToken({
         userId,
+        token,
         queryRunner,
       });
+      await queryRunner.commitTransaction();
       await EmailService.sendAccountActivationEmail({
         userEmail: user.email,
-        activationToken: token.token,
+        activationToken: otpToken.token,
       });
-      await queryRunner.commitTransaction();
+
       return SUCCESS;
     } catch (typeOrmError) {
       console.log(typeOrmError);

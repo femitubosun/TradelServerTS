@@ -3,6 +3,7 @@ import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { ProductCategory } from "Entities/ProductCategory";
 import { CreateProductCategoryDtoType } from "TypeChecking/ProductCategory/CreateProductCategoryDtoType";
 import { Repository } from "typeorm";
+import { NULL_OBJECT } from "../../Helpers/Messages/SystemMessages";
 
 @autoInjectable()
 class ProductCategoryService {
@@ -36,6 +37,16 @@ class ProductCategoryService {
 
   public async listAllProductCategory() {
     return await this.productCategoryRepository.findBy({});
+  }
+
+  public async getProductCategoryByIdentifier(
+    productCategoryIdentifier: string
+  ): Promise<ProductCategory | null> {
+    const productCategory = this.productCategoryRepository.findOneBy({
+      identifier: productCategoryIdentifier,
+    });
+
+    return productCategory || NULL_OBJECT;
   }
 }
 

@@ -3,7 +3,9 @@ declare global {
     interface ProcessEnv {
       USER_TOKEN_LENGTH: string;
       EMAIL_TOKEN_EXPIRES_IN_MINUTES: string;
-      PASSWORD_REST_TOKEN_EXPIRES_IN_MINUTES: string;
+      PASSWORD_RESET_TOKEN_LENGTH: string;
+      PASSWORD_RESET_TOKEN_EXPIRES_IN_MINUTES: string;
+      HOST: string;
       EXPRESS_PORT: string;
       EXPRESS_NODE_ENV: string;
       NODE_ENV: string;

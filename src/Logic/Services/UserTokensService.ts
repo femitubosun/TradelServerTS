@@ -8,7 +8,6 @@ import {
   UpdateUserTokenRecordArgs,
   UserTokenTypesEnum,
 } from "TypeChecking/UserTokens";
-import { generateToken } from "Utils/generateToken";
 import { DateTime } from "luxon";
 import { businessConfig } from "Config/businessConfig";
 import { ListUserTokenForUserByTokenTypeArgs } from "TypeChecking/UserTokens/ListUserTokenForUserByTokenTypeArgs";
@@ -36,17 +35,9 @@ class UserTokensService {
   public async createUserTokenRecord(createUserTokenArgs: CreateUserTokenArgs) {
     const { queryRunner } = createUserTokenArgs;
     const userToken = new UserTokens();
-    let generatedToken = generateToken(businessConfig.userTokenLength);
-    let foundToken = await this.getUserTokenByToken(generatedToken);
-
-    while (foundToken) {
-      generatedToken = generateToken(businessConfig.userTokenLength);
-      foundToken = await this.getUserTokenByToken(generatedToken);
-    }
 
     Object.assign(userToken, {
       ...createUserTokenArgs,
-      token: generatedToken,
     });
     await queryRunner.manager.save(userToken);
     return userToken;
@@ -55,12 +46,13 @@ class UserTokensService {
   public async createEmailActivationToken(
     createEmailActivationTokenArgs: CreateEmailActivationTokenArgs
   ) {
-    const { userId, queryRunner } = createEmailActivationTokenArgs;
+    const { userId, queryRunner, token } = createEmailActivationTokenArgs;
     const expiresOn = DateTime.now().plus({
       minute: businessConfig.emailTokenExpiresInMinutes,
     });
     const createUserTokenArgs: CreateUserTokenArgs = {
       userId,
+      token,
       tokenType: UserTokenTypesEnum.EMAIL,
       expiresOn,
       queryRunner,
@@ -77,7 +69,7 @@ class UserTokensService {
   public async createPasswordRecoveryToken(
     createPasswordRecoveryTokenArgs: CreatePasswordRecoveryTokenArgs
   ) {
-    const { userId, queryRunner } = createPasswordRecoveryTokenArgs;
+    const { userId, queryRunner, token } = createPasswordRecoveryTokenArgs;
     const userTokens = await this.listUserTokenForUserByTokenType({
       userId,
       tokenType: UserTokenTypesEnum.PASSWORD_RESET,
@@ -93,6 +85,7 @@ class UserTokensService {
 
     const createUserTokenArgs: CreateUserTokenArgs = {
       userId,
+      token,
       tokenType: UserTokenTypesEnum.PASSWORD_RESET,
       expiresOn,
       queryRunner,

@@ -11,4 +11,9 @@ routes.get(
   ProductController.listActiveProducts
 );
 
+routes.get(
+  "/Fetch/Products/:productIdentifier",
+  ProductController.getProductByIdentifier
+);
+
 export default routes;

@@ -3,7 +3,7 @@ import { keysSnakeCaseToCamelCase } from "Utils/keysSnakeCaseToCamelCase";
 import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 import {
   CustomerOnboardingUseCaseArgs,
-  OnboardCustomer,
+  CreateCustomer,
   MerchantOnboardingUseCaseArgs,
   OnboardMerchant,
 } from "Logic/UseCases/Onboarding";
@@ -40,9 +40,7 @@ class OnboardingController {
       queryRunner,
     };
 
-    const results = await OnboardCustomer.execute(
-      customerOnboardingUseCaseArgs
-    );
+    const results = await CreateCustomer.execute(customerOnboardingUseCaseArgs);
 
     return res.status(this.statusCode).json({
       status: SUCCESS,

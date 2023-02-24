@@ -13,8 +13,10 @@ import { CustomerOnboardingUseCaseArgs } from "Logic/UseCases/Onboarding/TypeChe
 import { eventTypes } from "Lib/Events/Listeners/TypeChecking/eventTypes";
 import Event from "Lib/Events";
 import UserTokensService from "Logic/Services/UserTokensService";
+import { generateStringOfLength } from "../../../Utils/generateStringOfLength";
+import { businessConfig } from "../../../Config/businessConfig";
 
-export class OnboardCustomer {
+export class CreateCustomer {
   /**
    * This Use Case handles Customer Onboarding.
    *
@@ -62,17 +64,18 @@ export class OnboardCustomer {
         customer,
         queryRunner,
       });
-
-      const token = await UserTokensService.createEmailActivationToken({
+      const token = generateStringOfLength(businessConfig.userTokenLength);
+      const otpToken = await UserTokensService.createEmailActivationToken({
         userId: user.id,
         queryRunner,
+        token,
       });
 
       await queryRunner.commitTransaction();
 
       Event.emit(eventTypes.user.signUp, {
         userEmail: user.email,
-        activationToken: token.token,
+        activationToken: otpToken.token,
       });
 
       return CUSTOMER_ONBOARDING_SUCCESS;

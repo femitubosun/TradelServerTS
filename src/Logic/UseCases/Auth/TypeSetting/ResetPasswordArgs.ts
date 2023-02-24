@@ -1,4 +1,4 @@
-import DbQueryRunner from "Logic/Services/TypeChecking/QueryRunner";
+import DbQueryRunner from "TypeChecking/QueryRunner";
 
 export type ResetPasswordArgs = {
   password: string;

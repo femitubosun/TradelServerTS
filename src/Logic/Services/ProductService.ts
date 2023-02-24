@@ -2,6 +2,7 @@ import { autoInjectable } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { Product } from "Entities/Product";
 import { Repository } from "typeorm";
+import { NULL_OBJECT } from "Helpers/Messages/SystemMessages";
 
 @autoInjectable()
 class ProductService {
@@ -21,16 +22,31 @@ class ProductService {
     throw new Error("Method not implemented");
   }
 
-  public async getProductByIdentifier() {
+  public async getProductByIdentifier(
+    productIdentifier: string
+  ): Promise<Product | null> {
+    const productInfo = this.productsRepository.findOneBy({
+      identifier: productIdentifier,
+    });
+
+    return productInfo || NULL_OBJECT;
+  }
+
+  public async listProductsByMerchantId() {
     throw new Error("Method not implemented");
   }
 
-  public async listProductByMerchantId() {
-    throw new Error("Method not implemented");
+  public async listActiveProductsByCategoryId(categoryId: number) {
+    return await this.productsRepository.findBy({
+      isActive: true,
+      categoryId,
+    });
   }
 
-  public async listActiveProduct() {
-    throw new Error("Method not implemented");
+  public async listActiveProducts(): Promise<Product[]> {
+    return await this.productsRepository.findBy({
+      isActive: true,
+    });
   }
 
   public async listDisabledProduct() {
@@ -46,4 +62,4 @@ class ProductService {
   }
 }
 
-export default ProductService;
+export default new ProductService();

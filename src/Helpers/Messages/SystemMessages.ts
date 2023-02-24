@@ -1,3 +1,5 @@
+import { RESOURCE_NOT_FOUND } from "./SystemMessageFunctions";
+
 export const NULL_OBJECT = null;
 export const PROVIDER_NOT_FOUND = "Provider Was Not Found";
 export const MIDDLEWARE_ATTACHED = "Middleware Attached Successfully";
@@ -43,9 +45,12 @@ export const EMAIL_ACTIVATION_TOKEN_EMAIL_SUBJECT =
   "Bexxle's Tradel Email Activation";
 export const PASSWORD_RESET_TOKEN_EMAIL_SUBJECT =
   "Bexxle's Tradel Password Reset";
-export const PASSWORD_RESET_LINK_GENERATED = "Password Recovery Link Generated";
+export const PASSWORD_RESET_LINK_GENERATED =
+  "Password Recovery Link Generated. Please Check your mail";
 export const PASSWORD_RESET_SUCCESSFULLY = "Password Changed Successfully";
 export const CUSTOMER_ROLE_NAME = "customer";
 
-// Resource
+/* ----------------------------- Resource Labels ---------------------------- */
+
 export const PRODUCT_RESOURCE = "Product Resource";
+export const CATEGORY_RESOURCE = "Category Resource";
