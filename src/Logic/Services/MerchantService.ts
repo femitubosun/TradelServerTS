@@ -8,7 +8,6 @@ import {
   DisableMerchantRecordArgs,
   UpdateMerchantRecordArgs,
 } from "TypeChecking/Merchant";
-import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
 import { Repository } from "typeorm";
 
 @autoInjectable()
@@ -79,9 +78,7 @@ class MerchantService {
       await this.merchantsRepository.save(merchant);
       return SUCCESS;
     } catch (e) {
-      const logger = LoggingProviderFactory.build();
       console.log(e);
-      logger.error(e);
       return FAILURE;
     }
   }

@@ -25,7 +25,7 @@ export class RequestEmailVerificationToken {
     });
 
     if (userTokens) {
-      for (let token of userTokens) {
+      for (const token of userTokens) {
         await UserTokensService.deactivateUserToken(token.id);
       }
     }

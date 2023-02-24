@@ -45,3 +45,5 @@ class ProductService {
     throw new Error("Method not implemented");
   }
 }
+
+export default ProductService;

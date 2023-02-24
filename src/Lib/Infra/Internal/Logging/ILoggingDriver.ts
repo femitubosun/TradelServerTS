@@ -1,5 +1,5 @@
 export interface ILoggingDriver {
-  info(msg: string): any;
+  info(msg: string): void;
 
-  error(msg: string): any;
+  error(msg: string): void;
 }

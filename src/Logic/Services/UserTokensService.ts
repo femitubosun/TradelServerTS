@@ -11,7 +11,6 @@ import {
 import { generateToken } from "Utils/generateToken";
 import { DateTime } from "luxon";
 import { businessConfig } from "Config/businessConfig";
-import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
 import { ListUserTokenForUserByTokenTypeArgs } from "TypeChecking/UserTokens/ListUserTokenForUserByTokenTypeArgs";
 import { CreatePasswordRecoveryTokenArgs } from "TypeChecking/UserTokens/CreatePasswordRecoveryTokenArgs";
 import { Repository } from "typeorm";
@@ -153,9 +152,7 @@ class UserTokensService {
       await this.userTokenRepository.save(userToken);
       return SUCCESS;
     } catch (e) {
-      const logger = LoggingProviderFactory.build();
       console.log(e);
-      logger.error(e);
       return FAILURE;
     }
   }

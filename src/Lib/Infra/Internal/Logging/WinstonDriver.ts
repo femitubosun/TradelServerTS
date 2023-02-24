@@ -30,11 +30,11 @@ export class WinstonDriver implements ILoggingDriver {
     });
   }
 
-  async info(data: any) {
-    return this.winston.info(data);
+  info(data: string): void {
+    this.winston.info(data);
   }
 
-  error(data: any) {
-    return this.winston.error(data);
+  error(data: string): void {
+    this.winston.error(data);
   }
 }

@@ -25,7 +25,7 @@ export default class Express {
   dbContext: DbContext;
   loggingProvider: ILoggingDriver;
 
-  constructor(dbContext: any) {
+  constructor(dbContext: DbContext) {
     this.loggingProvider = LoggingProviderFactory.build();
     this.dbContext = dbContext;
     this.#bootstrap();
@@ -34,8 +34,9 @@ export default class Express {
   #bootstrap() {
     this.app = express();
     Promise.resolve(this.#connectDatabase())
-      .then(this.loggingProvider.info(EXPRESS_BOOTSTRAPPED))
-      .catch((err) => {
+      .then(() => this.loggingProvider.info(EXPRESS_BOOTSTRAPPED))
+      .catch((expressBootstrapErr) => {
+        console.log(expressBootstrapErr);
         this.loggingProvider.error(EXPRESS_BOOTSTRAPPED_ERROR);
       });
     this.#attachMiddlewares();
@@ -50,7 +51,7 @@ export default class Express {
     this.app.use(express.json());
     this.app.use(
       cors({
-        origin: Express.getCorsWhiteList() as any,
+        origin: Express.getCorsWhiteList() as Array<string>,
       })
     );
     this.loggingProvider.info(MIDDLEWARE_ATTACHED);
@@ -60,9 +61,9 @@ export default class Express {
     try {
       await this.dbContext.connect();
       this.loggingProvider.info(DATABASE_CONNECTED);
-    } catch (e: any) {
+    } catch (expressConnectDbError: unknown) {
+      console.log(expressConnectDbError);
       this.loggingProvider.info(DATABASE_CONNECTION_ERROR);
-      this.loggingProvider.error(e.toString());
     }
   }
 
@@ -71,7 +72,7 @@ export default class Express {
     this.loggingProvider.info(ROUTES_ATTACHED);
   }
 
-  public static getCorsWhiteList(): Array<String> {
+  public static getCorsWhiteList(): Array<string> {
     return expressConfig.corsWhitelist;
   }
 
@@ -85,10 +86,8 @@ export default class Express {
       }
     );
 
-    this.app.use(
-      (err: Error, req: Request, res: Response, next: NextFunction) => {
-        errorHandler.handleError(err, res);
-      }
-    );
+    this.app.use((err: Error, req: Request, res: Response) => {
+      errorHandler.handleError(err, res);
+    });
   }
 }

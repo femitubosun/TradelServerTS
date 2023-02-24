@@ -10,7 +10,6 @@ import UsersService from "Logic/Services/UsersService";
 import CustomersService from "Logic/Services/CustomersService";
 import CartService from "Logic/Services/CartService";
 import { CustomerOnboardingUseCaseArgs } from "Logic/UseCases/Onboarding/TypeChecking";
-import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
 import { eventTypes } from "Lib/Events/Listeners/TypeChecking/eventTypes";
 import Event from "Lib/Events";
 import UserTokensService from "Logic/Services/UserTokensService";
@@ -29,8 +28,6 @@ export class OnboardCustomer {
   public static async execute(
     customerOnboardingArgs: CustomerOnboardingUseCaseArgs
   ): Promise<string> {
-    const loggingProvider = LoggingProviderFactory.build();
-
     const { email, password, firstName, lastName, phoneNumber, queryRunner } =
       customerOnboardingArgs;
 
@@ -79,8 +76,8 @@ export class OnboardCustomer {
       });
 
       return CUSTOMER_ONBOARDING_SUCCESS;
-    } catch (typeOrmError: any) {
-      loggingProvider.error(typeOrmError);
+    } catch (typeOrmError) {
+      console.log(typeOrmError);
       await queryRunner.rollbackTransaction();
       throw new InternalServerError();
     }

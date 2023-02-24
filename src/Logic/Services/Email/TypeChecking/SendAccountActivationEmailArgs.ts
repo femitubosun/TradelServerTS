@@ -1,4 +1,4 @@
-type SendAccountActivationEmailArgs = {
+export type SendAccountActivationEmailArgs = {
   userEmail: string;
   activationToken: string;
 };

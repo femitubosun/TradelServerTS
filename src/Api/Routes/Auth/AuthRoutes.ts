@@ -4,9 +4,9 @@ import validate from "Api/Validators/Common/validate";
 import userSignInValidator from "Api/Validators/Auth/userSignInValidator";
 import { asyncMiddlewareHandler } from "Utils/asyncMiddlewareHandler";
 import { isAuthenticated } from "Api/Middleware/isAuthenticated";
-import recoverPasswordValidator from "Api/Validators/Auth/RecoverPasswordValidator";
-import resetPasswordValidator from "Api/Validators/Auth/ResetPasswordValidator";
-import emailVerificationValidator from "Api/Validators/Auth/EmailVerificationValidator";
+import recoverPasswordValidator from "Api/Validators/Auth/recoverPasswordValidator";
+import resetPasswordValidator from "Api/Validators/Auth/resetPasswordValidator";
+import emailVerificationValidator from "Api/Validators/Auth/emailVerificationValidator";
 
 const routes = Router();
 

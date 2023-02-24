@@ -5,6 +5,7 @@ import {
   PASSWORD_RESET_TOKEN_EMAIL_SUBJECT,
 } from "Helpers/Messages/SystemMessages";
 import { SendPasswordRestLinkArgs } from "Logic/Services/Email/TypeChecking/SendPasswordRestLinkArgs";
+import { SendAccountActivationEmailArgs } from "Logic/Services/Email/TypeChecking/SendAccountActivationEmailArgs";
 
 export class EmailService {
   public static async sendAccountActivationEmail(
@@ -43,7 +44,11 @@ export class EmailService {
     console.log(resp);
   }
 
-  public static sendEmail() {}
+  public static sendEmail() {
+    throw new Error("Method not implemented");
+  }
 
-  public static sendBulkEmail() {}
+  public static sendBulkEmail() {
+    throw new Error("Method not implemented");
+  }
 }

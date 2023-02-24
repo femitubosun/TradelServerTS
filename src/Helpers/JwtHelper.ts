@@ -1,7 +1,7 @@
 import { jwtConfig } from "Config/index";
 import jwt from "jsonwebtoken";
-import { IUser } from "TypeChecking/Users";
 import { UnauthenticatedError } from "Exceptions/UnauthenticatedError";
+import { User } from "Entities/User";
 
 type JwtPayload = {
   identifier: string;
@@ -9,7 +9,7 @@ type JwtPayload = {
 };
 
 export class JwtHelper {
-  public static signUser(user: IUser) {
+  public static signUser(user: User) {
     return jwt.sign(
       {
         identifier: user.identifier,

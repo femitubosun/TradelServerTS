@@ -5,7 +5,7 @@ type UpdateUserRecordArgsPayload = {
   isFirstTimeLogin?: boolean;
   hasVerifiedEmail?: boolean;
   lastLoginDate?: DateTime;
-  role?: any;
+  roleId?: number;
   isActive?: boolean;
   isDeleted?: boolean;
   firstName?: string;

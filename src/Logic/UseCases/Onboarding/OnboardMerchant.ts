@@ -9,7 +9,6 @@ import {
 } from "Helpers/Messages/SystemMessages";
 import UsersService from "Logic/Services/UsersService";
 import { BadRequestError } from "Exceptions/BadRequestError";
-import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
 import Event from "Lib/Events";
 import { eventTypes } from "Lib/Events/Listeners/TypeChecking/eventTypes";
 import UserTokensService from "Logic/Services/UserTokensService";
@@ -18,7 +17,6 @@ export class OnboardMerchant {
   public static async execute(
     merchantOnboardingArgs: MerchantOnboardingUseCaseArgs
   ) {
-    const loggingProvider = LoggingProviderFactory.build();
     const {
       email,
       firstName,
@@ -66,7 +64,7 @@ export class OnboardMerchant {
         activationToken: token.token,
       });
     } catch (typeOrmError) {
-      loggingProvider.error(typeOrmError);
+      console.error(typeOrmError);
       await queryRunner.rollbackTransaction();
       throw new InternalServerError();
     }

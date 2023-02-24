@@ -3,7 +3,7 @@ import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { User } from "Entities/User";
 import { FAILURE, NULL_OBJECT, SUCCESS } from "Helpers/Messages/SystemMessages";
 import { CreateUserRecordDto, UpdateUserRecordArgs } from "TypeChecking/Users";
-import { LoggingProviderFactory } from "Lib/Infra/Internal/Logging";
+
 import { DateTime } from "luxon";
 import { ChangePasswordDto } from "TypeChecking/Users/ChangePasswordDto";
 import { Repository } from "typeorm";
@@ -113,9 +113,7 @@ class UsersService {
       await this.userRepository.save(user);
       return SUCCESS;
     } catch (e) {
-      const logger = LoggingProviderFactory.build();
       console.log(e);
-      logger.error(e);
       return FAILURE;
     }
   }
