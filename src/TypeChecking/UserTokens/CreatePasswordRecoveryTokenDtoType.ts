@@ -1,6 +1,6 @@
 import DbQueryRunner from "TypeChecking/QueryRunner";
 
-export type CreateEmailActivationTokenArgs = {
+export type CreatePasswordRecoveryTokenDtoType = {
   userId: number;
   token: string;
 } & DbQueryRunner;

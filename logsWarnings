@@ -196,3 +196,44 @@
 [ERROR] 2023-02-24 16:52:20 No metadata for "ProductCategory" was found.
 [ERROR] 2023-02-24 16:53:47 No metadata for "ProductCategory" was found.
 [ERROR] 2023-02-24 16:55:01 No metadata for "ProductCategory" was found.
+[ERROR] 2023-02-24 23:29:14 Not Authenticated
+[ERROR] 2023-02-25 10:25:36 Email is Already in Use
+[ERROR] 2023-02-25 10:52:08 Email is Already in Use
+[ERROR] 2023-02-25 10:53:08 Email is Already in Use
+[ERROR] 2023-02-25 10:54:00 Email is Already in Use
+[ERROR] 2023-02-25 10:54:02 Email is Already in Use
+[ERROR] 2023-02-25 10:54:30 Email is Already in Use
+[ERROR] 2023-02-25 10:54:31 Email is Already in Use
+[ERROR] 2023-02-25 10:54:51 Email is Already in Use
+[ERROR] 2023-02-25 10:55:09 Email is Already in Use
+[ERROR] 2023-02-25 10:55:23 Email is Already in Use
+[ERROR] 2023-02-25 10:55:43 Email is Already in Use
+[ERROR] 2023-02-25 10:55:51 Email is Already in Use
+[ERROR] 2023-02-25 10:55:53 Email is Already in Use
+[ERROR] 2023-02-25 10:56:15 Email is Already in Use
+[ERROR] 2023-02-25 10:57:23 Email is Already in Use
+[ERROR] 2023-02-25 11:12:26 relation "user" does not exist
+[ERROR] 2023-02-25 11:19:26 Check Your Email and Password
+[ERROR] 2023-02-25 11:19:41 Check Your Email and Password
+[ERROR] 2023-02-25 11:19:48 Check Your Email and Password
+[ERROR] 2023-02-25 11:20:10 Check Your Email and Password
+[ERROR] 2023-02-25 11:20:47 Check Your Email and Password
+[ERROR] 2023-02-25 11:33:27 Check Your Email and Password
+[ERROR] 2023-02-25 11:35:14 Check Your Email and Password
+[ERROR] 2023-02-25 11:59:09 Not Authenticated
+[ERROR] 2023-02-25 11:59:31 Check Your Email and Password
+[ERROR] 2023-02-25 11:59:33 Check Your Email and Password
+[ERROR] 2023-02-25 11:59:34 Check Your Email and Password
+[ERROR] 2023-02-25 11:59:38 Check Your Email and Password
+[ERROR] 2023-02-25 12:07:34 Invalid unit value NaN
+[ERROR] 2023-02-25 12:10:30 Invalid unit value NaN
+[ERROR] 2023-02-25 12:11:30 Invalid unit value NaN
+[ERROR] 2023-02-25 12:11:57 Invalid unit value NaN
+[ERROR] 2023-02-25 12:26:26 Transaction is not started yet, start transaction before committing or rolling it back.
+[ERROR] 2023-02-25 12:42:22 Transaction is not started yet, start transaction before committing or rolling it back.
+[ERROR] 2023-02-25 13:45:42 Transaction is not started yet, start transaction before committing or rolling it back.
+[ERROR] 2023-02-25 13:46:30 Transaction is not started yet, start transaction before committing or rolling it back.
+[ERROR] 2023-02-25 13:52:48 Transaction is not started yet, start transaction before committing or rolling it back.
+[ERROR] 2023-02-25 14:11:03 Check Your Email and Password
+[ERROR] 2023-02-25 14:11:20 Check Your Email and Password
+[ERROR] 2023-02-25 14:11:21 Check Your Email and Password

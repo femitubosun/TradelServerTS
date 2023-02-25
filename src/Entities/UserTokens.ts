@@ -1,15 +1,10 @@
 import { BaseEntity } from "Entities/Base";
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
-import { User } from "./User";
+import { Column, Entity } from "typeorm";
 import { DateTime } from "luxon";
 import { UserTokenTypesEnum } from "TypeChecking/UserTokens";
 
 @Entity()
 export class UserTokens extends BaseEntity {
-  @ManyToOne(() => User)
-  @JoinColumn()
-  user: User;
-
   @Column({
     nullable: true,
   })
@@ -31,6 +26,7 @@ export class UserTokens extends BaseEntity {
   })
   expiresOn: DateTime;
 
+  //TODO rename to hasExpired
   @Column({
     default: false,
   })

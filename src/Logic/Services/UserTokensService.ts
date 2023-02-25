@@ -3,16 +3,17 @@ import { UserTokens } from "Entities/UserTokens";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { FAILURE, NULL_OBJECT, SUCCESS } from "Helpers/Messages/SystemMessages";
 import {
-  CreateEmailActivationTokenArgs,
-  CreateUserTokenArgs,
-  UpdateUserTokenRecordArgs,
+  CreateEmailActivationTokenDtoType,
+  CreateUserTokenDtoType,
+  UpdateUserTokenRecordDtoType,
   UserTokenTypesEnum,
 } from "TypeChecking/UserTokens";
 import { DateTime } from "luxon";
 import { businessConfig } from "Config/businessConfig";
-import { ListUserTokenForUserByTokenTypeArgs } from "TypeChecking/UserTokens/ListUserTokenForUserByTokenTypeArgs";
-import { CreatePasswordRecoveryTokenArgs } from "TypeChecking/UserTokens/CreatePasswordRecoveryTokenArgs";
+import { ListUserTokenForUserByTokenDtoType } from "TypeChecking/UserTokens/ListUserTokenForUserByTokenDtoType";
+import { CreatePasswordRecoveryTokenDtoType } from "TypeChecking/UserTokens/CreatePasswordRecoveryTokenDtoType";
 import { Repository } from "typeorm";
+import { FetchActiveUserTokenRecordDtoType } from "TypeChecking/UserTokens/FetchActiveUserTokenRecordDtoType";
 
 @autoInjectable()
 class UserTokensService {
@@ -32,7 +33,9 @@ class UserTokensService {
    *
    * returns UserToken
    */
-  public async createUserTokenRecord(createUserTokenArgs: CreateUserTokenArgs) {
+  public async createUserTokenRecord(
+    createUserTokenArgs: CreateUserTokenDtoType
+  ) {
     const { queryRunner } = createUserTokenArgs;
     const userToken = new UserTokens();
 
@@ -44,13 +47,13 @@ class UserTokensService {
   }
 
   public async createEmailActivationToken(
-    createEmailActivationTokenArgs: CreateEmailActivationTokenArgs
+    createEmailActivationTokenArgs: CreateEmailActivationTokenDtoType
   ) {
     const { userId, queryRunner, token } = createEmailActivationTokenArgs;
     const expiresOn = DateTime.now().plus({
       minute: businessConfig.emailTokenExpiresInMinutes,
     });
-    const createUserTokenArgs: CreateUserTokenArgs = {
+    const createUserTokenArgs: CreateUserTokenDtoType = {
       userId,
       token,
       tokenType: UserTokenTypesEnum.EMAIL,
@@ -67,7 +70,7 @@ class UserTokensService {
   }
 
   public async createPasswordRecoveryToken(
-    createPasswordRecoveryTokenArgs: CreatePasswordRecoveryTokenArgs
+    createPasswordRecoveryTokenArgs: CreatePasswordRecoveryTokenDtoType
   ) {
     const { userId, queryRunner, token } = createPasswordRecoveryTokenArgs;
     const userTokens = await this.listUserTokenForUserByTokenType({
@@ -83,7 +86,7 @@ class UserTokensService {
       minute: businessConfig.passwordResetTokenExpiresInMinutes,
     });
 
-    const createUserTokenArgs: CreateUserTokenArgs = {
+    const createUserTokenArgs: CreateUserTokenDtoType = {
       userId,
       token,
       tokenType: UserTokenTypesEnum.PASSWORD_RESET,
@@ -99,7 +102,7 @@ class UserTokensService {
   }
 
   public async listUserTokenForUserByTokenType(
-    listUserTokenForUserByTokenTypeArgs: ListUserTokenForUserByTokenTypeArgs
+    listUserTokenForUserByTokenTypeArgs: ListUserTokenForUserByTokenDtoType
   ) {
     return await this.userTokenRepository.findBy(
       listUserTokenForUserByTokenTypeArgs
@@ -113,19 +116,30 @@ class UserTokensService {
   }
 
   public async deactivateUserToken(tokenId: number) {
-    const updateUserTokenRecordArgs: UpdateUserTokenRecordArgs = {
+    const updateUserTokenRecordArgs: UpdateUserTokenRecordDtoType = {
       identifierType: "id",
       identifier: tokenId,
       updatePayload: {
         expired: true,
+        isActive: false,
       },
     };
 
     return await this.updateUserTokenRecord(updateUserTokenRecordArgs);
   }
 
+  public async fetchActiveUserTokenRecord(
+    fetchActiveUserTokenRecordDto: FetchActiveUserTokenRecordDtoType
+  ) {
+    return this.userTokenRepository.findOneBy({
+      ...fetchActiveUserTokenRecordDto,
+      isActive: true,
+      expired: false,
+    });
+  }
+
   public async updateUserTokenRecord(
-    updateUserTokenRecordArgs: UpdateUserTokenRecordArgs
+    updateUserTokenRecordArgs: UpdateUserTokenRecordDtoType
   ) {
     const { identifier, identifierType, updatePayload } =
       updateUserTokenRecordArgs;

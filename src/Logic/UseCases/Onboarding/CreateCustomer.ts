@@ -1,10 +1,11 @@
 import SettingsUserRoleService from "Logic/Services/SettingsUserRoleService";
 import { BadRequestError, InternalServerError } from "Exceptions/index";
 import {
-  CUSTOMER_ONBOARDING_SUCCESS,
   CUSTOMER_ROLE_NAME,
   EMAIL_IN_USE,
+  NULL_OBJECT,
   ROLE_DOES_NOT_EXIST,
+  SOMETHING_WENT_WRONG,
 } from "Helpers/Messages/SystemMessages";
 import UsersService from "Logic/Services/UsersService";
 import CustomersService from "Logic/Services/CustomersService";
@@ -15,16 +16,15 @@ import Event from "Lib/Events";
 import UserTokensService from "Logic/Services/UserTokensService";
 import { generateStringOfLength } from "Utils/generateStringOfLength";
 import { businessConfig } from "Config/businessConfig";
+import { JwtHelper } from "Helpers/JwtHelper";
 
 export class CreateCustomer {
   /**
-   * @description This Use Case handles Customer Onboarding.
+   * @description This Use Case v Customer Onboarding.
    * @memberOf CreateCustomer
    * @param {CreateCustomerUseCaseDtoType} createCustomerDto
    */
-  public static async execute(
-    createCustomerDto: CreateCustomerUseCaseDtoType
-  ): Promise<string> {
+  public static async execute(createCustomerDto: CreateCustomerUseCaseDtoType) {
     const { email, password, firstName, lastName, phoneNumber, queryRunner } =
       createCustomerDto;
 
@@ -35,10 +35,12 @@ export class CreateCustomer {
 
     if (foundUser) throw new BadRequestError(EMAIL_IN_USE);
 
-    if (!role) {
+    if (role === NULL_OBJECT) {
       throw new InternalServerError(ROLE_DOES_NOT_EXIST);
     }
+
     await queryRunner.startTransaction();
+
     try {
       const user = await UsersService.createUserRecord({
         firstName,
@@ -60,6 +62,7 @@ export class CreateCustomer {
         queryRunner,
       });
       const token = generateStringOfLength(businessConfig.emailTokenLength);
+
       const otpToken = await UserTokensService.createEmailActivationToken({
         userId: user.id,
         queryRunner,
@@ -68,16 +71,26 @@ export class CreateCustomer {
 
       await queryRunner.commitTransaction();
 
+      const accessToken = JwtHelper.signUser(user);
+
       Event.emit(eventTypes.user.signUp, {
         userEmail: user.email,
         activationToken: otpToken.token,
       });
 
-      return CUSTOMER_ONBOARDING_SUCCESS;
+      return {
+        user: {
+          identifier: user.identifier,
+          email: user.email,
+          first_name: user.firstName,
+          last_name: user.lastName,
+        },
+        access_token: accessToken,
+      };
     } catch (typeOrmError) {
       console.log(typeOrmError);
       await queryRunner.rollbackTransaction();
-      throw new InternalServerError();
+      throw new InternalServerError(SOMETHING_WENT_WRONG);
     }
   }
 }

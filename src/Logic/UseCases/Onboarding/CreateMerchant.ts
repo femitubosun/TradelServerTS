@@ -15,8 +15,9 @@ import UserTokensService from "Logic/Services/UserTokensService";
 import { UserTokenTypesEnum } from "TypeChecking/UserTokens";
 import { generateStringOfLength } from "Utils/generateStringOfLength";
 import { businessConfig } from "Config/businessConfig";
+import { JwtHelper } from "Helpers/JwtHelper";
 
-export class OnboardMerchant {
+export class CreateMerchant {
   public static async execute(
     merchantOnboardingArgs: MerchantOnboardingUseCaseArgs
   ) {
@@ -72,11 +73,21 @@ export class OnboardMerchant {
         userEmail: user.email,
         activationToken: otpToken.token,
       });
+
+      const accessToken = JwtHelper.signUser(user);
+      return {
+        user: {
+          identifier: user.identifier,
+          email: user.email,
+          first_name: user.firstName,
+          last_name: user.lastName,
+        },
+        access_token: accessToken,
+      };
     } catch (typeOrmError) {
       console.error(typeOrmError);
       await queryRunner.rollbackTransaction();
       throw new InternalServerError();
     }
-    return SUCCESS;
   }
 }

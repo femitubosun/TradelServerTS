@@ -35,7 +35,6 @@ export class User extends BaseEntity {
   roleId: number;
 
   @BeforeInsert()
-  @BeforeUpdate()
   hashPassword() {
     if (this.password) {
       this.password = PasswordEncryptionHelper.hashPassword(this.password);

@@ -9,7 +9,7 @@ import {
 } from "Helpers/Messages/SystemMessages";
 import {
   RESOURCE_FETCHED_SUCCESSFULLY,
-  RESOURCE_NOT_FOUND,
+  RECORD_NOT_FOUND,
 } from "Helpers/Messages/SystemMessageFunctions";
 import ProductService from "Logic/Services/ProductService";
 
@@ -47,7 +47,7 @@ class ProductCategoryController {
       return response.status(statusCode).json({
         status_code: statusCode,
         status: FAILURE,
-        message: RESOURCE_NOT_FOUND(PRODUCT_CATEGORY_RESOURCE),
+        message: RECORD_NOT_FOUND(PRODUCT_CATEGORY_RESOURCE),
       });
     }
     const IS_INACTIVE = false;
@@ -62,7 +62,7 @@ class ProductCategoryController {
       return response.status(statusCode).json({
         status_code: statusCode,
         status: FAILURE,
-        message: RESOURCE_NOT_FOUND(PRODUCT_CATEGORY_RESOURCE),
+        message: RECORD_NOT_FOUND(PRODUCT_CATEGORY_RESOURCE),
       });
     }
 

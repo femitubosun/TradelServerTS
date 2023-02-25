@@ -8,7 +8,14 @@ export class EmailProvider {
   constructor(private emailDriver: IEmailDriver) {}
 
   public async sendEmail(sendMailArgs: SendEmailArgs) {
-    return this.emailDriver.sendEmail(sendMailArgs);
+    try {
+      await this.emailDriver.sendEmail(sendMailArgs);
+    } catch (sendEmailError) {
+      console.log(
+        "💣 EmailProvider.sendEmail sendEmailError ->",
+        sendEmailError
+      );
+    }
   }
 
   public async sendBulkEmail(sendBulkMailArgs: SendBulkEmailArgs) {

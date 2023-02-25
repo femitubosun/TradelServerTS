@@ -16,15 +16,14 @@ export class SendInBlueDriver implements IEmailDriver {
     this.transactionEmailApi = new SibApiV3Sdk.TransactionalEmailsApi();
   }
 
-  sendBulkEmail(sendBulkEmailArgs: SendBulkEmailArgs): Promise<null> {
+  public async sendBulkEmail(sendBulkEmailArgs: SendBulkEmailArgs) {
     console.log(sendBulkEmailArgs);
-    return Promise.resolve(null);
+    await null;
   }
 
-  public async sendEmail(sendEmailArgs: SendEmailArgs): Promise<null> {
+  public async sendEmail(sendEmailArgs: SendEmailArgs) {
     const { subject, body, to } = sendEmailArgs;
-
-    return await this.transactionEmailApi.sendTransacEmail({
+    await this.transactionEmailApi.sendTransacEmail({
       sender: {
         email: emailConfig.emailFromEmail,
         name: emailConfig.emailFromName,

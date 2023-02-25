@@ -4,21 +4,21 @@ import validate from "Api/Validators/Common/validate";
 import userSignInValidator from "Api/Validators/Auth/userSignInValidator";
 import { asyncMiddlewareHandler } from "Utils/asyncMiddlewareHandler";
 import { isAuthenticated } from "Api/Middleware/isAuthenticated";
-import startPasswordRecoveryValidator from "Api/Validators/Auth/startPasswordRecoveryValidator";
+import requestPasswordResetLinkValidator from "Api/Validators/Auth/requestPasswordResetLinkValidator";
 import resetPasswordValidator from "Api/Validators/Auth/resetPasswordValidator";
 import emailVerificationValidator from "Api/Validators/Auth/emailVerificationValidator";
 
 const routes = Router();
 
 routes.post(
-  "/Initiate/EmailSignIn",
+  "/Process/EmailSignIn",
   userSignInValidator,
   validate,
   AuthController.emailSignIn
 );
 
 routes.post(
-  "/Process/EmailVerification/",
+  "/Process/VerifyEmail/",
   asyncMiddlewareHandler(isAuthenticated),
   emailVerificationValidator,
   validate,
@@ -26,16 +26,16 @@ routes.post(
 );
 
 routes.get(
-  "/Initiate/RequestEmailVerificationToken",
+  "/Process/RequestEmailVerificationToken",
   asyncMiddlewareHandler(isAuthenticated),
   AuthController.requestEmailVerificationToken
 );
 
 routes.post(
-  "/Process/StartPasswordRecovery",
-  startPasswordRecoveryValidator,
+  "/Process/RequestPasswordResetLink",
+  requestPasswordResetLinkValidator,
   validate,
-  AuthController.startPasswordRecovery
+  AuthController.requestPasswordResetLink
 );
 
 routes.post(

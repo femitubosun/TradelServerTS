@@ -5,7 +5,7 @@ import {
   CreateCustomerUseCaseDtoType,
   CreateCustomer,
   MerchantOnboardingUseCaseArgs,
-  OnboardMerchant,
+  CreateMerchant,
 } from "Logic/UseCases/Onboarding";
 import { container } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
@@ -31,6 +31,7 @@ class OnboardingController {
     } = req.body;
 
     const queryRunner = await dbContext.getTransactionalQueryRunner();
+
     const customerOnboardingUseCaseArgs: CreateCustomerUseCaseDtoType = {
       email,
       firstName,
@@ -62,7 +63,7 @@ class OnboardingController {
       queryRunner,
     };
 
-    const results = await OnboardMerchant.execute(
+    const results = await CreateMerchant.execute(
       merchantOnboardingUseCaseArgs as MerchantOnboardingUseCaseArgs
     );
 

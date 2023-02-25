@@ -1,13 +1,8 @@
 import { BaseEntity } from "Entities/Base";
-import { Entity, OneToOne, Column, JoinColumn } from "typeorm";
-import { User } from "Entities/User";
+import { Entity, Column } from "typeorm";
 
 @Entity()
 export class Customer extends BaseEntity {
-  @OneToOne(() => User)
-  @JoinColumn()
-  user: User;
-
   @Column()
   phoneNumber: string;
 

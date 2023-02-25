@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import helmet from "helmet";
-import { expressConfig } from "Config/index";
+import { expressConfig } from "Config//expressConfig";
 import {
   LoggingProviderFactory,
   ILoggingDriver,
@@ -13,6 +13,7 @@ import { errorHandler } from "Exceptions/ErrorHandler";
 import {
   DATABASE_CONNECTED,
   DATABASE_CONNECTION_ERROR,
+  DATABASE_POPULATED,
   EXPRESS_BOOTSTRAPPED,
   EXPRESS_BOOTSTRAPPED_ERROR,
   MIDDLEWARE_ATTACHED,
@@ -34,9 +35,8 @@ export default class Express {
   #bootstrap() {
     this.app = express();
     Promise.resolve(this.#connectDatabase())
-      .then(() => this.loggingProvider.info(EXPRESS_BOOTSTRAPPED))
-      .catch((expressBootstrapErr) => {
-        console.log(expressBootstrapErr);
+      .then()
+      .catch((err) => {
         this.loggingProvider.error(EXPRESS_BOOTSTRAPPED_ERROR);
       });
     this.#attachMiddlewares();
@@ -51,7 +51,7 @@ export default class Express {
     this.app.use(express.json());
     this.app.use(
       cors({
-        origin: Express.getCorsWhiteList() as Array<string>,
+        origin: Express.getCorsWhiteList() as any,
       })
     );
     this.loggingProvider.info(MIDDLEWARE_ATTACHED);
@@ -61,9 +61,9 @@ export default class Express {
     try {
       await this.dbContext.connect();
       this.loggingProvider.info(DATABASE_CONNECTED);
-    } catch (expressConnectDbError: unknown) {
-      console.log(expressConnectDbError);
+    } catch (e) {
       this.loggingProvider.info(DATABASE_CONNECTION_ERROR);
+      console.log(e);
     }
   }
 
@@ -81,13 +81,16 @@ export default class Express {
 
     this.app.use(
       (err: Error, req: Request, res: Response, next: NextFunction) => {
+        console.log(err);
         this.loggingProvider.error(err.message);
         next(err);
       }
     );
 
-    this.app.use((err: Error, req: Request, res: Response) => {
-      errorHandler.handleError(err, res);
-    });
+    this.app.use(
+      (err: Error, req: Request, res: Response, next: NextFunction) => {
+        errorHandler.handleError(err, res);
+      }
+    );
   }
 }

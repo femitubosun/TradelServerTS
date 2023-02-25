@@ -53,6 +53,7 @@ export const CUSTOMER_ROLE_NAME = "customer";
 export const PRODUCT_RESOURCE = "Product Resource";
 export const PRODUCT_CATEGORY_RESOURCE = "Product Category Resource";
 export const MERCHANT_RESOURCE = "Merchant Resource";
+export const USER_RESOURCE = "User Resource";
 
 /* ------------------------------ Generic Messages  ------------------------- */
 

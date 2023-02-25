@@ -13,6 +13,7 @@ import { UserTokenTypesEnum } from "TypeChecking/UserTokens";
 import UsersService from "Logic/Services/UsersService";
 import { ChangePasswordDto } from "TypeChecking/Users/ChangePasswordDto";
 import { DateTime } from "luxon";
+import { PasswordEncryptionHelper } from "Helpers/PasswordEncryptionHelper";
 
 export class ResetPassword {
   public static async execute(resetPasswordArgs: ResetPasswordArgs) {
@@ -39,7 +40,7 @@ export class ResetPassword {
       const changePasswordArgs: ChangePasswordDto = {
         identifier: user.id,
         identifierType: "id",
-        password,
+        password: PasswordEncryptionHelper.hashPassword(password),
         queryRunner,
       };
       await UsersService.changeUserPassword(changePasswordArgs);

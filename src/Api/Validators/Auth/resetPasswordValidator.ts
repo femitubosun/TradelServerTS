@@ -2,15 +2,15 @@ import { param, body } from "express-validator";
 import { businessConfig } from "Config/businessConfig";
 
 const resetPasswordValidator = [
-  param("passwordResetToken")
+  param("passwordResetToken", "Invalid Link")
     .isLength({
-      min: businessConfig.emailTokenLength,
-      max: businessConfig.emailTokenLength,
+      min: businessConfig.passwordResetTokenLength,
+      max: businessConfig.passwordResetTokenLength,
     })
     .trim()
     .escape(),
 
-  body("password")
+  body("password", "Password is required")
     .isLength({
       min: 8,
     })
