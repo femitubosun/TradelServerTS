@@ -13,11 +13,7 @@ export interface IProduct {
 
   basePrice: number;
 
-  photoUrl: string;
-
   merchantId: number;
-
-  categoryId: number;
 
   createdAt: DateTime;
 

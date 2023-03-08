@@ -2,10 +2,12 @@ import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 import { Request, Response } from "express";
 import {
   PRODUCT_CATEGORY_RESOURCE,
-  FAILURE,
   NULL_OBJECT,
   PRODUCT_RESOURCE,
   SUCCESS,
+  INTERNAL_SERVER_ERROR,
+  ERROR,
+  SOMETHING_WENT_WRONG,
 } from "Helpers/Messages/SystemMessages";
 import {
   RESOURCE_FETCHED_SUCCESSFULLY,
@@ -13,6 +15,10 @@ import {
 } from "Helpers/Messages/SystemMessageFunctions";
 import ProductService from "Logic/Services/ProductService";
 import MerchantService from "Logic/Services/MerchantService";
+import { container } from "tsyringe";
+import { DbContext } from "Lib/Infra/Internal/DBContext";
+
+const dbContext = container.resolve(DbContext);
 
 class ProductController {
   public async listActiveProducts(request: Request, response: Response) {
@@ -65,7 +71,7 @@ class ProductController {
 
       return response.status(statusCode).json({
         status_code: statusCode,
-        status: FAILURE,
+        status: ERROR,
         message: RECORD_NOT_FOUND(PRODUCT_CATEGORY_RESOURCE),
       });
     }
@@ -78,7 +84,7 @@ class ProductController {
 
       return response.status(statusCode).json({
         status_code: statusCode,
-        status: FAILURE,
+        status: ERROR,
         message: RECORD_NOT_FOUND(PRODUCT_CATEGORY_RESOURCE),
       });
     }
@@ -97,13 +103,78 @@ class ProductController {
         name_slug: product.nameSlug,
         descriptions: product.description,
         price: product.basePrice,
-        photo_url: product.photoUrl,
         meta: {
           merchant_identifier: productMerchant?.identifier,
           product_variants: [],
         },
       },
     });
+  }
+
+  public async createProduct(request: Request, response: Response) {
+    try {
+      const {
+        name,
+        description,
+        base_price: basePrice,
+        merchant_id: merchantId,
+      } = request.body;
+
+      const queryRunner = await dbContext.getTransactionalQueryRunner();
+
+      await queryRunner.startTransaction();
+
+      try {
+        const product = await ProductService.createProductRecord({
+          name,
+          description,
+          basePrice,
+          merchantId,
+          queryRunner,
+        });
+
+        await queryRunner.commitTransaction();
+
+        return response.status(HttpStatusCodeEnum.CREATED).json({
+          status_code: HttpStatusCodeEnum.CREATED,
+          status: SUCCESS,
+          message: "Product Created Successfully",
+          results: {
+            name: product.name,
+            name_slug: product.nameSlug,
+            description: product.description,
+            base_price: product.basePrice,
+            meta: {
+              created_at: product.createdAt,
+            },
+          },
+        });
+      } catch (createProductControllerError) {
+        console.log(
+          "🚀 ~ ProductController.createProduct createProductControllerError ->",
+          createProductControllerError
+        );
+
+        await queryRunner.rollbackTransaction();
+
+        return response.status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR).json({
+          status_code: HttpStatusCodeEnum.INTERNAL_SERVER_ERROR,
+          status: ERROR,
+          message: SOMETHING_WENT_WRONG,
+        });
+      }
+    } catch (createProductError) {
+      console.log(
+        "🚀 ~ ProductController.createProduct createProductError ->",
+        createProductError
+      );
+
+      return response.status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR).json({
+        status_code: HttpStatusCodeEnum.INTERNAL_SERVER_ERROR,
+        status: ERROR,
+        message: SOMETHING_WENT_WRONG,
+      });
+    }
   }
 }
 

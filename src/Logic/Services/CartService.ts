@@ -24,14 +24,14 @@ export class CartService {
   public async createCartRecord(
     createCartRecordDto: CreateCartRecordDto
   ): Promise<Cart | null> {
-    const { customer, queryRunner } = createCartRecordDto;
+    const { customerId, queryRunner } = createCartRecordDto;
 
-    const foundCart = await this.findCartByCustomerId(customer.id);
+    const foundCart = await this.findCartByCustomerId(customerId);
 
     if (foundCart) return NULL_OBJECT;
 
     const cart = new Cart();
-    cart.customer = customer;
+    cart.customerId = customerId;
 
     await queryRunner.manager.save(cart);
     return cart;

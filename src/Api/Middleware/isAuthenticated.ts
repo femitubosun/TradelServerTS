@@ -6,11 +6,11 @@ import { AuthRequest } from "../TypeChecking";
 import { UnauthenticatedError } from "Exceptions/UnauthenticatedError";
 
 export const isAuthenticated = async (
-  req: Request,
-  res: Response,
+  request: Request,
+  response: Response,
   next: NextFunction
 ) => {
-  const token = await req.header("Authorization")?.replace("Bearer ", "");
+  const token = await request.header("Authorization")?.replace("Bearer ", "");
 
   if (!token) throw new UnauthenticatedError();
 
@@ -22,7 +22,7 @@ export const isAuthenticated = async (
 
   if (!user) throw new UnauthenticatedError();
 
-  (req as AuthRequest).user = user;
+  (request as AuthRequest).user = user;
 
   return next();
 };

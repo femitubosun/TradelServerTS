@@ -3,6 +3,7 @@ import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { Product } from "Entities/Product";
 import { Repository } from "typeorm";
 import { NULL_OBJECT } from "Helpers/Messages/SystemMessages";
+import { CreateProductRecordDtoType } from "TypeChecking/Product/CreateProductRecordDtoType";
 
 @autoInjectable()
 class ProductService {
@@ -14,8 +15,24 @@ class ProductService {
     ) as Repository<Product>;
   }
 
-  public async createProductRecord() {
-    throw new Error("Method not implemented");
+  public async createProductRecord(
+    createProductRecordDto: CreateProductRecordDtoType
+  ) {
+    const { queryRunner, name, description, basePrice, merchantId } =
+      createProductRecordDto;
+
+    const product = new Product();
+
+    Object.assign(product, {
+      name,
+      description,
+      basePrice,
+      merchantId,
+    });
+
+    await queryRunner.manager.save(product);
+
+    return product;
   }
 
   public async getProductById(productId: number): Promise<Product | null> {
@@ -45,13 +62,6 @@ class ProductService {
     return await this.productsRepository.findBy({
       isActive: true,
       merchantId,
-    });
-  }
-
-  public async listActiveProductsByCategoryId(categoryId: number) {
-    return await this.productsRepository.findBy({
-      isActive: true,
-      categoryId,
     });
   }
 

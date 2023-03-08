@@ -58,7 +58,7 @@ export class CreateCustomer {
       });
 
       await CartService.createCartRecord({
-        customer,
+        customerId: customer,
         queryRunner,
       });
       const token = generateStringOfLength(businessConfig.emailTokenLength);

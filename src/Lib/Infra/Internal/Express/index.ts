@@ -4,8 +4,8 @@ import cors from "cors";
 import helmet from "helmet";
 import { expressConfig } from "Config//expressConfig";
 import {
-  LoggingProviderFactory,
   ILoggingDriver,
+  LoggingProviderFactory,
 } from "Lib/Infra/Internal/Logging";
 import "express-async-errors";
 import routes from "Api/Routes";
@@ -13,8 +13,6 @@ import { errorHandler } from "Exceptions/ErrorHandler";
 import {
   DATABASE_CONNECTED,
   DATABASE_CONNECTION_ERROR,
-  DATABASE_POPULATED,
-  EXPRESS_BOOTSTRAPPED,
   EXPRESS_BOOTSTRAPPED_ERROR,
   MIDDLEWARE_ATTACHED,
   ROUTES_ATTACHED,
@@ -37,6 +35,7 @@ export default class Express {
     Promise.resolve(this.#connectDatabase())
       .then()
       .catch((err) => {
+        console.log(err);
         this.loggingProvider.error(EXPRESS_BOOTSTRAPPED_ERROR);
       });
     this.#attachMiddlewares();
@@ -51,7 +50,7 @@ export default class Express {
     this.app.use(express.json());
     this.app.use(
       cors({
-        origin: Express.getCorsWhiteList() as any,
+        origin: Express.getCorsWhiteList() as string[],
       })
     );
     this.loggingProvider.info(MIDDLEWARE_ATTACHED);
@@ -88,6 +87,7 @@ export default class Express {
     );
 
     this.app.use(
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       (err: Error, req: Request, res: Response, next: NextFunction) => {
         errorHandler.handleError(err, res);
       }

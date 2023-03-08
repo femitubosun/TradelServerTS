@@ -7,7 +7,7 @@ import {
   CHECK_EMAIL_AND_PASSWORD,
   EMAIL_VERIFICATION_SUCCESS,
   EMAIL_VERIFICATION_TOKEN_REQUEST_SUCCESS,
-  FAILURE,
+  ERROR,
   INVALID_TOKEN,
   NULL_OBJECT,
   PASSWORD_RESET_LINK_GENERATED,
@@ -126,7 +126,7 @@ class AuthController {
       this.statusCode = HttpStatusCodeEnum.INTERNAL_SERVER_ERROR;
 
       return res.status(this.statusCode).json({
-        status: FAILURE,
+        status: ERROR,
         status_code: this.statusCode,
         message: SOMETHING_WENT_WRONG,
       });
@@ -151,7 +151,7 @@ class AuthController {
       if (user == NULL_OBJECT) {
         return response.status(statusCode).json({
           status_code: statusCode,
-          status: FAILURE,
+          status: ERROR,
           message: RECORD_NOT_FOUND(USER_RESOURCE),
         });
       }
@@ -203,7 +203,7 @@ class AuthController {
 
       response.status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR).json({
         status_code: statusCode,
-        status: FAILURE,
+        status: ERROR,
         message: SOMETHING_WENT_WRONG,
       });
     }

@@ -1,10 +1,10 @@
 import { autoInjectable } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { Merchant } from "Entities/Merchant";
-import { FAILURE, NULL_OBJECT, SUCCESS } from "Helpers/Messages/SystemMessages";
+import { NULL_OBJECT } from "Helpers/Messages/SystemMessages";
 import {
+  CreateMerchantRecordDtoType,
   DeleteMerchantArgs,
-  CreateMerchantRecordArgs,
   DisableMerchantRecordArgs,
   UpdateMerchantRecordArgs,
 } from "TypeChecking/Merchant";
@@ -21,11 +21,11 @@ class MerchantService {
   }
 
   public async createMerchantRecord(
-    createMerchantRecordArgs: CreateMerchantRecordArgs
+    createMerchantRecordDto: CreateMerchantRecordDtoType
   ) {
     const { userId, queryRunner, phoneNumber, storeName } =
-      createMerchantRecordArgs;
-    const foundMerchant = await this.findMerchantByUserId(userId);
+      createMerchantRecordDto;
+    const foundMerchant = await this.getMerchantByUserId(userId);
 
     if (foundMerchant) return foundMerchant;
 
@@ -74,13 +74,10 @@ class MerchantService {
 
     if (merchant == NULL_OBJECT) return;
     Object.assign(merchant, updatePayload);
-    try {
-      await this.merchantsRepository.save(merchant);
-      return SUCCESS;
-    } catch (e) {
-      console.log(e);
-      return FAILURE;
-    }
+
+    await this.merchantsRepository.save(merchant);
+
+    return merchant;
   }
 
   public async deleteMerchantRecord(
@@ -129,7 +126,7 @@ class MerchantService {
     await this.merchantsRepository.save(merchant);
   }
 
-  public async findMerchantByUserId(userId: number) {
+  public async getMerchantByUserId(userId: number) {
     const merchant = await this.merchantsRepository.findOneBy({
       userId,
     });

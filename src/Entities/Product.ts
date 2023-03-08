@@ -17,19 +17,10 @@ export class Product extends BaseEntity {
   @Column()
   basePrice: number;
 
-  @Column({
-    nullable: true,
-  })
-  photoUrl: string;
-
   @Column()
   merchantId: number;
 
-  @Column()
-  categoryId: number;
-
   @BeforeInsert()
-  @BeforeUpdate()
   generateSlug() {
     if (this.name) {
       this.nameSlug =

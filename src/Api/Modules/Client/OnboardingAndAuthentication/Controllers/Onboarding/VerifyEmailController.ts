@@ -1,0 +1,102 @@
+import { Request, Response } from "express";
+import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
+import {
+  EMAIL_VERIFICATION_SUCCESS,
+  ERROR,
+  INVALID_TOKEN,
+  INVALID_TOKEN_TYPE,
+  NO_TOKEN_RECORD,
+  NULL_OBJECT,
+  SOMETHING_WENT_WRONG,
+  SUCCESS,
+  TOKEN_EXPIRED,
+  UNAUTHORIZED_OPERATION,
+  USER_DOES_NOT_EXIST,
+} from "Helpers/Messages/SystemMessages";
+import { AuthRequest } from "TypeChecking/GeneralPurpose/AuthRequest";
+import { BadRequestError } from "Exceptions/BadRequestError";
+import { VerifyUserEmail } from "Logic/UseCases/Onboarding";
+import UserTokensService from "Logic/Services/UserTokensService";
+import { UserTokenTypesEnum } from "TypeChecking/UserTokens";
+import UsersService from "Logic/Services/UsersService";
+import { UnauthorizedError } from "Exceptions/UnauthorizedError";
+import { DateTime } from "luxon";
+import usersService from "Logic/Services/UsersService";
+import userTokensService from "Logic/Services/UserTokensService";
+
+class VerifyEmailController {
+  public async handle(request: Request, response: Response) {
+    try {
+      const user = (request as AuthRequest).user;
+      const { otp_token: emailVerifyToken } = request.body;
+
+      if (!emailVerifyToken) throw new BadRequestError(INVALID_TOKEN);
+
+      const dbEmailVerificationToken =
+        await UserTokensService.getUserTokenByToken(emailVerifyToken);
+
+      if (dbEmailVerificationToken === NULL_OBJECT) {
+        throw new BadRequestError(NO_TOKEN_RECORD);
+      }
+
+      if (dbEmailVerificationToken.tokenType != UserTokenTypesEnum.EMAIL) {
+        throw new BadRequestError(INVALID_TOKEN_TYPE);
+      }
+
+      const tokenOwner = await UsersService.getUserById(
+        dbEmailVerificationToken.userId
+      );
+
+      if (tokenOwner == NULL_OBJECT)
+        throw new UnauthorizedError(USER_DOES_NOT_EXIST);
+
+      if (tokenOwner.hasVerifiedEmail) {
+        return response.status(HttpStatusCodeEnum.OK).json({
+          status_code: HttpStatusCodeEnum.OK,
+          status: SUCCESS,
+          message: EMAIL_VERIFICATION_SUCCESS,
+        });
+      }
+      if (tokenOwner.id != user.id) {
+        throw new UnauthorizedError(UNAUTHORIZED_OPERATION);
+      }
+
+      if (
+        dbEmailVerificationToken.expired ||
+        DateTime.now() > dbEmailVerificationToken.expiresOn
+      ) {
+        await UserTokensService.deactivateUserToken(
+          dbEmailVerificationToken.id
+        );
+        return response.status(HttpStatusCodeEnum.BAD_REQUEST).json({
+          status_code: HttpStatusCodeEnum.BAD_REQUEST,
+          status: ERROR,
+          message: TOKEN_EXPIRED,
+        });
+      }
+
+      await usersService.activateUserEmail(user.id);
+
+      await userTokensService.deactivateUserToken(dbEmailVerificationToken.id);
+
+      return response.status(HttpStatusCodeEnum.OK).json({
+        status_code: HttpStatusCodeEnum.OK,
+        status: SUCCESS,
+        message: EMAIL_VERIFICATION_SUCCESS,
+      });
+    } catch (VerifyEmailControllerError) {
+      console.log(
+        "🚀 ~ VerifyEmailController.handle VerifyEmailControllerError ->",
+        VerifyEmailControllerError
+      );
+
+      return response.status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR).json({
+        status_code: HttpStatusCodeEnum.INTERNAL_SERVER_ERROR,
+        status: ERROR,
+        message: SOMETHING_WENT_WRONG,
+      });
+    }
+  }
+}
+
+export default new VerifyEmailController();
