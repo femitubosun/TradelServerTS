@@ -1,15 +1,17 @@
 import { DataSource } from "typeorm";
 import { dbConfig } from "Config/index";
 import {
-  User,
-  SettingsUserRoles,
   Customer,
-  UserTokens,
   Cart,
   Merchant,
   ProductCategory,
   Product,
 } from "Entities/index";
+import {
+  SettingsUserRoles,
+  User,
+  UserTokens,
+} from "Api/Modules/Client/OnboardingAndAuthentication/Entities";
 
 export const AppDataSource = new DataSource({
   type: "postgres",

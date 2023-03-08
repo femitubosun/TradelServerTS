@@ -7,11 +7,11 @@ import {
   SIGN_IN_SUCCESSFUL,
   SOMETHING_WENT_WRONG,
   SUCCESS,
-} from "Helpers/Messages/SystemMessages";
-import UsersService from "Logic/Services/UsersService";
-import { BadRequestError } from "Exceptions/BadRequestError";
-import { PasswordEncryptionHelper } from "Helpers/PasswordEncryptionHelper";
-import { JwtHelper } from "Helpers/JwtHelper";
+} from "Api/Modules/Common/Helpers/Messages/SystemMessages";
+import UsersService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UsersService";
+import { BadRequestError } from "Api/Modules/Common/Exceptions/BadRequestError";
+import { PasswordEncryptionHelper } from "Api/Modules/Common/Helpers/PasswordEncryptionHelper";
+import { JwtHelper } from "Api/Modules/Common/Helpers/JwtHelper";
 import Event from "Lib/Events";
 import { eventTypes } from "Lib/Events/Listeners/TypeChecking/eventTypes";
 

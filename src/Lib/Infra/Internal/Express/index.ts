@@ -9,14 +9,14 @@ import {
 } from "Lib/Infra/Internal/Logging";
 import "express-async-errors";
 import routes from "Api/Routes";
-import { errorHandler } from "Exceptions/ErrorHandler";
+import { errorHandler } from "Api/Modules/Common/Exceptions/ErrorHandler";
 import {
   DATABASE_CONNECTED,
   DATABASE_CONNECTION_ERROR,
   EXPRESS_BOOTSTRAPPED_ERROR,
   MIDDLEWARE_ATTACHED,
   ROUTES_ATTACHED,
-} from "Helpers/Messages/SystemMessages";
+} from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
 
 export default class Express {

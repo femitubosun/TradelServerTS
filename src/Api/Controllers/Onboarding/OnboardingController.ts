@@ -15,19 +15,19 @@ import {
   NULL_OBJECT,
   SOMETHING_WENT_WRONG,
   SUCCESS,
-} from "Helpers/Messages/SystemMessages";
-import UsersService from "Logic/Services/UsersService";
-import SettingsUserRoleService from "Logic/Services/SettingsUserRoleService";
+} from "Api/Modules/Common/Helpers/Messages/SystemMessages";
+import UsersService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UsersService";
+import SettingsUserRoleService from "Api/Modules/Client/OnboardingAndAuthentication/Services/SettingsUserRoleService";
 import CustomersService from "Logic/Services/CustomersService";
 import CartService from "Logic/Services/CartService";
 import { generateStringOfLength } from "Utils/generateStringOfLength";
 import { businessConfig } from "Config/businessConfig";
-import UserTokensService from "Logic/Services/UserTokensService";
-import { UserTokenTypesEnum } from "TypeChecking/UserTokens";
+import UserTokensService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UserTokensService";
+import { UserTokenTypesEnum } from "TypeChecking/../../Modules/Client/OnboardingAndAuthentication/TypeChecking/UserTokens";
 import { DateTime } from "luxon";
 import Event from "Lib/Events";
 import { eventTypes } from "Lib/Events/Listeners/TypeChecking/eventTypes";
-import { JwtHelper } from "Helpers/JwtHelper";
+import { JwtHelper } from "Api/Modules/Common/Helpers/JwtHelper";
 
 const dbContext = container.resolve(DbContext);
 

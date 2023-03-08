@@ -3,14 +3,14 @@ import validate from "Api/Validators/Common/validate";
 import {
   CreateNewCustomerValidator,
   CreateNewMerchantValidator,
-} from "Api/Modules/OnboardingAndAuthentication/Validators/Onboarding";
+  VerifyEmailValidator,
+} from "Api/Modules/Client/OnboardingAndAuthentication/Validators/Onboarding";
 import { asyncMiddlewareHandler } from "Utils/asyncMiddlewareHandler";
 import { isAuthenticated } from "Api/Middleware/isAuthenticated";
-import VerifyEmailController from "Api/Modules/OnboardingAndAuthentication/Controllers/Onboarding/VerifyEmailController";
-import RequestNewEmailVerificationTokenController from "Api/Modules/OnboardingAndAuthentication/Controllers/Onboarding/RequestNewEmailVerificationTokenController";
-import CreateNewCustomerController from "Api/Modules/OnboardingAndAuthentication/Controllers/Onboarding/CreateNewCustomerController";
-import CreateNewMerchantController from "Api/Modules/OnboardingAndAuthentication/Controllers/Onboarding/CreateNewMerchantController";
-import { VerifyEmailValidator } from "Api/Modules/OnboardingAndAuthentication/Validators/Onboarding/VerifyEmailValidator";
+import VerifyEmailController from "Api/Modules/Client/OnboardingAndAuthentication/Controllers/Onboarding/VerifyEmailController";
+import RequestNewEmailVerificationTokenController from "Api/Modules/Client/OnboardingAndAuthentication/Controllers/Onboarding/RequestNewEmailVerificationTokenController";
+import CreateNewCustomerController from "Api/Modules/Client/OnboardingAndAuthentication/Controllers/Onboarding/CreateNewCustomerController";
+import CreateNewMerchantController from "Api/Modules/Client/OnboardingAndAuthentication/Controllers/Onboarding/CreateNewMerchantController";
 
 const routes = Router();
 

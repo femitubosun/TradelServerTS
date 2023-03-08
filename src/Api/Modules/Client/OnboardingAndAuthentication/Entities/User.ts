@@ -1,6 +1,6 @@
 import { BeforeInsert, Column, Entity } from "typeorm";
-import { BaseEntity } from "./Base";
-import { PasswordEncryptionHelper } from "Helpers/PasswordEncryptionHelper";
+import { BaseEntity } from "Entities/Base";
+import { PasswordEncryptionHelper } from "Api/Modules/Common/Helpers/PasswordEncryptionHelper";
 
 @Entity()
 export class User extends BaseEntity {

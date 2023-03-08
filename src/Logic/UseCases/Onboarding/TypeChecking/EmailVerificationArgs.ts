@@ -1,4 +1,4 @@
-import { User } from "Entities/User";
+import { User } from "Api/Modules/Client/OnboardingAndAuthentication/Entities/User";
 
 export type EmailVerificationArgs = {
   emailVerificationToken: string;

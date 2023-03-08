@@ -1,6 +1,9 @@
 import { Response, NextFunction } from "express";
 import ApplicationError from "./ApplicationError";
-import { CRITICAL_ERROR_EXITING, ERROR } from "Helpers/Messages/SystemMessages";
+import {
+  CRITICAL_ERROR_EXITING,
+  ERROR,
+} from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 
 // https://www.codeconcisely.com/posts/how-to-handle-errors-in-express-with-typescript/

@@ -2,7 +2,7 @@ import supertest from "supertest";
 import { Application } from "Lib/Infra/Internal/Application";
 import { container } from "tsyringe";
 import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
-import { WELCOME_TO_API } from "Helpers/Messages/SystemMessages";
+import { WELCOME_TO_API } from "../../src/Api/Modules/Common/Helpers/Messages/SystemMessages";
 
 const app = new Application(container);
 

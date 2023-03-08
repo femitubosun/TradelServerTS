@@ -1,6 +1,6 @@
 import { WinstonDriver } from "./WinstonDriver";
 import { LoggingProvider } from "./LoggingProvider";
-import { PROVIDER_NOT_FOUND } from "Helpers/Messages/SystemMessages";
+import { PROVIDER_NOT_FOUND } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { loggingConfig } from "Config/loggingConfig";
 
 export class LoggingProviderFactory {

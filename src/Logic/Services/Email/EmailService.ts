@@ -3,7 +3,7 @@ import { TemplateService } from "Logic/Services/Template/TemplateService";
 import {
   EMAIL_ACTIVATION_TOKEN_EMAIL_SUBJECT,
   PASSWORD_RESET_TOKEN_EMAIL_SUBJECT,
-} from "Helpers/Messages/SystemMessages";
+} from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { SendPasswordResetLinkDtoType } from "Logic/Services/Email/TypeChecking/SendPasswordRestLinkDtoType";
 import { SendAccountActivationEmailArgs } from "Logic/Services/Email/TypeChecking/SendAccountActivationEmailArgs";
 

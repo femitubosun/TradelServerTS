@@ -1,19 +1,19 @@
 import { autoInjectable } from "tsyringe";
 import { UserTokens } from "Api/Modules/Client/OnboardingAndAuthentication/Entities/UserTokens";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
-import { NULL_OBJECT } from "Helpers/Messages/SystemMessages";
-import {
-  CreateEmailActivationTokenDtoType,
-  CreateUserTokenDtoType,
-  UpdateUserTokenRecordDtoType,
-  UserTokenTypesEnum,
-} from "TypeChecking/../../Api/Modules/Client/OnboardingAndAuthentication/TypeChecking/UserTokens";
+import { NULL_OBJECT } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { DateTime } from "luxon";
 import { businessConfig } from "Config/businessConfig";
-import { ListUserTokenForUserByTokenDtoType } from "TypeChecking/../../Api/Modules/Client/OnboardingAndAuthentication/TypeChecking/UserTokens/ListUserTokenForUserByTokenDtoType";
-import { CreatePasswordRecoveryTokenDtoType } from "TypeChecking/../../Api/Modules/Client/OnboardingAndAuthentication/TypeChecking/UserTokens/CreatePasswordRecoveryTokenDtoType";
 import { Repository } from "typeorm";
-import { FetchActiveUserTokenRecordDtoType } from "TypeChecking/../../Api/Modules/Client/OnboardingAndAuthentication/TypeChecking/UserTokens/FetchActiveUserTokenRecordDtoType";
+import {
+  CreateEmailActivationTokenDtoType,
+  CreatePasswordRecoveryTokenDtoType,
+  CreateUserTokenDtoType,
+  ListUserTokenForUserByTokenDtoType,
+  UpdateUserTokenRecordDtoType,
+  UserTokenTypesEnum,
+} from "Api/Modules/Client/OnboardingAndAuthentication/TypeChecking/UserTokens";
+import { FetchActiveUserTokenRecordDtoType } from "Api/Modules/Client/OnboardingAndAuthentication/TypeChecking/UserTokens/FetchActiveUserTokenRecordDtoType";
 
 @autoInjectable()
 class UserTokensService {

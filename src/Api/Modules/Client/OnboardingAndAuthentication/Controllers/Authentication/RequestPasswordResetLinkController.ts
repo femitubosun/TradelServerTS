@@ -7,11 +7,11 @@ import {
   SOMETHING_WENT_WRONG,
   SUCCESS,
   USER_RESOURCE,
-} from "Helpers/Messages/SystemMessages";
-import UsersService from "Logic/Services/UsersService";
-import { RECORD_NOT_FOUND } from "Helpers/Messages/SystemMessageFunctions";
-import UserTokensService from "Logic/Services/UserTokensService";
-import { UserTokenTypesEnum } from "TypeChecking/UserTokens";
+} from "Api/Modules/Common/Helpers/Messages/SystemMessages";
+import UsersService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UsersService";
+import { RECORD_NOT_FOUND } from "Api/Modules/Common/Helpers/Messages/SystemMessageFunctions";
+import UserTokensService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UserTokensService";
+import { UserTokenTypesEnum } from "Api/Modules/Client/OnboardingAndAuthentication/TypeChecking/UserTokens";
 import { generateStringOfLength } from "Utils/generateStringOfLength";
 import { businessConfig } from "Config/businessConfig";
 import { expressConfig } from "Config/expressConfig";

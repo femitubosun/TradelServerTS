@@ -1,11 +1,11 @@
 import { autoInjectable } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { SettingsUserRoles } from "Api/Modules/Client/OnboardingAndAuthentication/Entities/SettingsUserRoles";
-import { ISettingsUserRole } from "TypeChecking/../../Api/Modules/Client/OnboardingAndAuthentication/TypeChecking/SettingsUserRole";
 import { Repository } from "typeorm";
+import { ISettingsUserRole } from "Api/Modules/Client/OnboardingAndAuthentication/TypeChecking/SettingsUserRole";
 
 @autoInjectable()
-export class SettingsUserRoleService {
+class SettingsUserRoleService {
   private settingsUserRoleRepository;
 
   constructor(private dbContext?: DbContext) {

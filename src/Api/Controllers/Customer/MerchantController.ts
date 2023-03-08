@@ -7,11 +7,11 @@ import {
   NULL_OBJECT,
   PRODUCT_CATEGORY_RESOURCE,
   SUCCESS,
-} from "Helpers/Messages/SystemMessages";
+} from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import {
   RESOURCE_FETCHED_SUCCESSFULLY,
   RECORD_NOT_FOUND,
-} from "Helpers/Messages/SystemMessageFunctions";
+} from "Api/Modules/Common/Helpers/Messages/SystemMessageFunctions";
 import ProductService from "Logic/Services/ProductService";
 
 class MerchantController {

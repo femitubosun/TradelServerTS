@@ -1,7 +1,10 @@
 import { autoInjectable } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { User } from "Api/Modules/Client/OnboardingAndAuthentication/Entities/User";
-import { NULL_OBJECT, SUCCESS } from "Helpers/Messages/SystemMessages";
+import {
+  NULL_OBJECT,
+  SUCCESS,
+} from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { DateTime } from "luxon";
 import { Repository } from "typeorm";
 import {

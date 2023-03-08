@@ -9,21 +9,21 @@ import {
   ROLE_DOES_NOT_EXIST,
   SOMETHING_WENT_WRONG,
   SUCCESS,
-} from "Helpers/Messages/SystemMessages";
-import UsersService from "Logic/Services/UsersService";
+} from "Api/Modules/Common/Helpers/Messages/SystemMessages";
+import UsersService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UsersService";
 import CustomersService from "Logic/Services/CustomersService";
 import CartService from "Logic/Services/CartService";
-import SettingsUserRoleService from "Logic/Services/SettingsUserRoleService";
+import SettingsUserRoleService from "Api/Modules/Client/OnboardingAndAuthentication/Services/SettingsUserRoleService";
 import { container } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { generateStringOfLength } from "Utils/generateStringOfLength";
 import { businessConfig } from "Config/businessConfig";
 import { DateTime } from "luxon";
-import UserTokensService from "Logic/Services/UserTokensService";
-import { UserTokenTypesEnum } from "TypeChecking/UserTokens";
+import UserTokensService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UserTokensService";
+import { UserTokenTypesEnum } from "Api/Modules/Client/OnboardingAndAuthentication/TypeChecking/UserTokens";
 import Event from "Lib/Events";
 import { eventTypes } from "Lib/Events/Listeners/TypeChecking/eventTypes";
-import { JwtHelper } from "Helpers/JwtHelper";
+import { JwtHelper } from "Api/Modules/Common/Helpers/JwtHelper";
 
 const dbContext = container.resolve(DbContext);
 

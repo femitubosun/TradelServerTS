@@ -4,7 +4,7 @@ import {
   ERROR,
   SOMETHING_WENT_WRONG,
   SUCCESS,
-} from "Helpers/Messages/SystemMessages";
+} from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { container } from "tsyringe";
 import ProductService from "Logic/Services/ProductService";

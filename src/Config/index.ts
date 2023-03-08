@@ -1,13 +1,13 @@
 import dotenv from "dotenv";
-import { InternalServerError } from "Exceptions/InternalServerError";
-import { ENV_NOT_FOUND } from "Helpers/Messages/SystemMessages";
+import { InternalServerError } from "Api/Modules/Common/Exceptions/InternalServerError";
+import { ENV_NOT_FOUND_ERROR } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import path from "path";
 
 const envFound = dotenv.config({
   path: path.join(__dirname, "..", "..", ".env"),
 });
 
-if (envFound.error) throw new InternalServerError(ENV_NOT_FOUND);
+if (envFound.error) throw new InternalServerError(ENV_NOT_FOUND_ERROR);
 
 export * from "./businessConfig";
 export * from "./expressConfig";

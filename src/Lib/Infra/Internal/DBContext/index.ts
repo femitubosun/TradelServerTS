@@ -6,10 +6,10 @@ import {
   Repository,
 } from "typeorm";
 import { AppDataSource } from "Lib/Infra/Internal/DBContext/DataSource";
-import { SettingsUserRoles } from "Entities/SettingsUserRoles";
+import { SettingsUserRoles } from "Api/Modules/Client/OnboardingAndAuthentication/Entities/SettingsUserRoles";
 import { inject, singleton, container } from "tsyringe";
-import { NULL_OBJECT } from "Helpers/Messages/SystemMessages";
-import { InternalServerError } from "Exceptions/InternalServerError";
+import { NULL_OBJECT } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
+import { InternalServerError } from "Api/Modules/Common/Exceptions/InternalServerError";
 
 container.register("DataSource", { useValue: AppDataSource });
 

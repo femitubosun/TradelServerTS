@@ -5,13 +5,12 @@ import {
   ERROR,
   SOMETHING_WENT_WRONG,
   SUCCESS,
-} from "Helpers/Messages/SystemMessages";
+} from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { AuthRequest } from "TypeChecking/GeneralPurpose/AuthRequest";
-import { RequestEmailVerificationToken } from "Logic/UseCases/Auth/RequestEmailVerificationToken";
 import { container } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
-import UserTokensService from "Logic/Services/UserTokensService";
-import { UserTokenTypesEnum } from "TypeChecking/UserTokens";
+import UserTokensService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UserTokensService";
+import { UserTokenTypesEnum } from "Api/Modules/Client/OnboardingAndAuthentication/TypeChecking/UserTokens";
 import { generateStringOfLength } from "Utils/generateStringOfLength";
 import { businessConfig } from "Config/businessConfig";
 import { EmailService } from "Logic/Services/Email/EmailService";
@@ -26,11 +25,6 @@ class RequestNewEmailVerificationTokenController {
 
       await queryRunner.startTransaction();
       try {
-        const results = await RequestEmailVerificationToken.execute({
-          userId: user.id,
-          queryRunner,
-        });
-
         const userTokens =
           await UserTokensService.listUserTokenForUserByTokenType({
             userId: user.id,

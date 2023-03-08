@@ -1,7 +1,7 @@
 import { BaseEntity } from "Entities/Base";
 import { Column, Entity } from "typeorm";
 import { DateTime } from "luxon";
-import { UserTokenTypesEnum } from "TypeChecking/UserTokens";
+import { UserTokenTypesEnum } from "../TypeChecking/UserTokens";
 
 @Entity()
 export class UserTokens extends BaseEntity {

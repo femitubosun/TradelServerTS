@@ -1,7 +1,7 @@
 import { autoInjectable } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { Cart } from "Entities/Cart";
-import { NULL_OBJECT } from "Helpers/Messages/SystemMessages";
+import { NULL_OBJECT } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { CreateCartRecordDto } from "TypeChecking/Cart";
 import { Repository } from "typeorm";
 

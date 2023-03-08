@@ -2,7 +2,7 @@ import { autoInjectable } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { Product } from "Entities/Product";
 import { Repository } from "typeorm";
-import { NULL_OBJECT } from "Helpers/Messages/SystemMessages";
+import { NULL_OBJECT } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { CreateProductRecordDtoType } from "TypeChecking/Product/CreateProductRecordDtoType";
 
 @autoInjectable()

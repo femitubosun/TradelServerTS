@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 import DbQueryRunner from "TypeChecking/QueryRunner";
-import { UserTokenTypesEnum } from "TypeChecking/UserTokens";
+import { UserTokenTypesEnum } from "Api/Modules/Client/OnboardingAndAuthentication/TypeChecking/UserTokens/index";
 
 export type CreateUserTokenDtoType = {
   userId: number;

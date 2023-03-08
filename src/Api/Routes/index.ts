@@ -1,15 +1,17 @@
 import { Request, Response, Router } from "express";
 import authRoutes from "Api/Routes/Auth/AuthRoutes";
-import onboardingRoutes from "Api/Routes/Onboarding/OnboardingRoutes";
 import productRoutes from "Api/Routes/Customer/ProductRoutes";
 import merchantRoutes from "Api/Routes/Merchant/ProductRoutes";
+import OnboardingAndAuthenticationRoutes from "Api/Modules/Client/OnboardingAndAuthentication/Routes/index";
 import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
-import { SUCCESS, WELCOME_TO_API } from "Helpers/Messages/SystemMessages";
+import {
+  SUCCESS,
+  WELCOME_TO_API,
+} from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 
 const routes = Router();
 
-routes.use("", authRoutes);
-routes.use("", onboardingRoutes);
+routes.use("", OnboardingAndAuthenticationRoutes);
 routes.use("", productRoutes);
 routes.use("", merchantRoutes);
 

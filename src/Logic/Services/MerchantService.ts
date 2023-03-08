@@ -1,7 +1,7 @@
 import { autoInjectable } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { Merchant } from "Entities/Merchant";
-import { NULL_OBJECT } from "Helpers/Messages/SystemMessages";
+import { NULL_OBJECT } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import {
   CreateMerchantRecordDtoType,
   DeleteMerchantArgs,

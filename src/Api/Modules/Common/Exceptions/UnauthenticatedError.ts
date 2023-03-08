@@ -1,4 +1,4 @@
-import ApplicationError from "Exceptions/ApplicationError";
+import ApplicationError from "Api/Modules/Common/Exceptions/ApplicationError";
 import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 
 export class UnauthenticatedError extends ApplicationError {

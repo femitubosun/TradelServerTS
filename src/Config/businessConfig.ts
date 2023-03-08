@@ -18,4 +18,6 @@ export const businessConfig = {
   currentDateTime: DateTime.now(),
 
   host: process.env.HOST,
+
+  passwordResetTokenLink: `${process.env.HOST}/Interface/Process/ResetPassword`,
 };

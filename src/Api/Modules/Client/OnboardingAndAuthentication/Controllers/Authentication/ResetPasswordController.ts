@@ -6,10 +6,10 @@ import {
   PASSWORD_RESET_SUCCESSFULLY,
   SOMETHING_WENT_WRONG,
   SUCCESS,
-} from "Helpers/Messages/SystemMessages";
-import UserTokensService from "Logic/Services/UserTokensService";
-import UsersService from "Logic/Services/UsersService";
-import { PasswordEncryptionHelper } from "Helpers/PasswordEncryptionHelper";
+} from "Api/Modules/Common/Helpers/Messages/SystemMessages";
+import UserTokensService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UserTokensService";
+import UsersService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UsersService";
+import { PasswordEncryptionHelper } from "Api/Modules/Common/Helpers/PasswordEncryptionHelper";
 
 class ResetPasswordController {
   public async handle(request: Request, response: Response) {

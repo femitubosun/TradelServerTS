@@ -1,5 +1,5 @@
 import { Request } from "express";
-import { User } from "Entities/User";
+import { User } from "Api/Modules/Client/OnboardingAndAuthentication/Entities/User";
 
 export type AuthRequest = Request & {
   user: User;

@@ -12,17 +12,16 @@ import {
   TOKEN_EXPIRED,
   UNAUTHORIZED_OPERATION,
   USER_DOES_NOT_EXIST,
-} from "Helpers/Messages/SystemMessages";
+} from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { AuthRequest } from "TypeChecking/GeneralPurpose/AuthRequest";
-import { BadRequestError } from "Exceptions/BadRequestError";
-import { VerifyUserEmail } from "Logic/UseCases/Onboarding";
-import UserTokensService from "Logic/Services/UserTokensService";
-import { UserTokenTypesEnum } from "TypeChecking/UserTokens";
-import UsersService from "Logic/Services/UsersService";
-import { UnauthorizedError } from "Exceptions/UnauthorizedError";
+import { BadRequestError } from "Api/Modules/Common/Exceptions/BadRequestError";
+import UserTokensService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UserTokensService";
+import { UserTokenTypesEnum } from "Api/Modules/Client/OnboardingAndAuthentication/TypeChecking/UserTokens";
+import UsersService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UsersService";
+import { UnauthorizedError } from "Api/Modules/Common/Exceptions/UnauthorizedError";
 import { DateTime } from "luxon";
-import usersService from "Logic/Services/UsersService";
-import userTokensService from "Logic/Services/UserTokensService";
+import usersService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UsersService";
+import userTokensService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UserTokensService";
 
 class VerifyEmailController {
   public async handle(request: Request, response: Response) {
