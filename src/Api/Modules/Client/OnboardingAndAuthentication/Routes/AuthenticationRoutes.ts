@@ -6,14 +6,14 @@ import ResetPasswordController from "Api/Modules/Client/OnboardingAndAuthenticat
 import EmailSignInController from "Api/Modules/Client/OnboardingAndAuthentication/Controllers/Authentication/EmailSignInController";
 import {
   EmailSignInValidator,
-  ResetPasswordValidator,
   RequestPasswordResetLinkValidator,
+  ResetPasswordValidator,
 } from "Api/Modules/Client/OnboardingAndAuthentication/Validators/Authentication";
 
 const routes = Router();
 
 routes.post(
-  "/Process/EmailSignIn",
+  "/Authenticate/UserEmail",
   EmailSignInValidator,
   validate,
   EmailSignInController.handle

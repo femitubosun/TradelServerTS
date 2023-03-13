@@ -1,6 +1,6 @@
 import { QueryRunner } from "typeorm";
 
-export type CreateCustomerArgs = {
+export type CreateCustomerRecordDtoType = {
   userId: number;
   phoneNumber: string;
   queryRunner: QueryRunner;

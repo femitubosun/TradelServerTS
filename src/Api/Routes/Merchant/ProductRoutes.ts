@@ -15,14 +15,14 @@ const routes = Router();
 //   MerchantController.getActiveMerchantByIdentifier
 // );
 
-routes.post(
-  "/Create/Product",
-  asyncMiddlewareHandler(
-    isRole([SettingsUserRoleService.getMerchantRoleName()])
-  ),
-  createProductValidator,
-  validate,
-  CreateProductController.createNewProduct
-);
+// routes.post(
+//   "/Create/Product",
+//   asyncMiddlewareHandler(
+//     isRole([SettingsUserRoleService.getMerchantRoleName()])
+//   ),
+//   createProductValidator,
+//   validate,
+//   CreateProductController.createNewProduct
+// );
 
 export default routes;

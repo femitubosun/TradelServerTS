@@ -1,13 +1,13 @@
 import { autoInjectable } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
-import { Merchant } from "Entities/Merchant";
+import { Merchant } from "Api/Modules/Client/Profile/Entities/Merchant";
 import { NULL_OBJECT } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import {
   CreateMerchantRecordDtoType,
   DeleteMerchantArgs,
   DisableMerchantRecordArgs,
   UpdateMerchantRecordArgs,
-} from "TypeChecking/Merchant";
+} from "Api/Modules/Client/Profile/TypeChecking/Merchant";
 import { Repository } from "typeorm";
 
 @autoInjectable()

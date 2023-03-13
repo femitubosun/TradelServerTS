@@ -1,5 +1,5 @@
 import { BaseEntity } from "Entities/Base";
-import { BeforeInsert, BeforeUpdate, Column, Entity } from "typeorm";
+import { BeforeInsert, Column, Entity } from "typeorm";
 import slugify from "slugify";
 import { businessConfig } from "Config/businessConfig";
 

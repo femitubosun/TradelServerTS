@@ -1,4 +1,3 @@
-export const NULL_OBJECT = null;
 export const PROVIDER_NOT_FOUND = "Provider Was Not Found";
 export const MIDDLEWARE_ATTACHED = "Middleware Attached Successfully";
 export const NOT_ALLOWED_BY_CORS = "This Origin is not allowed by CORS";
@@ -50,6 +49,8 @@ export const WALLET_RESOURCE = "Wallet Resource";
 export const WELCOME_TO_API = "Welcome to Tradel Server API";
 export const SOMETHING_WENT_WRONG =
   "Something went wrong while performing this operation";
+export const INFORMATION_CREATED = "Information Created Successfully";
+export const INFORMATION_RETRIEVED = "Information Retrieved Successfully";
 
 /* ------------------------------  Response Statuses  ------------------------- */
 
@@ -73,3 +74,7 @@ export const PASSWORD_RESET_TOKEN_EMAIL_SUBJECT =
 export const PASSWORD_RESET_LINK_GENERATED =
   "Password Recovery Link Generated. Please Check your mail";
 export const PASSWORD_RESET_SUCCESSFULLY = "Password Changed Successfully";
+
+/* ----------------------------------- Object States  ------------------------------*/
+export const NULL_OBJECT = null;
+export const NOT_APPLICABLE = "N/A";

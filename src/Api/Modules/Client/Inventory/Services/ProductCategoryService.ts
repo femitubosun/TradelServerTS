@@ -1,9 +1,9 @@
 import { autoInjectable } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
-import { ProductCategory } from "Entities/ProductCategory";
+import { ProductCategory } from "Api/Modules/Client/Inventory/Entities/ProductCategory";
 import { CreateProductCategoryDtoType } from "TypeChecking/ProductCategory/CreateProductCategoryDtoType";
 import { Repository } from "typeorm";
-import { NULL_OBJECT } from "../../Api/Modules/Common/Helpers/Messages/SystemMessages";
+import { NULL_OBJECT } from "../../../Common/Helpers/Messages/SystemMessages";
 
 @autoInjectable()
 class ProductCategoryService {

@@ -11,8 +11,7 @@ import {
   SUCCESS,
 } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import UsersService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UsersService";
-import CustomersService from "Logic/Services/CustomersService";
-import CartService from "Logic/Services/CartService";
+import { InventoryInternalApi } from "Api/Modules/Client/Inventory/InventoryInternalApi";
 import SettingsUserRoleService from "Api/Modules/Client/OnboardingAndAuthentication/Services/SettingsUserRoleService";
 import { container } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
@@ -24,6 +23,7 @@ import { UserTokenTypesEnum } from "Api/Modules/Client/OnboardingAndAuthenticati
 import Event from "Lib/Events";
 import { eventTypes } from "Lib/Events/Listeners/TypeChecking/eventTypes";
 import { JwtHelper } from "Api/Modules/Common/Helpers/JwtHelper";
+import { ProfileInternalApi } from "Api/Modules/Client/Profile/ProfileInternalApi";
 
 const dbContext = container.resolve(DbContext);
 
@@ -73,13 +73,14 @@ class CreateNewCustomerController {
           queryRunner,
         });
 
-        const customer = await CustomersService.createCustomerRecord({
+        const customer = await ProfileInternalApi.createCustomerRecord({
           userId: user.id,
           phoneNumber,
           queryRunner,
         });
 
-        await CartService.createCartRecord({
+        // TODO Call CreateCartInternalAPI
+        await InventoryInternalApi.createCartRecord({
           customerId: customer.id,
           queryRunner,
         });

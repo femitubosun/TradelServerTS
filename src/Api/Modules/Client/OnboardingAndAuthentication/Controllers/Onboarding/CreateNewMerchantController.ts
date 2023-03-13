@@ -4,6 +4,7 @@ import {
   CUSTOMER_ONBOARDING_SUCCESS,
   EMAIL_IN_USE,
   ERROR,
+  MERCHANT_ONBOARDING_SUCCESS,
   MERCHANT_ROLE_NAME,
   NULL_OBJECT,
   ROLE_DOES_NOT_EXIST,
@@ -14,7 +15,6 @@ import UsersService from "Api/Modules/Client/OnboardingAndAuthentication/Service
 import SettingsUserRoleService from "Api/Modules/Client/OnboardingAndAuthentication/Services/SettingsUserRoleService";
 import { container } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
-import MerchantService from "Logic/Services/MerchantService";
 import { generateStringOfLength } from "Utils/generateStringOfLength";
 import { businessConfig } from "Config/businessConfig";
 import UserTokensService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UserTokensService";
@@ -22,6 +22,7 @@ import { UserTokenTypesEnum } from "Api/Modules/Client/OnboardingAndAuthenticati
 import Event from "Lib/Events";
 import { eventTypes } from "Lib/Events/Listeners/TypeChecking/eventTypes";
 import { JwtHelper } from "Api/Modules/Common/Helpers/JwtHelper";
+import { ProfileInternalApi } from "Api/Modules/Client/Profile/ProfileInternalApi";
 
 const dbContext = container.resolve(DbContext);
 
@@ -72,7 +73,7 @@ class CreateNewMerchantController {
           password,
         });
 
-        await MerchantService.createMerchantRecord({
+        await ProfileInternalApi.createMerchantRecord({
           userId: user.id,
           phoneNumber,
           storeName,
@@ -110,7 +111,7 @@ class CreateNewMerchantController {
         return response.status(HttpStatusCodeEnum.CREATED).json({
           status: SUCCESS,
           status_code: HttpStatusCodeEnum.CREATED,
-          message: CUSTOMER_ONBOARDING_SUCCESS,
+          message: MERCHANT_ONBOARDING_SUCCESS,
           results,
         });
       } catch (CreateNewMerchantControllerError) {

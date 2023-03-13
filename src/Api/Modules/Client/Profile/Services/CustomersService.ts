@@ -1,7 +1,7 @@
 import { autoInjectable } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
-import { Customer } from "Entities/Customer";
-import { CreateCustomerArgs } from "TypeChecking/Customers/CreateCustomerArgs";
+import { Customer } from "Api/Modules/Client/Profile/Entities/Customer";
+import { CreateCustomerRecordDtoType } from "Api/Modules/Client/Profile/TypeChecking/Customer/CreateCustomerRecordDtoType";
 import { Repository } from "typeorm";
 
 @autoInjectable()
@@ -14,7 +14,9 @@ class CustomerService {
     ) as Repository<Customer>;
   }
 
-  public async createCustomerRecord(createCustomerArgs: CreateCustomerArgs) {
+  public async createCustomerRecord(
+    createCustomerArgs: CreateCustomerRecordDtoType
+  ) {
     const { userId, queryRunner, phoneNumber } = createCustomerArgs;
     const foundCustomer = await this.findCustomerByUserId(userId);
 

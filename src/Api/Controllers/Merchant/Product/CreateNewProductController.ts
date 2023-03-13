@@ -7,9 +7,9 @@ import {
 } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { container } from "tsyringe";
-import ProductService from "Logic/Services/ProductService";
 import { AuthRequest } from "TypeChecking/GeneralPurpose/AuthRequest";
-import MerchantService from "Logic/Services/MerchantService";
+import MerchantService from "Api/Modules/Client/Profile/Services/MerchantService";
+import ProductService from "Api/Modules/Client/Inventory/Services/ProductService";
 
 const dbContext = container.resolve(DbContext);
 

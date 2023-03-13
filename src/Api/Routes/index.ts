@@ -1,8 +1,8 @@
 import { Request, Response, Router } from "express";
-import authRoutes from "Api/Routes/Auth/AuthRoutes";
-import productRoutes from "Api/Routes/Customer/ProductRoutes";
-import merchantRoutes from "Api/Routes/Merchant/ProductRoutes";
+// import productRoutes from "Api/Routes/Customer/ProductRoutes";
+// import merchantRoutes from "Api/Routes/Merchant/ProductRoutes";
 import OnboardingAndAuthenticationRoutes from "Api/Modules/Client/OnboardingAndAuthentication/Routes/index";
+import InventoryRoutes from "Api/Modules/Client/Inventory/Routes/index";
 import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 import {
   SUCCESS,
@@ -12,8 +12,7 @@ import {
 const routes = Router();
 
 routes.use("", OnboardingAndAuthenticationRoutes);
-routes.use("", productRoutes);
-routes.use("", merchantRoutes);
+routes.use("", InventoryRoutes);
 
 routes.use("/", (request: Request, response: Response) => {
   response.status(HttpStatusCodeEnum.OK).json({

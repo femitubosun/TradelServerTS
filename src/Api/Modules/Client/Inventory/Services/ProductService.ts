@@ -1,6 +1,6 @@
 import { autoInjectable } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
-import { Product } from "Entities/Product";
+import { Product } from "Api/Modules/Client/Inventory/Entities/Product";
 import { Repository } from "typeorm";
 import { NULL_OBJECT } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { CreateProductRecordDtoType } from "TypeChecking/Product/CreateProductRecordDtoType";
@@ -61,6 +61,12 @@ class ProductService {
   public async listActiveProductsByMerchantId(merchantId: number) {
     return await this.productsRepository.findBy({
       isActive: true,
+      merchantId,
+    });
+  }
+
+  public async listProductsByMerchantId(merchantId: number) {
+    return await this.productsRepository.findBy({
       merchantId,
     });
   }

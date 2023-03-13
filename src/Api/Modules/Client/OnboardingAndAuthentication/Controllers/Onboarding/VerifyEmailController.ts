@@ -29,17 +29,35 @@ class VerifyEmailController {
       const user = (request as AuthRequest).user;
       const { otp_token: emailVerifyToken } = request.body;
 
-      if (!emailVerifyToken) throw new BadRequestError(INVALID_TOKEN);
+      if (!emailVerifyToken) {
+        return response.status(HttpStatusCodeEnum.BAD_REQUEST).json({
+          status_code: HttpStatusCodeEnum.BAD_REQUEST,
+          status: ERROR,
+          message: INVALID_TOKEN,
+        });
+      }
 
       const dbEmailVerificationToken =
         await UserTokensService.getUserTokenByToken(emailVerifyToken);
 
       if (dbEmailVerificationToken === NULL_OBJECT) {
-        throw new BadRequestError(NO_TOKEN_RECORD);
+        return response.status(HttpStatusCodeEnum.BAD_REQUEST).json({
+          status_code: HttpStatusCodeEnum.BAD_REQUEST,
+          status: ERROR,
+          message: INVALID_TOKEN,
+        });
       }
 
       if (dbEmailVerificationToken.tokenType != UserTokenTypesEnum.EMAIL) {
-        throw new BadRequestError(INVALID_TOKEN_TYPE);
+        await UserTokensService.deactivateUserToken(
+          dbEmailVerificationToken.id
+        );
+
+        return response.status(HttpStatusCodeEnum.BAD_REQUEST).json({
+          status_code: HttpStatusCodeEnum.BAD_REQUEST,
+          status: ERROR,
+          message: INVALID_TOKEN,
+        });
       }
 
       const tokenOwner = await UsersService.getUserById(
@@ -47,7 +65,11 @@ class VerifyEmailController {
       );
 
       if (tokenOwner == NULL_OBJECT)
-        throw new UnauthorizedError(USER_DOES_NOT_EXIST);
+        return response.status(HttpStatusCodeEnum.BAD_REQUEST).json({
+          status_code: HttpStatusCodeEnum.BAD_REQUEST,
+          status: ERROR,
+          message: INVALID_TOKEN,
+        });
 
       if (tokenOwner.hasVerifiedEmail) {
         return response.status(HttpStatusCodeEnum.OK).json({
@@ -57,7 +79,11 @@ class VerifyEmailController {
         });
       }
       if (tokenOwner.id != user.id) {
-        throw new UnauthorizedError(UNAUTHORIZED_OPERATION);
+        return response.status(HttpStatusCodeEnum.BAD_REQUEST).json({
+          status_code: HttpStatusCodeEnum.BAD_REQUEST,
+          status: ERROR,
+          message: INVALID_TOKEN,
+        });
       }
 
       if (
