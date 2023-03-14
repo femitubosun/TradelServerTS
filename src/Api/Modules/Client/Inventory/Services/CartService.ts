@@ -4,9 +4,10 @@ import { Cart } from "Api/Modules/Client/Inventory/Entities/Cart";
 import { NULL_OBJECT } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { CreateCartRecordDto } from "TypeChecking/Cart";
 import { Repository } from "typeorm";
+import { UpdateCartRecordDto } from "Api/Modules/Client/Inventory/TypeChecking/Cart/UpdateCartRecordDto";
 
 @autoInjectable()
-export class CartService {
+class CartService {
   private cartRepository: Repository<Cart>;
 
   constructor(private dbContext?: DbContext) {
@@ -26,7 +27,7 @@ export class CartService {
   ): Promise<Cart | null> {
     const { customerId, queryRunner } = createCartRecordDto;
 
-    const foundCart = await this.findCartByCustomerId(customerId);
+    const foundCart = await this.getCartByCustomerId(customerId);
 
     if (foundCart) return NULL_OBJECT;
 
@@ -37,8 +38,69 @@ export class CartService {
     return cart;
   }
 
-  public async findCartByCustomerId(customerId: number) {
-    return await this.cartRepository.findOneBy({ customerId });
+  public async getCartById(id: number) {
+    const cartsList = await this.cartRepository.find({
+      where: {
+        id,
+      },
+      relations: {
+        products: true,
+      },
+      take: 1,
+    });
+
+    const cart = cartsList[0];
+
+    return cart || NULL_OBJECT;
+  }
+
+  public async getCartByCustomerId(customerId: number) {
+    const cartsList = await this.cartRepository.find({
+      where: {
+        customerId,
+      },
+      relations: {
+        products: true,
+      },
+      take: 1,
+    });
+
+    const cart = cartsList[0];
+
+    return cart || NULL_OBJECT;
+  }
+
+  public async getCartByIdentifier(identifier: string) {
+    const cartsList = await this.cartRepository.find({
+      where: {
+        identifier,
+      },
+      relations: {
+        products: true,
+      },
+      take: 1,
+    });
+
+    const cart = cartsList[0];
+
+    return cart || NULL_OBJECT;
+  }
+
+  public async updateCartRecord(updateCartRecordDto: UpdateCartRecordDto) {
+    const { identifierType, identifier, updatePayload } = updateCartRecordDto;
+
+    const cart =
+      identifierType === "id"
+        ? await this.getCartById(identifier as number)
+        : await this.getCartByIdentifier(identifier as string);
+
+    if (cart == NULL_OBJECT) return;
+
+    Object.assign(cart, updatePayload);
+
+    await this.cartRepository.save(cart);
+
+    return cart;
   }
 }
 

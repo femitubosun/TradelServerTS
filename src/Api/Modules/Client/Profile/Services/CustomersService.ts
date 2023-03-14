@@ -3,6 +3,7 @@ import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { Customer } from "Api/Modules/Client/Profile/Entities/Customer";
 import { CreateCustomerRecordDtoType } from "Api/Modules/Client/Profile/TypeChecking/Customer/CreateCustomerRecordDtoType";
 import { Repository } from "typeorm";
+import { NULL_OBJECT } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 
 @autoInjectable()
 class CustomerService {
@@ -18,7 +19,7 @@ class CustomerService {
     createCustomerArgs: CreateCustomerRecordDtoType
   ) {
     const { userId, queryRunner, phoneNumber } = createCustomerArgs;
-    const foundCustomer = await this.findCustomerByUserId(userId);
+    const foundCustomer = await this.getCustomerByUserId(userId);
 
     if (foundCustomer) return foundCustomer;
 
@@ -34,8 +35,10 @@ class CustomerService {
     return customer;
   }
 
-  public async findCustomerByUserId(userId: number) {
-    return await this.customersRepository.findOneBy({ id: userId });
+  public async getCustomerByUserId(userId: number) {
+    const customer = await this.customersRepository.findOneBy({ userId });
+
+    return customer || NULL_OBJECT;
   }
 }
 

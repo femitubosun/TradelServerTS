@@ -1,8 +1,10 @@
 import { Router } from "express";
-import ProductRoutes from "./ProductRoutes";
+import CustomerRoutes from "./CustomerRoutes";
+import MerchantRoutes from "./MerchantRoutes";
 
 const routes = Router();
 
-routes.use("", ProductRoutes);
+routes.use("", CustomerRoutes);
+routes.use("", MerchantRoutes);
 
 export default routes;

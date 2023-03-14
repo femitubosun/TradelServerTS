@@ -1,7 +1,7 @@
 import { body } from "express-validator";
 
 export const CreateNewMerchantValidator = [
-  body("email", "Email Should be an email").isEmail(),
+  body("email", "Email Should be an email").normalizeEmail().isEmail(),
   body("password", "Password required").isLength({
     min: 8,
   }),

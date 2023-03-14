@@ -19,4 +19,16 @@ export class ProfileInternalApi {
   public static async getMerchantByUserId(userId: number) {
     return await MerchantService.getMerchantByUserId(userId);
   }
+
+  public static async getMerchantById(merchantId: number) {
+    return await MerchantService.getMerchantById(merchantId);
+  }
+
+  public static async getMerchantByIdentifier(identifier: string) {
+    return await MerchantService.getMerchantByIdentifier(identifier);
+  }
+
+  public static async getCustomerByUserId(userId: number) {
+    return await CustomersService.getCustomerByUserId(userId);
+  }
 }

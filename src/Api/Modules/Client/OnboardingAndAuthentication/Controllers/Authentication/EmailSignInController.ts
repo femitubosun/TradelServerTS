@@ -3,6 +3,7 @@ import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 import {
   CHECK_EMAIL_AND_PASSWORD,
   ERROR,
+  INVALID_CREDENTIALS,
   NULL_OBJECT,
   SIGN_IN_SUCCESSFUL,
   SOMETHING_WENT_WRONG,
@@ -24,7 +25,11 @@ class EmailSignInController {
 
       if (user == NULL_OBJECT) {
         console.log("No user record");
-        throw new BadRequestError(CHECK_EMAIL_AND_PASSWORD);
+        return response.status(HttpStatusCodeEnum.BAD_REQUEST).json({
+          status_code: HttpStatusCodeEnum.BAD_REQUEST,
+          status: ERROR,
+          message: INVALID_CREDENTIALS,
+        });
       }
 
       const isMatch = await PasswordEncryptionHelper.verifyPassword(
@@ -36,7 +41,12 @@ class EmailSignInController {
 
       if (isMatch === IS_NOT_MATCH) {
         console.log("Password mismatch");
-        throw new BadRequestError(CHECK_EMAIL_AND_PASSWORD);
+
+        return response.status(HttpStatusCodeEnum.BAD_REQUEST).json({
+          status_code: HttpStatusCodeEnum.BAD_REQUEST,
+          status: ERROR,
+          message: INVALID_CREDENTIALS,
+        });
       }
 
       const accessToken = JwtHelper.signUser(user);

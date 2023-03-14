@@ -51,6 +51,8 @@ export const SOMETHING_WENT_WRONG =
   "Something went wrong while performing this operation";
 export const INFORMATION_CREATED = "Information Created Successfully";
 export const INFORMATION_RETRIEVED = "Information Retrieved Successfully";
+export const INFORMATION_UPDATED = "Information Updated Successfully";
+export const INVALID_CREDENTIALS = "Invalid Credentials";
 
 /* ------------------------------  Response Statuses  ------------------------- */
 

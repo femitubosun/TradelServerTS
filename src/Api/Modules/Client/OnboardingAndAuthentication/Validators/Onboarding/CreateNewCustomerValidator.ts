@@ -1,7 +1,11 @@
 import { body } from "express-validator";
 
 export const CreateNewCustomerValidator = [
-  body("email", "Email Should be an email").isEmail().trim().escape(),
+  body("email", "Email Should be an email")
+    .normalizeEmail()
+    .isEmail()
+    .trim()
+    .escape(),
   body("password", "Password required")
     .isLength({
       min: 1,

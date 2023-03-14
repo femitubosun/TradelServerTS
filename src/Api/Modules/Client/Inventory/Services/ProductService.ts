@@ -43,15 +43,17 @@ class ProductService {
   public async getProductByIdentifier(
     productIdentifier: string
   ): Promise<Product | null> {
-    const productInfo = this.productsRepository.findOneBy({
+    const productInfo = await this.productsRepository.findOneBy({
       identifier: productIdentifier,
+      isActive: true,
+      isDeleted: false,
     });
 
     return productInfo || NULL_OBJECT;
   }
 
   public async getProductBySlug(productSlug: string) {
-    const productInfo = this.productsRepository.findOneBy({
+    const productInfo = await this.productsRepository.findOneBy({
       nameSlug: productSlug,
     });
 

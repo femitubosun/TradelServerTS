@@ -43,13 +43,15 @@ class MerchantService {
   }
 
   public async getMerchantById(merchantId: number): Promise<Merchant | null> {
-    const merchant = this.merchantsRepository?.findOneById(merchantId);
+    const merchant = await this.merchantsRepository?.findOneById(merchantId);
     return merchant || NULL_OBJECT;
   }
 
   public async getMerchantByIdentifier(merchantIdentifier: string) {
-    const merchant = this.merchantsRepository?.findOneBy({
+    const merchant = await this.merchantsRepository?.findOneBy({
       identifier: merchantIdentifier,
+      isActive: true,
+      isDeleted: false,
     });
     return merchant || NULL_OBJECT;
   }

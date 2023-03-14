@@ -55,6 +55,7 @@ class CreateNewProductController {
           status: SUCCESS,
           message: INFORMATION_CREATED,
           results: {
+            identifier: product.identifier,
             name: product.name,
             name_slug: product.nameSlug,
             description: product.description || NOT_APPLICABLE,

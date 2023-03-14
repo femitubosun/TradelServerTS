@@ -1,6 +1,5 @@
 import { CreateCartRecordDto } from "TypeChecking/Cart";
 import { Cart } from "Api/Modules/Client/Inventory/Entities";
-import c from "config";
 
 export class InventoryInternalApi {
   public static async createCartRecord(
