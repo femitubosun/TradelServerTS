@@ -1,4 +1,4 @@
-import { IProduct } from "TypeChecking/Product/IProduct";
+import { IProduct } from "Api/Modules/Client/Inventory/TypeChecking/Product/IProduct";
 import DbQueryRunner from "TypeChecking/QueryRunner";
 
 export type CreateProductRecordDtoType = Pick<

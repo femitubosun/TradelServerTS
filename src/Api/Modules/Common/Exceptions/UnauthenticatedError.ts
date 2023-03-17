@@ -5,7 +5,7 @@ export class UnauthenticatedError extends ApplicationError {
   constructor(description = "Not Authenticated") {
     super({
       description,
-      httpStatusCode: HttpStatusCodeEnum.UNAUTHORIZED,
+      httpStatusCode: HttpStatusCodeEnum.UNAUTHENTICATED,
       isOperational: undefined,
     });
 

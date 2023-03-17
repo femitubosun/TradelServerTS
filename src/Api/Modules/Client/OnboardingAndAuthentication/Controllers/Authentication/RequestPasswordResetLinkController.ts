@@ -9,7 +9,7 @@ import {
   USER_RESOURCE,
 } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import UsersService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UsersService";
-import { RECORD_NOT_FOUND } from "Api/Modules/Common/Helpers/Messages/SystemMessageFunctions";
+import { RESOURCE_RECORD_NOT_FOUND } from "Api/Modules/Common/Helpers/Messages/SystemMessageFunctions";
 import UserTokensService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UserTokensService";
 import { UserTokenTypesEnum } from "Api/Modules/Client/OnboardingAndAuthentication/TypeChecking/UserTokens";
 import { generateStringOfLength } from "Utils/generateStringOfLength";
@@ -38,7 +38,7 @@ class RequestPasswordResetLinkController {
           return response.status(HttpStatusCodeEnum.BAD_REQUEST).json({
             status_code: HttpStatusCodeEnum.BAD_REQUEST,
             status: ERROR,
-            message: RECORD_NOT_FOUND(USER_RESOURCE),
+            message: RESOURCE_RECORD_NOT_FOUND(USER_RESOURCE),
           });
         }
 

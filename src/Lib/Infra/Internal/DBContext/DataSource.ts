@@ -7,7 +7,12 @@ import {
 } from "Api/Modules/Client/OnboardingAndAuthentication/Entities";
 import { Customer, Merchant } from "Api/Modules/Client/Profile/Entities";
 import { ProductCategory } from "Api/Modules/Client/Inventory/Entities/ProductCategory";
-import { Cart, Product } from "Api/Modules/Client/Inventory/Entities";
+import {
+  Cart,
+  CartItem,
+  Product,
+  Collection,
+} from "Api/Modules/Client/Inventory/Entities";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -22,7 +27,9 @@ export const AppDataSource = new DataSource({
     Customer,
     UserTokens,
     Cart,
+    CartItem,
     Merchant,
+    Collection,
     ProductCategory,
     Product,
   ],

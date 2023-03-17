@@ -7,9 +7,7 @@ export enum HttpStatusCodeEnum {
 
   BAD_REQUEST = 400,
 
-  UNAUTHORIZED = 401,
-
-  UNAUTHENTICATED = 402,
+  UNAUTHENTICATED = 401,
 
   FORBIDDEN = 403,
 

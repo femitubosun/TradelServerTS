@@ -9,10 +9,13 @@ import FetchProductByIdentifierController from "Api/Modules/Client/Inventory/Con
 import { isRole } from "Api/Middleware/isRole";
 import { CUSTOMER_ROLE_NAME } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import FetchCartController from "Api/Modules/Client/Inventory/Controllers/Customer/Cart/FetchCartController";
-import AddProductToCartController from "Api/Modules/Client/Inventory/Controllers/Customer/Cart/AddProductToCartController";
-import { AddProductToCartValidator } from "Api/Modules/Client/Inventory/Validators/Cart/AddProductToCartValidator";
-import RemoveProductFromCartController from "Api/Modules/Client/Inventory/Controllers/Customer/Cart/RemoveProductFromCartController";
-import { RemoveProductFromCartValidator } from "Api/Modules/Client/Inventory/Validators/Cart/RemoveProductFromCartValidator";
+import AddItemToCartController from "Api/Modules/Client/Inventory/Controllers/Customer/Cart/AddItemToCartController";
+import { AddItemToCartValidator } from "Api/Modules/Client/Inventory/Validators/Cart/AddItemToCartValidator";
+import RemoveItemFromCartController from "Api/Modules/Client/Inventory/Controllers/Customer/Cart/RemoveItemFromCartController";
+import { RemoveItemFromCartValidator } from "Api/Modules/Client/Inventory/Validators/Cart/RemoveItemFromCartValidator";
+import { UpdateCartItemValidator } from "Api/Modules/Client/Inventory/Validators/Cart/UpdateCartItemValidator";
+import UpdateCartItemController from "Api/Modules/Client/Inventory/Controllers/Customer/Cart/UpdateCartItemController";
+import ClearCartController from "Api/Modules/Client/Inventory/Controllers/Customer/Cart/ClearCartController";
 
 const routes = Router();
 
@@ -43,19 +46,33 @@ routes.get(
 );
 
 routes.post(
-  "/Process/AddProductToCart",
+  "/Process/AddItemToCart",
   asyncMiddlewareHandler(isRole([CUSTOMER_ROLE_NAME])),
-  AddProductToCartValidator,
+  AddItemToCartValidator,
   validate,
-  AddProductToCartController.handle
+  AddItemToCartController.handle
 );
 
 routes.post(
-  "/Process/RemoveProductFromCart",
+  "/Process/RemoveItemFromCart",
   asyncMiddlewareHandler(isRole([CUSTOMER_ROLE_NAME])),
-  RemoveProductFromCartValidator,
+  RemoveItemFromCartValidator,
   validate,
-  RemoveProductFromCartController.handle
+  RemoveItemFromCartController.handle
+);
+
+routes.get(
+  "/Process/ClearCart",
+  asyncMiddlewareHandler(isRole([CUSTOMER_ROLE_NAME])),
+  ClearCartController.handle
+);
+
+routes.patch(
+  "/Update/CartItem/:cartItemIdentifier",
+  asyncMiddlewareHandler(isRole([CUSTOMER_ROLE_NAME])),
+  UpdateCartItemValidator,
+  validate,
+  UpdateCartItemController.handle
 );
 
 export default routes;

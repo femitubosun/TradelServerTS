@@ -2,29 +2,32 @@ import { Request, Response } from "express";
 import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 import {
   ERROR,
-  INFORMATION_RETRIEVED,
   NULL_OBJECT,
   PRODUCT_RESOURCE,
   SOMETHING_WENT_WRONG,
   SUCCESS,
+  UNAUTHORIZED_OPERATION,
 } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
+import { AuthRequest } from "TypeChecking/GeneralPurpose/AuthRequest";
+import { ProfileInternalApi } from "Api/Modules/Client/Profile/ProfileInternalApi";
 import ProductService from "Api/Modules/Client/Inventory/Services/ProductService";
 import {
-  RESOURCE_RECORD_NOT_FOUND,
   RESOURCE_FETCHED_SUCCESSFULLY,
+  RESOURCE_RECORD_NOT_FOUND,
 } from "Api/Modules/Common/Helpers/Messages/SystemMessageFunctions";
-import { ProfileInternalApi } from "Api/Modules/Client/Profile/ProfileInternalApi";
 
 class FetchProductByIdentifierController {
   public async handle(request: Request, response: Response) {
     try {
+      const user = (request as AuthRequest).user;
+
       const { productIdentifier } = request.params;
 
       const product = await ProductService.getProductByIdentifier(
         productIdentifier
       );
 
-      if (product === NULL_OBJECT || !product.isActive) {
+      if (product === NULL_OBJECT) {
         return response.status(HttpStatusCodeEnum.NOT_FOUND).json({
           status_code: HttpStatusCodeEnum.NOT_FOUND,
           status: ERROR,
@@ -32,14 +35,20 @@ class FetchProductByIdentifierController {
         });
       }
 
-      const merchant = await ProfileInternalApi.getMerchantById(
-        product.merchantId
-      );
+      const merchant = await ProfileInternalApi.getMerchantByUserId(user.id);
+
+      if (product.merchantId != merchant!.id) {
+        return response.status(HttpStatusCodeEnum.FORBIDDEN).json({
+          status_code: HttpStatusCodeEnum.FORBIDDEN,
+          status: ERROR,
+          message: UNAUTHORIZED_OPERATION,
+        });
+      }
 
       return response.status(HttpStatusCodeEnum.OK).json({
         status_code: HttpStatusCodeEnum.OK,
         status: SUCCESS,
-        message: INFORMATION_RETRIEVED,
+        message: RESOURCE_FETCHED_SUCCESSFULLY(PRODUCT_RESOURCE),
         results: {
           identifier: product.identifier,
           name: product.name,

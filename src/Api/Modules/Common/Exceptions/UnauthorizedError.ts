@@ -7,7 +7,7 @@ export class UnauthorizedError extends ApplicationError {
   ) {
     super({
       description,
-      httpStatusCode: HttpStatusCodeEnum.UNAUTHORIZED,
+      httpStatusCode: HttpStatusCodeEnum.FORBIDDEN,
       isOperational: undefined,
     });
     Object.setPrototypeOf(this, new.target.prototype);

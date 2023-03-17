@@ -1,7 +1,8 @@
-import { Product } from "Api/Modules/Client/Inventory/Entities";
+import { CartItem } from "Api/Modules/Client/Inventory/Entities";
+import QueryRunner from "TypeChecking/QueryRunner";
 
 type UpdateCartRecordPayload = {
-  products?: Product[];
+  items?: CartItem[];
   updatedAt?: string;
   createdAt?: string;
   isActive?: boolean;
@@ -12,4 +13,4 @@ export type UpdateCartRecordDto = {
   identifier: number | string;
   identifierType: "id" | "identifier";
   updatePayload: UpdateCartRecordPayload;
-};
+} & QueryRunner;

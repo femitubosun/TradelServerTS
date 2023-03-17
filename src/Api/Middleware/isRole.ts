@@ -21,7 +21,7 @@ export const isRole =
 
     const user = await UsersService.getUserByEmail(email);
 
-    if (user === NULL_OBJECT) throw new UnauthorizedError();
+    if (user === NULL_OBJECT) throw new UnauthenticatedError();
 
     const role = await SettingsUserRoleService.getUserRoleById(user.roleId);
 

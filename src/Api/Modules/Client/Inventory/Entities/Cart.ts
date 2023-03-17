@@ -1,6 +1,6 @@
 import { BaseEntity } from "Entities/Base";
-import { Entity, Column, ManyToMany, JoinTable } from "typeorm";
-import { Product } from "Api/Modules/Client/Inventory/Entities/Product";
+import { Column, Entity, JoinTable, ManyToMany } from "typeorm";
+import { CartItem } from "Api/Modules/Client/Inventory/Entities/CartItem";
 
 @Entity()
 export class Cart extends BaseEntity {
@@ -9,7 +9,7 @@ export class Cart extends BaseEntity {
   })
   customerId: number;
 
-  @ManyToMany(() => Product)
+  @ManyToMany(() => CartItem)
   @JoinTable()
-  products: Product[];
+  items: CartItem[];
 }

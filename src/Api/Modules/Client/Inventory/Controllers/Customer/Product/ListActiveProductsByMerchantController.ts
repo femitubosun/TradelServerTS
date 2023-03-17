@@ -11,7 +11,7 @@ import {
 } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import ProductService from "Api/Modules/Client/Inventory/Services/ProductService";
 import { ProfileInternalApi } from "Api/Modules/Client/Profile/ProfileInternalApi";
-import { RECORD_NOT_FOUND } from "Api/Modules/Common/Helpers/Messages/SystemMessageFunctions";
+import { RESOURCE_RECORD_NOT_FOUND } from "Api/Modules/Common/Helpers/Messages/SystemMessageFunctions";
 
 class ListActiveProductsByMerchantController {
   public async handle(request: Request, response: Response) {
@@ -26,7 +26,7 @@ class ListActiveProductsByMerchantController {
         return response.status(HttpStatusCodeEnum.NOT_FOUND).json({
           status_code: HttpStatusCodeEnum.NOT_FOUND,
           status: ERROR,
-          message: RECORD_NOT_FOUND(MERCHANT_RESOURCE),
+          message: RESOURCE_RECORD_NOT_FOUND(MERCHANT_RESOURCE),
         });
       }
 

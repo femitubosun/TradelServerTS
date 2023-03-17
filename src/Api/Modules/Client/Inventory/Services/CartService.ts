@@ -38,13 +38,13 @@ class CartService {
     return cart;
   }
 
-  public async getCartById(id: number) {
+  public async getCartById(cartId: number) {
     const cartsList = await this.cartRepository.find({
       where: {
-        id,
+        id: cartId,
       },
       relations: {
-        products: true,
+        items: true,
       },
       take: 1,
     });
@@ -60,7 +60,7 @@ class CartService {
         customerId,
       },
       relations: {
-        products: true,
+        items: true,
       },
       take: 1,
     });
@@ -76,7 +76,7 @@ class CartService {
         identifier,
       },
       relations: {
-        products: true,
+        items: true,
       },
       take: 1,
     });
@@ -87,7 +87,8 @@ class CartService {
   }
 
   public async updateCartRecord(updateCartRecordDto: UpdateCartRecordDto) {
-    const { identifierType, identifier, updatePayload } = updateCartRecordDto;
+    const { identifierType, identifier, updatePayload, queryRunner } =
+      updateCartRecordDto;
 
     const cart =
       identifierType === "id"
@@ -98,7 +99,7 @@ class CartService {
 
     Object.assign(cart, updatePayload);
 
-    await this.cartRepository.save(cart);
+    await queryRunner.manager.save(cart);
 
     return cart;
   }

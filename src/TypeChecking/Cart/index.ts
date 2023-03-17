@@ -1,1 +1,1 @@
-export * from "./CreateCartRecordDto";
+export * from "Api/Modules/Client/Inventory/TypeChecking/Cart/CreateCartRecordDto";

@@ -25,8 +25,8 @@ class CreateNewProductController {
       const merchant = await ProfileInternalApi.getMerchantByUserId(user.id);
 
       if (merchant === NULL_OBJECT) {
-        return response.status(HttpStatusCodeEnum.UNAUTHORIZED).json({
-          status_code: HttpStatusCodeEnum.UNAUTHORIZED,
+        return response.status(HttpStatusCodeEnum.UNAUTHENTICATED).json({
+          status_code: HttpStatusCodeEnum.UNAUTHENTICATED,
           status: ERROR,
           message: UNAUTHORIZED_OPERATION,
         });
@@ -38,7 +38,6 @@ class CreateNewProductController {
 
       await queryRunner.startTransaction();
 
-      // TODO Create Variants Record
       try {
         const product = await ProductService.createProductRecord({
           merchantId: merchant!.id,
@@ -50,8 +49,8 @@ class CreateNewProductController {
 
         await queryRunner.commitTransaction();
 
-        return response.status(HttpStatusCodeEnum.OK).json({
-          status_code: HttpStatusCodeEnum.OK,
+        return response.status(HttpStatusCodeEnum.CREATED).json({
+          status_code: HttpStatusCodeEnum.CREATED,
           status: SUCCESS,
           message: INFORMATION_CREATED,
           results: {

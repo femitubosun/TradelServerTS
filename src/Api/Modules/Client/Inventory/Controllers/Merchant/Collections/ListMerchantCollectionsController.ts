@@ -2,36 +2,34 @@ import { Request, Response } from "express";
 import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 import {
   ERROR,
-  INFORMATION_RETRIEVED,
   NOT_APPLICABLE,
   SOMETHING_WENT_WRONG,
   SUCCESS,
 } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { AuthRequest } from "TypeChecking/GeneralPurpose/AuthRequest";
 import { ProfileInternalApi } from "Api/Modules/Client/Profile/ProfileInternalApi";
-import ProductService from "Api/Modules/Client/Inventory/Services/ProductService";
+import CollectionService from "Api/Modules/Client/Inventory/Services/CollectionService";
+import { RESOURCE_FETCHED_SUCCESSFULLY } from "Api/Modules/Common/Helpers/Messages/SystemMessageFunctions";
 
-class ListMerchantProductsController {
+class ListMerchantCollectionsController {
   public async handle(request: Request, response: Response) {
     try {
       const user = (request as AuthRequest).user;
 
       const merchant = await ProfileInternalApi.getMerchantByUserId(user.id);
 
-      const products = await ProductService.listActiveProductsByMerchantId(
-        merchant!.id
-      );
+      const collections =
+        await CollectionService.listActiveCollectionsByMerchantId(merchant!.id);
 
-      const mutatedProducts = products.map((product) => {
+      const mutatedCollections = collections.map((collection) => {
         return {
-          identifier: product.identifier,
-          name: product.name,
-          name_slug: product.nameSlug,
-          description: product.description || NOT_APPLICABLE,
-          base_price: product.basePrice,
+          identifier: collection.identifier,
+          label: collection.label,
+          slug: collection.slug,
+          image_url: collection.imageUrl || NOT_APPLICABLE,
           meta: {
-            created_at: product.createdAt,
-            updated_at: product.updatedAt,
+            created_at: collection.createdAt,
+            updated_at: collection.updatedAt,
           },
         };
       });
@@ -39,16 +37,13 @@ class ListMerchantProductsController {
       return response.status(HttpStatusCodeEnum.OK).json({
         status_code: HttpStatusCodeEnum.OK,
         status: SUCCESS,
-        message: INFORMATION_RETRIEVED,
-        results: {
-          products: mutatedProducts,
-          count: mutatedProducts.length,
-        },
+        message: RESOURCE_FETCHED_SUCCESSFULLY(),
+        results: mutatedCollections,
       });
-    } catch (ListMerchantProductsControllerError) {
+    } catch (ListMerchantCollectionsControllerError) {
       console.log(
-        "🚀 ~ ListMerchantProductsController.handle ListMerchantProductsControllerError ->",
-        ListMerchantProductsControllerError
+        "🚀 ~ ListMerchantCollectionsController.handle ListMerchantCollectionsControllerError ->",
+        ListMerchantCollectionsControllerError
       );
 
       return response.status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR).json({
@@ -60,4 +55,4 @@ class ListMerchantProductsController {
   }
 }
 
-export default new ListMerchantProductsController();
+export default new ListMerchantCollectionsController();

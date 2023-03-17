@@ -3,7 +3,9 @@ import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { Product } from "Api/Modules/Client/Inventory/Entities/Product";
 import { Repository } from "typeorm";
 import { NULL_OBJECT } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
-import { CreateProductRecordDtoType } from "TypeChecking/Product/CreateProductRecordDtoType";
+import { CreateProductRecordDtoType } from "Api/Modules/Client/Inventory/TypeChecking/Product/CreateProductRecordDtoType";
+import { UpdateProductRecordDto } from "Api/Modules/Client/Inventory/TypeChecking/Product/UpdateProductRecordDto";
+import { DeleteProductRecordDto } from "Api/Modules/Client/Inventory/TypeChecking/Product/DeleteProductRecordDto";
 
 @autoInjectable()
 class ProductService {
@@ -83,12 +85,42 @@ class ProductService {
     throw new Error("Method not implemented");
   }
 
-  public async updateProductRecord() {
-    throw new Error("Method not implemented");
+  public async updateProductRecord(updateProductDto: UpdateProductRecordDto) {
+    const { identifier, identifierType, updatePayload, queryRunner } =
+      updateProductDto;
+
+    const product =
+      identifierType === "id"
+        ? await this.getProductById(identifier as number)
+        : await this.getProductByIdentifier(identifier as string);
+
+    if (product === NULL_OBJECT) return;
+
+    Object.assign(product, updatePayload);
+
+    await queryRunner.manager.save(product);
+
+    return product;
   }
 
-  public async deleteProductRecord() {
-    throw new Error("Method not implemented");
+  public async deleteProductRecord(deleteProductDto: DeleteProductRecordDto) {
+    const { identifier, identifierType, queryRunner } = deleteProductDto;
+
+    const product =
+      identifierType === "id"
+        ? await this.getProductById(identifier as number)
+        : await this.getProductByIdentifier(identifier as string);
+
+    if (product === NULL_OBJECT) return;
+
+    Object.assign(product, {
+      isDeleted: true,
+      isActive: false,
+    });
+
+    await queryRunner.manager.save(product);
+
+    return product;
   }
 }
 

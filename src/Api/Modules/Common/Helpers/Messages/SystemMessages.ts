@@ -43,6 +43,8 @@ export const MERCHANT_RESOURCE = "Merchant Resource";
 export const CUSTOMER_RESOURCE = "Customer Resource";
 export const USER_RESOURCE = "User Resource";
 export const WALLET_RESOURCE = "Wallet Resource";
+export const CART_ITEM_RESOURCE = "Cart Item Resource";
+export const COLLECTION_RESOURCE = "Collection Resource";
 
 /* ------------------------------ Generic Messages  ------------------------- */
 
@@ -80,3 +82,6 @@ export const PASSWORD_RESET_SUCCESSFULLY = "Password Changed Successfully";
 /* ----------------------------------- Object States  ------------------------------*/
 export const NULL_OBJECT = null;
 export const NOT_APPLICABLE = "N/A";
+
+/* -------------------------------  Cart Messages  --------------------------- */
+export const CART_ITEM_REMOVED_SUCCESS = "Cart Item removed Successfully";
