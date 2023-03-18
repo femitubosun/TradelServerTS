@@ -55,7 +55,7 @@ class RequestPasswordResetLinkController {
           businessConfig.passwordResetTokenLength
         );
 
-        const expiresOn = businessConfig.currentDateTime.plus({
+        const expiresOn = businessConfig.currentDateTime().plus({
           minute: businessConfig.passwordResetTokenExpiresInMinutes,
         });
 

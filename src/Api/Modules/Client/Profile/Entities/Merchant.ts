@@ -29,7 +29,7 @@ export class Merchant extends BaseEntity {
       this.storeNameSlug =
         slugify(this.storeName, { lower: true }) +
         "-" +
-        businessConfig.currentDateTime.toUTC();
+        businessConfig.currentDateTime().toUTC();
     }
   }
 }

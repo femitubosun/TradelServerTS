@@ -1,6 +1,8 @@
 import { BaseEntity } from "Entities/Base";
-import { Column, Entity, JoinTable, ManyToMany } from "typeorm";
+import { BeforeInsert, Column, Entity, JoinTable, ManyToMany } from "typeorm";
 import { Product } from "Api/Modules/Client/Inventory/Entities/Product";
+import slugify from "slugify";
+import { businessConfig } from "Config/businessConfig";
 
 @Entity()
 export class Collection extends BaseEntity {
@@ -21,4 +23,14 @@ export class Collection extends BaseEntity {
   @ManyToMany(() => Product)
   @JoinTable()
   items: Product[];
+
+  @BeforeInsert()
+  generateSlug() {
+    if (this.label) {
+      this.slug =
+        slugify(this.label, { lower: true }) +
+        "-" +
+        businessConfig.currentDateTime().toUTC();
+    }
+  }
 }

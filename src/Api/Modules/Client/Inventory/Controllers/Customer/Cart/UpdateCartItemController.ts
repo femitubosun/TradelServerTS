@@ -21,6 +21,9 @@ const dbContext = container.resolve(DbContext);
 
 class UpdateCartItemController {
   public async handle(request: Request, response: Response) {
+    const queryRunner = await dbContext.getTransactionalQueryRunner();
+
+    await queryRunner.startTransaction();
     try {
       const user = (request as AuthRequest).user;
 
@@ -50,34 +53,23 @@ class UpdateCartItemController {
           message: UNAUTHORIZED_OPERATION,
         });
       }
-      const queryRunner = await dbContext.getTransactionalQueryRunner();
 
-      await queryRunner.startTransaction();
+      await CartItemService.updateCartItem({
+        identifier: cartItemIdentifier,
+        identifierType: "identifier",
+        updatePayload: {
+          quantity,
+        },
+        queryRunner,
+      });
 
-      try {
-        await CartItemService.updateCartItem({
-          identifier: cartItemIdentifier,
-          identifierType: "identifier",
-          updatePayload: {
-            quantity,
-          },
-          queryRunner,
-        });
+      await queryRunner.commitTransaction();
 
-        await queryRunner.commitTransaction();
-
-        return response.status(HttpStatusCodeEnum.OK).json({
-          status_code: HttpStatusCodeEnum.OK,
-          status: SUCCESS,
-          message: INFORMATION_UPDATED,
-        });
-      } catch (UpdateCartItemControllerError) {
-        await queryRunner.rollbackTransaction();
-        console.log(
-          "🚀 ~ UpdateCartItemController.handle UpdateCartItemControllerError ->",
-          UpdateCartItemControllerError
-        );
-      }
+      return response.status(HttpStatusCodeEnum.OK).json({
+        status_code: HttpStatusCodeEnum.OK,
+        status: SUCCESS,
+        message: INFORMATION_UPDATED,
+      });
 
       return response.status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR).json({
         status_code: HttpStatusCodeEnum.INTERNAL_SERVER_ERROR,
@@ -89,6 +81,7 @@ class UpdateCartItemController {
         "🚀 ~ UpdateCartItemController.handle UpdateCartItemControllerError ->",
         UpdateCartItemControllerError
       );
+      await queryRunner.rollbackTransaction();
 
       return response.status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR).json({
         status_code: HttpStatusCodeEnum.INTERNAL_SERVER_ERROR,

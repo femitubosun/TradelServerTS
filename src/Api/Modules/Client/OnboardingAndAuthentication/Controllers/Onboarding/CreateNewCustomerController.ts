@@ -29,6 +29,9 @@ const dbContext = container.resolve(DbContext);
 
 class CreateNewCustomerController {
   public async handle(request: Request, response: Response) {
+    const queryRunner = await dbContext.getTransactionalQueryRunner();
+
+    await queryRunner.startTransaction();
     try {
       const {
         first_name: firstName,
@@ -59,89 +62,73 @@ class CreateNewCustomerController {
         });
       }
 
-      const queryRunner = await dbContext.getTransactionalQueryRunner();
+      const user = await UsersService.createUserRecord({
+        firstName,
+        lastName,
+        email,
+        password,
+        roleId: role.id,
+        queryRunner,
+      });
 
-      await queryRunner.startTransaction();
+      const customer = await ProfileInternalApi.createCustomerRecord({
+        userId: user.id,
+        phoneNumber,
+        queryRunner,
+      });
 
-      try {
-        const user = await UsersService.createUserRecord({
-          firstName,
-          lastName,
-          email,
-          password,
-          roleId: role.id,
-          queryRunner,
-        });
+      // TODO Call CreateCartInternalAPI
+      await InventoryInternalApi.createCartRecord({
+        customerId: customer.id,
+        queryRunner,
+      });
 
-        const customer = await ProfileInternalApi.createCustomerRecord({
-          userId: user.id,
-          phoneNumber,
-          queryRunner,
-        });
+      const token = generateStringOfLength(businessConfig.emailTokenLength);
 
-        // TODO Call CreateCartInternalAPI
-        await InventoryInternalApi.createCartRecord({
-          customerId: customer.id,
-          queryRunner,
-        });
+      const expiresOn = DateTime.now().plus({
+        minute: businessConfig.emailTokenExpiresInMinutes,
+      });
 
-        const token = generateStringOfLength(businessConfig.emailTokenLength);
+      const otpToken = await UserTokensService.createUserTokenRecord({
+        userId: user.id,
+        tokenType: UserTokenTypesEnum.EMAIL,
+        expiresOn,
+        queryRunner,
+        token,
+      });
 
-        const expiresOn = DateTime.now().plus({
-          minute: businessConfig.emailTokenExpiresInMinutes,
-        });
+      await queryRunner.commitTransaction();
 
-        const otpToken = await UserTokensService.createUserTokenRecord({
-          userId: user.id,
-          tokenType: UserTokenTypesEnum.EMAIL,
-          expiresOn,
-          queryRunner,
-          token,
-        });
+      Event.emit(eventTypes.user.signUp, {
+        userEmail: user.email,
+        activationToken: otpToken.token,
+      });
 
-        await queryRunner.commitTransaction();
+      const accessToken = JwtHelper.signUser(user);
 
-        Event.emit(eventTypes.user.signUp, {
-          userEmail: user.email,
-          activationToken: otpToken.token,
-        });
+      const results = {
+        user: {
+          identifier: user.identifier,
+          email: user.email,
+          first_name: user.firstName,
+          last_name: user.lastName,
+        },
+        access_token: accessToken,
+      };
 
-        const accessToken = JwtHelper.signUser(user);
-
-        const results = {
-          user: {
-            identifier: user.identifier,
-            email: user.email,
-            first_name: user.firstName,
-            last_name: user.lastName,
-          },
-          access_token: accessToken,
-        };
-
-        return response.status(HttpStatusCodeEnum.CREATED).json({
-          status: SUCCESS,
-          status_code: HttpStatusCodeEnum.CREATED,
-          message: CUSTOMER_ONBOARDING_SUCCESS,
-          results,
-        });
-      } catch (onboardCustomerError) {
-        await queryRunner.rollbackTransaction();
-        console.log(
-          "🚀 ~ OnboardingController.onboardCustomer onboardCustomerError ->",
-          onboardCustomerError
-        );
-
-        return response.status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR).json({
-          status_code: HttpStatusCodeEnum.INTERNAL_SERVER_ERROR,
-          status: ERROR,
-          message: SOMETHING_WENT_WRONG,
-        });
-      }
+      return response.status(HttpStatusCodeEnum.CREATED).json({
+        status: SUCCESS,
+        status_code: HttpStatusCodeEnum.CREATED,
+        message: CUSTOMER_ONBOARDING_SUCCESS,
+        results,
+      });
     } catch (CreateNewCustomerControllerError) {
       console.log(
         "🚀 ~ CreateNewCustomerController.handle CreateNewCustomerControllerError ->",
         CreateNewCustomerControllerError
       );
+
+      await queryRunner.rollbackTransaction();
 
       return response.status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR).json({
         status_code: HttpStatusCodeEnum.INTERNAL_SERVER_ERROR,

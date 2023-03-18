@@ -1,27 +1,35 @@
 import { Request, Response } from "express";
 import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 import {
-  COLLECTION_RESOURCE,
   ERROR,
-  NOT_APPLICABLE,
+  MERCHANT_COLLECTION_RESOURCE,
   NULL_OBJECT,
   SOMETHING_WENT_WRONG,
   SUCCESS,
 } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
+import { container } from "tsyringe";
+import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { AuthRequest } from "TypeChecking/GeneralPurpose/AuthRequest";
 import { ProfileInternalApi } from "Api/Modules/Client/Profile/ProfileInternalApi";
 import CollectionService from "Api/Modules/Client/Inventory/Services/CollectionService";
 import {
-  RESOURCE_FETCHED_SUCCESSFULLY,
   RESOURCE_RECORD_NOT_FOUND,
+  RESOURCE_RECORD_UPDATED_SUCCESSFULLY,
 } from "Api/Modules/Common/Helpers/Messages/SystemMessageFunctions";
 
-class FetchMerchantCollectionByIdentifier {
+const dbContext = container.resolve(DbContext);
+
+class UpdateMerchantCollectionController {
   public async handle(request: Request, response: Response) {
+    const queryRunner = await dbContext.getTransactionalQueryRunner();
+
+    await queryRunner.startTransaction();
     try {
       const user = (request as AuthRequest).user;
 
-      const { merchantIdentifier: collectionIdentifier } = request.params;
+      const { collectionIdentifier } = request.params;
+
+      const { label } = request.body;
 
       const merchant = await ProfileInternalApi.getMerchantByUserId(user.id);
 
@@ -33,7 +41,7 @@ class FetchMerchantCollectionByIdentifier {
         return response.status(HttpStatusCodeEnum.NOT_FOUND).json({
           status_code: HttpStatusCodeEnum.NOT_FOUND,
           status: ERROR,
-          message: RESOURCE_RECORD_NOT_FOUND(COLLECTION_RESOURCE),
+          message: RESOURCE_RECORD_NOT_FOUND(MERCHANT_COLLECTION_RESOURCE),
         });
       }
 
@@ -45,26 +53,31 @@ class FetchMerchantCollectionByIdentifier {
         });
       }
 
+      await CollectionService.updateCollection({
+        identifier: collectionIdentifier,
+        identifierType: "identifier",
+        updatePayload: {
+          label: label || collection.label,
+        },
+        queryRunner,
+      });
+
+      await queryRunner.commitTransaction();
+
       return response.status(HttpStatusCodeEnum.OK).json({
         status_code: HttpStatusCodeEnum.OK,
         status: SUCCESS,
-        message: RESOURCE_FETCHED_SUCCESSFULLY(COLLECTION_RESOURCE),
-        results: {
-          identifier: collection.identifier,
-          label: collection.label,
-          slug: collection.slug,
-          image_url: collection.imageUrl || NOT_APPLICABLE,
-          meta: {
-            created_at: collection.createdAt,
-            updated_at: collection.updatedAt,
-          },
-        },
+        message: RESOURCE_RECORD_UPDATED_SUCCESSFULLY(
+          MERCHANT_COLLECTION_RESOURCE
+        ),
       });
-    } catch (FetchMerchantCollectionByIdentifierError) {
+    } catch (UpdateMerchantCollectionControllerError) {
       console.log(
-        "🚀 ~ FetchMerchantCollectionByIdentifier.handle FetchMerchantCollectionByIdentifierError ->",
-        FetchMerchantCollectionByIdentifierError
+        "🚀 ~ UpdateMerchantCollectionController.handle UpdateMerchantCollectionControllerError ->",
+        UpdateMerchantCollectionControllerError
       );
+
+      await queryRunner.rollbackTransaction();
 
       return response.status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR).json({
         status_code: HttpStatusCodeEnum.INTERNAL_SERVER_ERROR,
@@ -75,4 +88,4 @@ class FetchMerchantCollectionByIdentifier {
   }
 }
 
-export default new FetchMerchantCollectionByIdentifier();
+export default new UpdateMerchantCollectionController();

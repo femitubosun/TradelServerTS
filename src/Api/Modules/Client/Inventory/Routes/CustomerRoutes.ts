@@ -16,8 +16,12 @@ import { RemoveItemFromCartValidator } from "Api/Modules/Client/Inventory/Valida
 import { UpdateCartItemValidator } from "Api/Modules/Client/Inventory/Validators/Cart/UpdateCartItemValidator";
 import UpdateCartItemController from "Api/Modules/Client/Inventory/Controllers/Customer/Cart/UpdateCartItemController";
 import ClearCartController from "Api/Modules/Client/Inventory/Controllers/Customer/Cart/ClearCartController";
+import ListActiveMerchantsController from "Api/Modules/Client/Inventory/Controllers/Customer/Merchant/ListActiveMerchantsController";
+import FetchMerchantByIdentifierController from "Api/Modules/Client/Inventory/Controllers/Customer/Merchant/FetchMerchantByIdentifierController";
 
 const routes = Router();
+
+// Product Routes
 
 routes.get(
   "/Fetch/ActiveProducts",
@@ -31,13 +35,7 @@ routes.get(
   FetchProductByIdentifierController.handle
 );
 
-routes.get(
-  "/Fetch/ActiveProductsByMerchant/:merchantIdentifier",
-  asyncMiddlewareHandler(isAuthenticated),
-  ListActiveProductsByMerchantValidator,
-  validate,
-  ListActiveProductsByMerchantController.handle
-);
+//
 
 routes.get(
   "/Fetch/Cart",
@@ -73,6 +71,28 @@ routes.patch(
   UpdateCartItemValidator,
   validate,
   UpdateCartItemController.handle
+);
+
+// Merchants
+
+routes.get(
+  "/Fetch/Merchants",
+  asyncMiddlewareHandler(isRole([CUSTOMER_ROLE_NAME])),
+  ListActiveMerchantsController.handle
+);
+
+routes.get(
+  "/Fetch/Merchants/:merchantIdentifier",
+  //TODO Add Validator
+  FetchMerchantByIdentifierController.handle
+);
+
+routes.get(
+  "/Fetch/Merchants/:merchantIdentifier/Products",
+  asyncMiddlewareHandler(isAuthenticated),
+  ListActiveProductsByMerchantValidator,
+  validate,
+  ListActiveProductsByMerchantController.handle
 );
 
 export default routes;

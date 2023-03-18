@@ -15,7 +15,7 @@ export const businessConfig = {
     10
   ),
 
-  currentDateTime: DateTime.now(),
+  currentDateTime: () => DateTime.now(),
 
   host: process.env.HOST,
 

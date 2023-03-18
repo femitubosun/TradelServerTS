@@ -5,7 +5,7 @@ import { Repository } from "typeorm";
 import { NULL_OBJECT } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { CreateProductRecordDtoType } from "Api/Modules/Client/Inventory/TypeChecking/Product/CreateProductRecordDtoType";
 import { UpdateProductRecordDto } from "Api/Modules/Client/Inventory/TypeChecking/Product/UpdateProductRecordDto";
-import { DeleteProductRecordDto } from "Api/Modules/Client/Inventory/TypeChecking/Product/DeleteProductRecordDto";
+import { DeleteRecordDto } from "Api/Modules/Client/Inventory/TypeChecking/GeneralPurpose/DeleteRecordDto";
 
 @autoInjectable()
 class ProductService {
@@ -103,7 +103,7 @@ class ProductService {
     return product;
   }
 
-  public async deleteProductRecord(deleteProductDto: DeleteProductRecordDto) {
+  public async deleteProductRecord(deleteProductDto: DeleteRecordDto) {
     const { identifier, identifierType, queryRunner } = deleteProductDto;
 
     const product =

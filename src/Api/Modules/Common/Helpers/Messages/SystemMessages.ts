@@ -44,7 +44,7 @@ export const CUSTOMER_RESOURCE = "Customer Resource";
 export const USER_RESOURCE = "User Resource";
 export const WALLET_RESOURCE = "Wallet Resource";
 export const CART_ITEM_RESOURCE = "Cart Item Resource";
-export const COLLECTION_RESOURCE = "Collection Resource";
+export const MERCHANT_COLLECTION_RESOURCE = "Collection Resource";
 
 /* ------------------------------ Generic Messages  ------------------------- */
 

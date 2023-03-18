@@ -21,6 +21,9 @@ const dbContext = container.resolve(DbContext);
 
 class AddItemToCartController {
   public async handle(request: Request, response: Response) {
+    const queryRunner = await dbContext.getTransactionalQueryRunner();
+
+    await queryRunner.startTransaction();
     try {
       const user = (request as AuthRequest).user;
       const { product_identifier: productIdentifier, quantity } = request.body;
@@ -41,57 +44,39 @@ class AddItemToCartController {
 
       const cart = await CartService.getCartByCustomerId(customer!.id);
 
-      const queryRunner = await dbContext.getTransactionalQueryRunner();
+      const newCartItem = await CartItemService.createCartItemRecord({
+        productId: product.id,
+        cartId: cart?.id,
+        quantity,
+        queryRunner,
+      });
 
-      await queryRunner.startTransaction();
-      try {
-        const newCartItem = await CartItemService.createCartItemRecord({
-          productId: product.id,
-          cartId: cart?.id,
-          quantity,
-          queryRunner,
-        });
+      const cartItems = cart?.items;
 
-        const cartItems = cart?.items;
+      cartItems?.push(newCartItem);
 
-        cartItems?.push(newCartItem);
+      await CartService.updateCartRecord({
+        identifierType: "id",
+        identifier: cart!.id,
+        updatePayload: {
+          items: cartItems,
+        },
+        queryRunner,
+      });
 
-        await CartService.updateCartRecord({
-          identifierType: "id",
-          identifier: cart!.id,
-          updatePayload: {
-            items: cartItems,
-          },
-          queryRunner,
-        });
+      await queryRunner.commitTransaction();
 
-        await queryRunner.commitTransaction();
-
-        return response.status(HttpStatusCodeEnum.OK).json({
-          status_code: HttpStatusCodeEnum.OK,
-          status: SUCCESS,
-          message: INFORMATION_UPDATED,
-        });
-      } catch (AddProductToCartControllerError) {
-        console.log(
-          "🚀 ~ AddProductToCartController.handle AddProductToCartControllerError ->",
-          AddProductToCartControllerError
-        );
-
-        await queryRunner.rollbackTransaction();
-
-        return response.status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR).json({
-          status_code: HttpStatusCodeEnum.INTERNAL_SERVER_ERROR,
-          status: ERROR,
-          message: SOMETHING_WENT_WRONG,
-        });
-      }
+      return response.status(HttpStatusCodeEnum.OK).json({
+        status_code: HttpStatusCodeEnum.OK,
+        status: SUCCESS,
+        message: INFORMATION_UPDATED,
+      });
     } catch (AddProductToCartControllerError) {
       console.log(
         "🚀 ~ AddProductToCartController.handle AddProductToCartControllerError ->",
         AddProductToCartControllerError
       );
-
+      await queryRunner.rollbackTransaction();
       return response.status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR).json({
         status_code: HttpStatusCodeEnum.INTERNAL_SERVER_ERROR,
         status: ERROR,

@@ -98,9 +98,10 @@ class MerchantService {
     await this.merchantsRepository.save(merchant);
   }
 
-  public async listActiveMerchantRecords() {
+  public async listActiveMerchants() {
     return await this.merchantsRepository.findBy({
       isActive: true,
+      isDeleted: false,
     });
   }
 

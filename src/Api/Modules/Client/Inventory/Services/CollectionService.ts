@@ -4,6 +4,8 @@ import { Collection } from "Api/Modules/Client/Inventory/Entities";
 import { Repository } from "typeorm";
 import { CreateCollectionRecordDto } from "Api/Modules/Client/Inventory/TypeChecking/Collection/CreateCollectionRecordDto";
 import { NULL_OBJECT } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
+import { DeleteRecordDto } from "Api/Modules/Client/Inventory/TypeChecking/GeneralPurpose/DeleteRecordDto";
+import { UpdateCollectionRecordDto } from "Api/Modules/Client/Inventory/TypeChecking/Collection/UpdateCollectionRecordDto";
 
 @autoInjectable()
 class CollectionService {
@@ -121,6 +123,46 @@ class CollectionService {
         isDeleted: true,
       },
     });
+  }
+
+  public async deleteCollection(deleteCollectionDto: DeleteRecordDto) {
+    const { identifier, identifierType, queryRunner } = deleteCollectionDto;
+
+    const collection =
+      identifierType === "id"
+        ? await this.getCollectionById(identifier as number)
+        : await this.getCollectionByIdentifier(identifier as string);
+
+    if (collection === NULL_OBJECT) return;
+
+    Object.assign(collection, {
+      isDeleted: true,
+      isActive: false,
+    });
+
+    await queryRunner.manager.save(collection);
+
+    return collection;
+  }
+
+  public async updateCollection(
+    updateCollectionDto: UpdateCollectionRecordDto
+  ) {
+    const { identifier, identifierType, updatePayload, queryRunner } =
+      updateCollectionDto;
+
+    const collection =
+      identifierType === "id"
+        ? await this.getCollectionById(identifier as number)
+        : await this.getCollectionByIdentifier(identifier as string);
+
+    if (collection === NULL_OBJECT) return;
+
+    Object.assign(collection, updatePayload);
+
+    await queryRunner.manager.save(collection);
+
+    return collection;
   }
 }
 

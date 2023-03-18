@@ -23,7 +23,7 @@ export class ProductCategory extends BaseEntity {
       this.nameSlug =
         slugify(this.name, { lower: true }) +
         "-" +
-        businessConfig.currentDateTime.toUTC();
+        businessConfig.currentDateTime().toUTC();
     }
   }
 }

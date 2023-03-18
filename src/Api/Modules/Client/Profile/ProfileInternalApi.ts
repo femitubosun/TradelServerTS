@@ -31,4 +31,8 @@ export class ProfileInternalApi {
   public static async getCustomerByUserId(userId: number) {
     return await CustomersService.getCustomerByUserId(userId);
   }
+
+  public static async listActiveMerchants() {
+    return await MerchantService.listActiveMerchants();
+  }
 }
