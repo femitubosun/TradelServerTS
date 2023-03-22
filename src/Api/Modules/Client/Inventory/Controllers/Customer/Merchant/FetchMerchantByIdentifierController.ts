@@ -8,7 +8,6 @@ import {
   SUCCESS,
 } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { ProfileInternalApi } from "Api/Modules/Client/Profile/ProfileInternalApi";
-import * as Http from "http";
 import {
   RESOURCE_FETCHED_SUCCESSFULLY,
   RESOURCE_RECORD_NOT_FOUND,

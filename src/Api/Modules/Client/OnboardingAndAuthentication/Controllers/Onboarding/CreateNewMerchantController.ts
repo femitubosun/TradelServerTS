@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 import {
-  CUSTOMER_ONBOARDING_SUCCESS,
   EMAIL_IN_USE,
   ERROR,
   MERCHANT_ONBOARDING_SUCCESS,
@@ -28,6 +27,9 @@ const dbContext = container.resolve(DbContext);
 
 class CreateNewMerchantController {
   public async handle(request: Request, response: Response) {
+    const queryRunner = await dbContext.getTransactionalQueryRunner();
+
+    await queryRunner.startTransaction();
     try {
       const {
         email,
@@ -59,81 +61,62 @@ class CreateNewMerchantController {
         });
       }
 
-      const queryRunner = await dbContext.getTransactionalQueryRunner();
+      const user = await UsersService.createUserRecord({
+        firstName,
+        lastName,
+        email,
+        roleId: role.id,
+        queryRunner,
+        password,
+      });
 
-      await queryRunner.startTransaction();
+      await ProfileInternalApi.createMerchantRecord({
+        userId: user.id,
+        phoneNumber,
+        storeName,
+        queryRunner,
+      });
 
-      try {
-        const user = await UsersService.createUserRecord({
-          firstName,
-          lastName,
-          email,
-          roleId: role.id,
-          queryRunner,
-          password,
-        });
+      const token = generateStringOfLength(businessConfig.emailTokenLength);
 
-        await ProfileInternalApi.createMerchantRecord({
-          userId: user.id,
-          phoneNumber,
-          storeName,
-          queryRunner,
-        });
+      const otpToken = await UserTokensService.createUserTokenRecord({
+        userId: user.id,
+        queryRunner,
+        expiresOn: UserTokensService.getEmailTokenExpiresOn(),
+        tokenType: UserTokenTypesEnum.EMAIL,
+        token,
+      });
+      await queryRunner.commitTransaction();
 
-        const token = generateStringOfLength(businessConfig.emailTokenLength);
+      Event.emit(eventTypes.user.signUp, {
+        userEmail: user.email,
+        activationToken: otpToken.token,
+      });
 
-        const otpToken = await UserTokensService.createUserTokenRecord({
-          userId: user.id,
-          queryRunner,
-          expiresOn: UserTokensService.getEmailTokenExpiresOn(),
-          tokenType: UserTokenTypesEnum.EMAIL,
-          token,
-        });
-        await queryRunner.commitTransaction();
+      const accessToken = JwtHelper.signUser(user);
 
-        Event.emit(eventTypes.user.signUp, {
-          userEmail: user.email,
-          activationToken: otpToken.token,
-        });
+      const results = {
+        user: {
+          identifier: user.identifier,
+          email: user.email,
+          first_name: user.firstName,
+          last_name: user.lastName,
+        },
+        access_token: accessToken,
+      };
 
-        const accessToken = JwtHelper.signUser(user);
-
-        const results = {
-          user: {
-            identifier: user.identifier,
-            email: user.email,
-            first_name: user.firstName,
-            last_name: user.lastName,
-          },
-          access_token: accessToken,
-        };
-
-        return response.status(HttpStatusCodeEnum.CREATED).json({
-          status: SUCCESS,
-          status_code: HttpStatusCodeEnum.CREATED,
-          message: MERCHANT_ONBOARDING_SUCCESS,
-          results,
-        });
-      } catch (CreateNewMerchantControllerError) {
-        await queryRunner.rollbackTransaction();
-
-        console.log(
-          "🚀 ~ CreateNewMerchantController.handle CreateNewMerchantControllerError ->",
-          CreateNewMerchantControllerError
-        );
-
-        return response.status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR).json({
-          status_code: HttpStatusCodeEnum.INTERNAL_SERVER_ERROR,
-          status: ERROR,
-          message: SOMETHING_WENT_WRONG,
-        });
-      }
+      return response.status(HttpStatusCodeEnum.CREATED).json({
+        status: SUCCESS,
+        status_code: HttpStatusCodeEnum.CREATED,
+        message: MERCHANT_ONBOARDING_SUCCESS,
+        results,
+      });
     } catch (CreateNewMerchantControllerError) {
       console.log(
         "🚀 ~ CreateNewMerchantController.handle CreateNewMerchantControllerError ->",
         CreateNewMerchantControllerError
       );
-
+      await queryRunner.rollbackTransaction();
       return response.status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR).json({
         status_code: HttpStatusCodeEnum.INTERNAL_SERVER_ERROR,
         status: ERROR,

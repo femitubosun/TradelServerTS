@@ -2,8 +2,12 @@ export const PROVIDER_NOT_FOUND = "Provider Was Not Found";
 export const MIDDLEWARE_ATTACHED = "Middleware Attached Successfully";
 export const NOT_ALLOWED_BY_CORS = "This Origin is not allowed by CORS";
 export const SERVER_STARTED = `Server Started`;
-export const DATABASE_CONNECTED = "Database Connected Successfully";
-export const DATABASE_CONNECTION_ERROR = "Database Connection Failure";
+export const POSTGRES_DATABASE_CONNECTED =
+  "Postgres Database Connected Successfully";
+export const POSTGRES_DATABASE_CONNECTION_ERROR =
+  "Postgres Database Connection Failure";
+export const MONGODB_CONNECTED = "MongoDb Connected Successfully";
+export const MONGODB_CONNECTION_ERROR = "MongoDB Connection Error";
 export const EXPRESS_BOOTSTRAPPED = "Express Bootstrapped Successfully";
 export const EXPRESS_BOOTSTRAPPED_ERROR = "Express Bootstrap Failure";
 export const ROUTES_ATTACHED = "Routes Attached Successfully";
@@ -45,6 +49,7 @@ export const USER_RESOURCE = "User Resource";
 export const WALLET_RESOURCE = "Wallet Resource";
 export const CART_ITEM_RESOURCE = "Cart Item Resource";
 export const MERCHANT_COLLECTION_RESOURCE = "Collection Resource";
+export const PRODUCT_VARIANT_RESOURCE = "Product Variant Resource";
 
 /* ------------------------------ Generic Messages  ------------------------- */
 

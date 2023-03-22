@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 import {
   ERROR,
-  INFORMATION_RETRIEVED,
   NULL_OBJECT,
   PRODUCT_RESOURCE,
   SOMETHING_WENT_WRONG,
@@ -10,10 +9,11 @@ import {
 } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import ProductService from "Api/Modules/Client/Inventory/Services/ProductService";
 import {
-  RESOURCE_RECORD_NOT_FOUND,
   RESOURCE_FETCHED_SUCCESSFULLY,
+  RESOURCE_RECORD_NOT_FOUND,
 } from "Api/Modules/Common/Helpers/Messages/SystemMessageFunctions";
 import { ProfileInternalApi } from "Api/Modules/Client/Profile/ProfileInternalApi";
+import ProductVariantOptionsService from "Api/Modules/Client/Inventory/Services/ProductVariantOptionsService";
 
 class FetchProductByIdentifierController {
   public async handle(request: Request, response: Response) {
@@ -36,10 +36,15 @@ class FetchProductByIdentifierController {
         product.merchantId
       );
 
+      const productVariantOptions =
+        await ProductVariantOptionsService.getProductVariantOptionsByProductId(
+          product.id
+        );
+
       return response.status(HttpStatusCodeEnum.OK).json({
         status_code: HttpStatusCodeEnum.OK,
         status: SUCCESS,
-        message: INFORMATION_RETRIEVED,
+        message: RESOURCE_FETCHED_SUCCESSFULLY(PRODUCT_RESOURCE),
         results: {
           identifier: product.identifier,
           name: product.name,
@@ -47,6 +52,7 @@ class FetchProductByIdentifierController {
           description: product.description,
           base_price: product.basePrice,
           meta: {
+            variants: productVariantOptions,
             merchant: {
               identifier: merchant?.identifier,
               store_name: merchant?.storeName,

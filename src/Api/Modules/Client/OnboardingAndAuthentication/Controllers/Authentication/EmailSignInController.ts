@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 import {
-  CHECK_EMAIL_AND_PASSWORD,
   ERROR,
   INVALID_CREDENTIALS,
   NULL_OBJECT,
@@ -10,7 +9,6 @@ import {
   SUCCESS,
 } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import UsersService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UsersService";
-import { BadRequestError } from "Api/Modules/Common/Exceptions/BadRequestError";
 import { PasswordEncryptionHelper } from "Api/Modules/Common/Helpers/PasswordEncryptionHelper";
 import { JwtHelper } from "Api/Modules/Common/Helpers/JwtHelper";
 import Event from "Lib/Events";

@@ -3,7 +3,6 @@ import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 import {
   ERROR,
   MERCHANT_COLLECTION_RESOURCE,
-  MERCHANT_RESOURCE,
   SOMETHING_WENT_WRONG,
   SUCCESS,
 } from "Api/Modules/Common/Helpers/Messages/SystemMessages";

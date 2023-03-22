@@ -4,24 +4,18 @@ import {
   EMAIL_VERIFICATION_SUCCESS,
   ERROR,
   INVALID_TOKEN,
-  INVALID_TOKEN_TYPE,
-  NO_TOKEN_RECORD,
   NULL_OBJECT,
   SOMETHING_WENT_WRONG,
   SUCCESS,
   TOKEN_EXPIRED,
-  UNAUTHORIZED_OPERATION,
-  USER_DOES_NOT_EXIST,
 } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { AuthRequest } from "TypeChecking/GeneralPurpose/AuthRequest";
-import { BadRequestError } from "Api/Modules/Common/Exceptions/BadRequestError";
 import UserTokensService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UserTokensService";
+import userTokensService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UserTokensService";
 import { UserTokenTypesEnum } from "Api/Modules/Client/OnboardingAndAuthentication/TypeChecking/UserTokens";
 import UsersService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UsersService";
-import { UnauthorizedError } from "Api/Modules/Common/Exceptions/UnauthorizedError";
-import { DateTime } from "luxon";
 import usersService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UsersService";
-import userTokensService from "Api/Modules/Client/OnboardingAndAuthentication/Services/UserTokensService";
+import { DateTime } from "luxon";
 
 class VerifyEmailController {
   public async handle(request: Request, response: Response) {

@@ -15,6 +15,7 @@ import {
   RESOURCE_FETCHED_SUCCESSFULLY,
   RESOURCE_RECORD_NOT_FOUND,
 } from "Api/Modules/Common/Helpers/Messages/SystemMessageFunctions";
+import ProductVariantOptionsService from "Api/Modules/Client/Inventory/Services/ProductVariantOptionsService";
 
 class FetchProductByIdentifierController {
   public async handle(request: Request, response: Response) {
@@ -44,6 +45,10 @@ class FetchProductByIdentifierController {
           message: UNAUTHORIZED_OPERATION,
         });
       }
+      const productVariantOptions =
+        await ProductVariantOptionsService.getProductVariantOptionsByProductId(
+          product.id
+        );
 
       return response.status(HttpStatusCodeEnum.OK).json({
         status_code: HttpStatusCodeEnum.OK,
@@ -56,6 +61,7 @@ class FetchProductByIdentifierController {
           description: product.description,
           base_price: product.basePrice,
           meta: {
+            variants: productVariantOptions,
             merchant: {
               identifier: merchant?.identifier,
               store_name: merchant?.storeName,

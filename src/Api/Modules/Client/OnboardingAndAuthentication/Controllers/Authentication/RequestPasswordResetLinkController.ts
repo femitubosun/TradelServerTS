@@ -14,7 +14,6 @@ import UserTokensService from "Api/Modules/Client/OnboardingAndAuthentication/Se
 import { UserTokenTypesEnum } from "Api/Modules/Client/OnboardingAndAuthentication/TypeChecking/UserTokens";
 import { generateStringOfLength } from "Utils/generateStringOfLength";
 import { businessConfig } from "Config/businessConfig";
-import { expressConfig } from "Config/expressConfig";
 import { SendPasswordResetLinkDtoType } from "Logic/Services/Email/TypeChecking/SendPasswordRestLinkDtoType";
 import { EmailService } from "Logic/Services/Email/EmailService";
 import { container } from "tsyringe";

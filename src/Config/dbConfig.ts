@@ -9,4 +9,6 @@ export const dbConfig = {
   testUsername: process.env.TEST_DATABASE_USERNAME,
   testPassword: process.env.TEST_DATABASE_PASSWORD,
   testDbName: process.env.TEST_DATABASE_NAME,
+
+  mongoDbUrl: process.env.MONGO_URI,
 };

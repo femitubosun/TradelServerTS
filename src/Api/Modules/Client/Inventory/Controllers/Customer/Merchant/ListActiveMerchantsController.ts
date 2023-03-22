@@ -5,7 +5,6 @@ import {
   SOMETHING_WENT_WRONG,
   SUCCESS,
 } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
-import MerchantService from "Api/Modules/Client/Profile/Services/MerchantService";
 import { ProfileInternalApi } from "Api/Modules/Client/Profile/ProfileInternalApi";
 
 class ListActiveMerchantsController {

@@ -12,6 +12,8 @@ import {
   CartItem,
   Product,
   Collection,
+  ProductVariant,
+  ProductVariantOptions,
 } from "Api/Modules/Client/Inventory/Entities";
 
 export const AppDataSource = new DataSource({
@@ -31,6 +33,8 @@ export const AppDataSource = new DataSource({
     Merchant,
     Collection,
     ProductCategory,
+    ProductVariant,
+    ProductVariantOptions,
     Product,
   ],
   synchronize: true,

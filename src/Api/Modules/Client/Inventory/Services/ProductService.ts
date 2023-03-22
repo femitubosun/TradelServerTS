@@ -38,28 +38,28 @@ class ProductService {
   }
 
   public async getProductById(productId: number): Promise<Product | null> {
-    const productInfo = await this.productsRepository.findOneById(productId);
-    return productInfo || NULL_OBJECT;
+    const product = await this.productsRepository.findOneById(productId);
+    return product || NULL_OBJECT;
   }
 
   public async getProductByIdentifier(
     productIdentifier: string
   ): Promise<Product | null> {
-    const productInfo = await this.productsRepository.findOneBy({
+    const product = await this.productsRepository.findOneBy({
       identifier: productIdentifier,
       isActive: true,
       isDeleted: false,
     });
 
-    return productInfo || NULL_OBJECT;
+    return product || NULL_OBJECT;
   }
 
   public async getProductBySlug(productSlug: string) {
-    const productInfo = await this.productsRepository.findOneBy({
+    const product = await this.productsRepository.findOneBy({
       nameSlug: productSlug,
     });
 
-    return productInfo || NULL_OBJECT;
+    return product || NULL_OBJECT;
   }
 
   public async listActiveProductsByMerchantId(merchantId: number) {

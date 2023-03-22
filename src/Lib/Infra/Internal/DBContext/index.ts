@@ -7,7 +7,7 @@ import {
 } from "typeorm";
 import { AppDataSource } from "Lib/Infra/Internal/DBContext/DataSource";
 import { SettingsUserRoles } from "Api/Modules/Client/OnboardingAndAuthentication/Entities/SettingsUserRoles";
-import { inject, singleton, container } from "tsyringe";
+import { container, inject, singleton } from "tsyringe";
 import { NULL_OBJECT } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { InternalServerError } from "Api/Modules/Common/Exceptions/InternalServerError";
 

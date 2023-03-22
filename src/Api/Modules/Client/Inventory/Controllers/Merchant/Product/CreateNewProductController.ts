@@ -14,11 +14,15 @@ import { ProfileInternalApi } from "Api/Modules/Client/Profile/ProfileInternalAp
 import ProductService from "Api/Modules/Client/Inventory/Services/ProductService";
 import { container } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
+import ProductVariantOptionsService from "Api/Modules/Client/Inventory/Services/ProductVariantOptionsService";
 
 const dbContext = container.resolve(DbContext);
 
 class CreateNewProductController {
   public async handle(request: Request, response: Response) {
+    const queryRunner = await dbContext.getTransactionalQueryRunner();
+
+    await queryRunner.startTransaction();
     try {
       const user = (request as AuthRequest).user;
 
@@ -34,55 +38,45 @@ class CreateNewProductController {
 
       const { name, description, base_price: basePrice } = request.body;
 
-      const queryRunner = await dbContext.getTransactionalQueryRunner();
+      const product = await ProductService.createProductRecord({
+        merchantId: merchant!.id,
+        name,
+        description,
+        basePrice,
+        queryRunner,
+      });
 
-      await queryRunner.startTransaction();
+      await ProductVariantOptionsService.createProductVariantOptionsRecord({
+        productId: product.id,
+        variantOptions: [],
+        queryRunner,
+      });
 
-      try {
-        const product = await ProductService.createProductRecord({
-          merchantId: merchant!.id,
-          name,
-          description,
-          basePrice,
-          queryRunner,
-        });
+      await queryRunner.commitTransaction();
 
-        await queryRunner.commitTransaction();
-
-        return response.status(HttpStatusCodeEnum.CREATED).json({
-          status_code: HttpStatusCodeEnum.CREATED,
-          status: SUCCESS,
-          message: INFORMATION_CREATED,
-          results: {
-            identifier: product.identifier,
-            name: product.name,
-            name_slug: product.nameSlug,
-            description: product.description || NOT_APPLICABLE,
-            base_price: product.basePrice,
-            meta: {
-              created_at: product.createdAt,
-              updated_at: product.updatedAt,
-            },
+      return response.status(HttpStatusCodeEnum.CREATED).json({
+        status_code: HttpStatusCodeEnum.CREATED,
+        status: SUCCESS,
+        message: INFORMATION_CREATED,
+        results: {
+          identifier: product.identifier,
+          name: product.name,
+          name_slug: product.nameSlug,
+          description: product.description || NOT_APPLICABLE,
+          base_price: product.basePrice,
+          meta: {
+            created_at: product.createdAt,
+            updated_at: product.updatedAt,
           },
-        });
-      } catch (CreateNewProductControllerError) {
-        console.log(
-          "🚀 ~ CreateNewProductController.handle CreateNewProductControllerError ->",
-          CreateNewProductControllerError
-        );
-        await queryRunner.rollbackTransaction();
-
-        return response.status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR).json({
-          status_code: HttpStatusCodeEnum.INTERNAL_SERVER_ERROR,
-          status: ERROR,
-          message: SOMETHING_WENT_WRONG,
-        });
-      }
+        },
+      });
     } catch (CreateNewProductControllerError) {
       console.log(
         "🚀 ~ CreateNewProductController.handle CreateNewProductControllerError ->",
         CreateNewProductControllerError
       );
+
+      await queryRunner.rollbackTransaction();
 
       return response.status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR).json({
         status_code: HttpStatusCodeEnum.INTERNAL_SERVER_ERROR,

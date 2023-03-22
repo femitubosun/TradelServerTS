@@ -21,6 +21,12 @@ import { UpdateCollectionValidator } from "Api/Modules/Client/Inventory/Validato
 import { AddProductToCollectionValidator } from "Api/Modules/Client/Inventory/Validators/Collection/AddProductToCollectionValidator";
 import AddProductToMerchantCollectionController from "Api/Modules/Client/Inventory/Controllers/Merchant/Collections/AddProductToMerchantCollectionController";
 import RemoveProductFromMerchantCollectionController from "Api/Modules/Client/Inventory/Controllers/Merchant/Collections/RemoveProductFromMerchantCollectionController";
+import { CreateNewProductVariantOptionValidator } from "Api/Modules/Client/Inventory/Validators/ProductVariant/CreateNewProductVariantOptionValidator";
+import AddVariantMetadataController from "Api/Modules/Client/Inventory/Controllers/Merchant/ProductVariant/AddVariantMetadataController";
+import CreateNewProductVariantController from "Api/Modules/Client/Inventory/Controllers/Merchant/ProductVariant/CreateNewProductVariantController";
+import { AccessProductIdentifierValidator } from "Api/Modules/Client/Inventory/Validators/ProductVariant/AccessProductIdentifierValidator";
+import { CreateNewProductVariantValidator } from "Api/Modules/Client/Inventory/Validators/ProductVariant/CreateNewProductVariantValidator";
+import CreateProductVariantOptionController from "Api/Modules/Client/Inventory/Controllers/Merchant/ProductVariant/CreateProductVariantOptionController";
 
 const routes = Router();
 
@@ -117,4 +123,24 @@ routes.post(
   validate,
   RemoveProductFromMerchantCollectionController.handle
 );
+
+/* ------------------------------<  Product Variants  >------------------------- */
+
+// routes.post(
+//   "/Create/ProductVariant/:productIdentifier",
+//   AccessProductIdentifierValidator,
+//   CreateNewProductVariantValidator,
+//   validate,
+//   CreateNewProductVariantController.handle
+// );
+
+// Variant Options
+routes.post(
+  "/Create/ProductVariantOption/:productIdentifier",
+  asyncMiddlewareHandler(isRole([MERCHANT_ROLE_NAME])),
+  CreateNewProductVariantOptionValidator,
+  validate,
+  CreateProductVariantOptionController.handle
+);
+
 export default routes;

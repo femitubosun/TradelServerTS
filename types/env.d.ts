@@ -32,6 +32,7 @@ declare global {
       SEND_GRID_SMTP_PASSWORD: string;
       JWT_SECRET: string;
       LOG_LEVEL: string;
+      MONGO_URI: string;
     }
   }
 }

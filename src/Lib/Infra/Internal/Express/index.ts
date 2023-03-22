@@ -11,10 +11,9 @@ import "express-async-errors";
 import routes from "Api/Routes";
 import { errorHandler } from "Api/Modules/Common/Exceptions/ErrorHandler";
 import {
-  DATABASE_CONNECTED,
-  DATABASE_CONNECTION_ERROR,
-  EXPRESS_BOOTSTRAPPED_ERROR,
   MIDDLEWARE_ATTACHED,
+  POSTGRES_DATABASE_CONNECTED,
+  POSTGRES_DATABASE_CONNECTION_ERROR,
   ROUTES_ATTACHED,
 } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
@@ -32,12 +31,18 @@ export default class Express {
 
   #bootstrap() {
     this.app = express();
-    Promise.resolve(this.#connectDatabase())
-      .then()
-      .catch((err) => {
-        console.log(err);
-        this.loggingProvider.error(EXPRESS_BOOTSTRAPPED_ERROR);
+    Promise.resolve(this.#connectPostgresDatabase())
+      .then(() => {
+        this.loggingProvider.info(POSTGRES_DATABASE_CONNECTED);
+      })
+      .catch((postgresConnectionError) => {
+        console.log(
+          "🚀 ~ Express. postgresConnectionError ->",
+          postgresConnectionError
+        );
+        this.loggingProvider.error(POSTGRES_DATABASE_CONNECTION_ERROR);
       });
+
     this.#attachMiddlewares();
     this.#attachRouters();
     this.#attachErrorHandlers();
@@ -56,14 +61,8 @@ export default class Express {
     this.loggingProvider.info(MIDDLEWARE_ATTACHED);
   }
 
-  async #connectDatabase() {
-    try {
-      await this.dbContext.connect();
-      this.loggingProvider.info(DATABASE_CONNECTED);
-    } catch (e) {
-      this.loggingProvider.info(DATABASE_CONNECTION_ERROR);
-      console.log(e);
-    }
+  async #connectPostgresDatabase() {
+    await this.dbContext.connect();
   }
 
   #attachRouters() {
