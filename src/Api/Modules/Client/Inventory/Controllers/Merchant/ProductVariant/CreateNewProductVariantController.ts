@@ -18,6 +18,9 @@ import {
 import { AuthRequest } from "TypeChecking/GeneralPurpose/AuthRequest";
 import { ProfileInternalApi } from "Api/Modules/Client/Profile/ProfileInternalApi";
 import ProductService from "Api/Modules/Client/Inventory/Services/ProductService";
+import ProductVariantOptionsService from "Api/Modules/Client/Inventory/Services/ProductVariantOptionsService";
+import * as console from "console";
+import ProductVariantService from "Api/Modules/Client/Inventory/Services/ProductVariantService";
 
 const dbContext = container.resolve(DbContext);
 
@@ -28,7 +31,7 @@ class CreateNewProductVariantController {
     await queryRunner.startTransaction();
     try {
       const { productIdentifier } = request.params;
-      const { variant_parents: variantParents, sku, price } = request.body;
+      const { parent_variants: parentVariants, sku, price } = request.body;
 
       const user = (request as AuthRequest).user;
 
@@ -54,11 +57,44 @@ class CreateNewProductVariantController {
         });
       }
 
-      return response.status(HttpStatusCodeEnum.OK).json({
-        status_code: HttpStatusCodeEnum.OK,
+      const productVariantOptions =
+        await ProductVariantOptionsService.getProductVariantOptionsByProductId(
+          product.id
+        );
+
+      const isNotMember = false;
+
+      const variantParentIsMember =
+        await ProductVariantOptionsService.isCombinationInVariantOption({
+          identifier: productVariantOptions!.id,
+          identifierType: "id",
+          combination: parentVariants,
+        });
+
+      if (variantParentIsMember === isNotMember) {
+        return response.status(HttpStatusCodeEnum.BAD_REQUEST).json({
+          status_code: HttpStatusCodeEnum.BAD_REQUEST,
+          status: ERROR,
+          message: "Invalid Variant Parents",
+        });
+      }
+
+      const productVariant =
+        await ProductVariantService.createProductVariantRecord({
+          sku,
+          parentVariants: parentVariants,
+          queryRunner,
+          price,
+          productId: product.id,
+        });
+
+      await queryRunner.commitTransaction();
+
+      return response.status(HttpStatusCodeEnum.CREATED).json({
+        status_code: HttpStatusCodeEnum.CREATED,
         status: SUCCESS,
         message: RESOURCE_RECORD_CREATED_SUCCESSFULLY(PRODUCT_VARIANT_RESOURCE),
-        results: request.body,
+        results: productVariant.forClient,
       });
     } catch (CreateNewProductVariantControllerError) {
       console.log(

@@ -31,6 +31,7 @@ class CreateMerchantCollectionController {
         label,
         merchantId: merchant!.id,
         queryRunner,
+        items: [],
       });
 
       await queryRunner.commitTransaction();

@@ -6,7 +6,7 @@ export const AddProductToCollectionValidator = [
     "Collection Identifier should be a valid UUID"
   ).isUUID(),
   body(
-    "productIdentifier",
+    "product_identifier",
     "Product Identifier should be a valid UUID"
   ).isUUID(),
 ];

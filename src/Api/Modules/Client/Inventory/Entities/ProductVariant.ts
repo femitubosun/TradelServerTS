@@ -14,25 +14,21 @@ export class ProductVariant extends BaseEntity {
   @Column()
   price: number;
 
-  @Column("text", { array: true })
-  variantParents: string[];
-}
+  @Column({
+    nullable: true,
+  })
+  photoUrl: string;
 
-// export const ProductVariant = new mongoose.Schema({
-//   productId: {
-//     type: String,
-//     required: true,
-//   },
-//
-//   sku: {
-//     type: String,
-//     required: true,
-//   },
-//
-//   price: {
-//     type: Number,
-//     required: true,
-//   },
-//
-//   variantParents: [String],
-// });
+  @Column("text", { array: true })
+  parentVariants: string[];
+
+  public get forClient() {
+    return {
+      identifier: this.identifier,
+      sku: this.sku,
+      price: this.price,
+      parent_variants: this.parentVariants,
+      photo_url: this.photoUrl,
+    };
+  }
+}

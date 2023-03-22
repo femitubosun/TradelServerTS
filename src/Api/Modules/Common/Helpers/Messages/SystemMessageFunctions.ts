@@ -17,3 +17,7 @@ export function RESOURCE_RECORD_UPDATED_SUCCESSFULLY(
 ) {
   return `${resourceName} Record Updated Successfully`;
 }
+
+export function RESOURCE_LIST_FETCHED_SUCCESSFULLY(resourceName = "Resource") {
+  return ` ${resourceName} List Fetched Successfully`;
+}

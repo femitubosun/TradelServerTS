@@ -29,4 +29,19 @@ export class Product extends BaseEntity {
         businessConfig.currentDateTime().toUTC();
     }
   }
+
+  public get forClient() {
+    return {
+      identifier: this.identifier,
+      name: this.name,
+      name_slug: this.nameSlug,
+      description: this.description,
+      base_price: this.basePrice,
+      meta: {
+        created_at: this.createdAt,
+        updated_at: this.updatedAt,
+        variants: {},
+      },
+    };
+  }
 }

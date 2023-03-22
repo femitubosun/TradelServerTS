@@ -7,6 +7,7 @@ export const UpdateCollectionValidator = [
   ).isUUID(),
   body("label")
     .isString()
+    .optional()
     .withMessage("Label must be a valid string")
     .trim()
     .escape()

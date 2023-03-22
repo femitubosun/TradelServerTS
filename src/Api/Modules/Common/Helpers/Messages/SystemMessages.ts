@@ -50,6 +50,8 @@ export const WALLET_RESOURCE = "Wallet Resource";
 export const CART_ITEM_RESOURCE = "Cart Item Resource";
 export const MERCHANT_COLLECTION_RESOURCE = "Collection Resource";
 export const PRODUCT_VARIANT_RESOURCE = "Product Variant Resource";
+export const PRODUCT_VARIANT_OPTION_RESOURCE =
+  "Product Variant Option Resource";
 
 /* ------------------------------ Generic Messages  ------------------------- */
 
@@ -90,3 +92,6 @@ export const NOT_APPLICABLE = "N/A";
 
 /* -------------------------------  Cart Messages  --------------------------- */
 export const CART_ITEM_REMOVED_SUCCESS = "Cart Item removed Successfully";
+
+/*-------------------------------<  Variant Option  >--------------------------- */
+export const INVALID_VARIANT_OPTIONS_PARENT = "Invalid Variant Options Parents";

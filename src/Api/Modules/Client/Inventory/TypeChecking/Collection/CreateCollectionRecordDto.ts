@@ -3,6 +3,6 @@ import DbQueryRunner from "TypeChecking/QueryRunner";
 
 export type CreateCollectionRecordDto = Pick<
   ICollection,
-  "merchantId" | "label"
+  "merchantId" | "label" | "items"
 > &
   DbQueryRunner;

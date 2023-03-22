@@ -5,6 +5,7 @@ import { Repository } from "typeorm";
 import { CreateProductVariantOptionRecordDto } from "Api/Modules/Client/Inventory/TypeChecking/ProductVariantOption/CreateProductVariantOptionRecordDto";
 import { NULL_OBJECT } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { UpdateProductVariantOptionsRecordDto } from "Api/Modules/Client/Inventory/TypeChecking/ProductVariantOption/UpdateProductVariantOptionsRecordDto";
+import { IsCombinationInVariantOptionDto } from "Api/Modules/Client/Inventory/TypeChecking/ProductVariantOption/IsCombinationInVariantOptionDto";
 
 @autoInjectable()
 class ProductVariantOptionsService {
@@ -112,6 +113,55 @@ class ProductVariantOptionsService {
     await queryRunner.manager.save(productVariant);
 
     return productVariant;
+  }
+
+  public async isCombinationInVariantOption(
+    isCombinationInVariantOptionDto: IsCombinationInVariantOptionDto
+  ): Promise<boolean> {
+    const { identifier, identifierType, combination } =
+      isCombinationInVariantOptionDto;
+
+    let productVariant;
+
+    switch (identifierType) {
+      case "productId":
+        productVariant = await this.getProductVariantOptionsByProductId(
+          identifier as number
+        );
+        break;
+
+      case "id":
+        productVariant = await this.getProductVariantOptionsById(
+          identifier as number
+        );
+        break;
+
+      case "identifier":
+        productVariant = await this.getProductVariantOptionsByIdentifier(
+          identifier as string
+        );
+        break;
+    }
+    if (productVariant === NULL_OBJECT) return false;
+
+    const variantOptionsCombinations = productVariant.variantCombinations;
+
+    // Search for array in an array of arrays.
+    // Reference https://stackoverflow.com/questions/19543514/check-whether-an-array-exists-in-an-array-of-arrays
+    let i, j, current;
+
+    for (i = 0; i < variantOptionsCombinations.length; ++i) {
+      if (combination.length === variantOptionsCombinations[i].length) {
+        current = variantOptionsCombinations[i];
+        for (
+          j = 0;
+          j < combination.length && combination[j] === current[j];
+          ++j
+        );
+        if (j === combination.length) return true;
+      }
+    }
+    return false;
   }
 }
 

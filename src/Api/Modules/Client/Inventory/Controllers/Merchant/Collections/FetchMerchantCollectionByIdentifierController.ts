@@ -38,12 +38,15 @@ class FetchMerchantCollectionByIdentifierController {
       }
 
       if (collection.merchantId != merchant!.id) {
-        return response.status(HttpStatusCodeEnum.FORBIDDEN).json({
-          status_code: HttpStatusCodeEnum.FORBIDDEN,
+        return response.status(HttpStatusCodeEnum.NOT_FOUND).json({
+          status_code: HttpStatusCodeEnum.NOT_FOUND,
           status: ERROR,
-          message: "You are not authorized to access this resource",
+          message: RESOURCE_RECORD_NOT_FOUND(MERCHANT_COLLECTION_RESOURCE),
         });
       }
+
+      const collectionItems = collection.items;
+      const mutatedItems = collectionItems.map((el) => el.forClient);
 
       return response.status(HttpStatusCodeEnum.OK).json({
         status_code: HttpStatusCodeEnum.OK,
@@ -54,6 +57,10 @@ class FetchMerchantCollectionByIdentifierController {
           label: collection.label,
           slug: collection.slug,
           image_url: collection.imageUrl || NOT_APPLICABLE,
+          collection_items: {
+            items: mutatedItems,
+            count: mutatedItems.length,
+          },
           meta: {
             created_at: collection.createdAt,
             updated_at: collection.updatedAt,

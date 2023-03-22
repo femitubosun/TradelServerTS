@@ -14,6 +14,7 @@ import {
 } from "Api/Modules/Common/Helpers/Messages/SystemMessageFunctions";
 import { ProfileInternalApi } from "Api/Modules/Client/Profile/ProfileInternalApi";
 import ProductVariantOptionsService from "Api/Modules/Client/Inventory/Services/ProductVariantOptionsService";
+import * as console from "console";
 
 class FetchProductByIdentifierController {
   public async handle(request: Request, response: Response) {
@@ -52,7 +53,7 @@ class FetchProductByIdentifierController {
           description: product.description,
           base_price: product.basePrice,
           meta: {
-            variants: productVariantOptions,
+            variants: productVariantOptions!.forClient,
             merchant: {
               identifier: merchant?.identifier,
               store_name: merchant?.storeName,

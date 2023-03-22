@@ -22,15 +22,17 @@ import { AddProductToCollectionValidator } from "Api/Modules/Client/Inventory/Va
 import AddProductToMerchantCollectionController from "Api/Modules/Client/Inventory/Controllers/Merchant/Collections/AddProductToMerchantCollectionController";
 import RemoveProductFromMerchantCollectionController from "Api/Modules/Client/Inventory/Controllers/Merchant/Collections/RemoveProductFromMerchantCollectionController";
 import { CreateNewProductVariantOptionValidator } from "Api/Modules/Client/Inventory/Validators/ProductVariant/CreateNewProductVariantOptionValidator";
-import AddVariantMetadataController from "Api/Modules/Client/Inventory/Controllers/Merchant/ProductVariant/AddVariantMetadataController";
+import CreateProductVariantOptionController from "Api/Modules/Client/Inventory/Controllers/Merchant/ProductVariant/CreateProductVariantOptionController";
 import CreateNewProductVariantController from "Api/Modules/Client/Inventory/Controllers/Merchant/ProductVariant/CreateNewProductVariantController";
 import { AccessProductIdentifierValidator } from "Api/Modules/Client/Inventory/Validators/ProductVariant/AccessProductIdentifierValidator";
 import { CreateNewProductVariantValidator } from "Api/Modules/Client/Inventory/Validators/ProductVariant/CreateNewProductVariantValidator";
-import CreateProductVariantOptionController from "Api/Modules/Client/Inventory/Controllers/Merchant/ProductVariant/CreateProductVariantOptionController";
+import ListProductsVariantsController from "Api/Modules/Client/Inventory/Controllers/Merchant/ProductVariant/ListProductsVariantsController";
+import { CreateCollectionValidator } from "Api/Modules/Client/Inventory/Validators/Collection/CreateCollectionValidator";
+import CreateMerchantCollectionController from "Api/Modules/Client/Inventory/Controllers/Merchant/Collections/CreateMerchantCollectionController";
 
 const routes = Router();
 
-// Product Routes
+/*-------------------------------<  Product Routes  >---------------------------*/
 routes.post(
   "/Create/Product",
   asyncMiddlewareHandler(isRole([MERCHANT_ROLE_NAME])),
@@ -68,14 +70,14 @@ routes.delete(
   DeleteProductController.handle
 );
 
-// Collection Routes
+/*-----------------------------<  Collection Routes  >-------------------------- */
 
 routes.post(
   "/Create/MerchantCollection",
   asyncMiddlewareHandler(isRole([MERCHANT_ROLE_NAME])),
-  CreateNewProductValidator,
+  CreateCollectionValidator,
   validate,
-  CreateNewProductController.handle
+  CreateMerchantCollectionController.handle
 );
 
 routes.get(
@@ -85,7 +87,7 @@ routes.get(
 );
 
 routes.get(
-  "/Fetch/MerchantCollections/:collectionIdentifier",
+  "/Fetch/MerchantCollection/:collectionIdentifier",
   asyncMiddlewareHandler(isRole([MERCHANT_ROLE_NAME])),
   AccessCollectionResourceByIdentifierValidator,
   validate,
@@ -93,7 +95,7 @@ routes.get(
 );
 
 routes.patch(
-  "/Update/MerchantCollections/:collectionIdentifier",
+  "/Update/MerchantCollection/:collectionIdentifier",
   asyncMiddlewareHandler(isRole([MERCHANT_ROLE_NAME])),
   UpdateCollectionValidator,
   validate,
@@ -124,17 +126,27 @@ routes.post(
   RemoveProductFromMerchantCollectionController.handle
 );
 
-/* ------------------------------<  Product Variants  >------------------------- */
+/* ------------------------------<  Product Variants Routes  >------------------------- */
 
-// routes.post(
-//   "/Create/ProductVariant/:productIdentifier",
-//   AccessProductIdentifierValidator,
-//   CreateNewProductVariantValidator,
-//   validate,
-//   CreateNewProductVariantController.handle
-// );
+routes.post(
+  "/Create/ProductVariant/:productIdentifier",
+  asyncMiddlewareHandler(isRole([MERCHANT_ROLE_NAME])),
+  AccessProductIdentifierValidator,
+  CreateNewProductVariantValidator,
+  validate,
+  CreateNewProductVariantController.handle
+);
 
-// Variant Options
+routes.get(
+  "/Fetch/ProductVariants/:productIdentifier",
+  asyncMiddlewareHandler(isRole([MERCHANT_ROLE_NAME])),
+  AccessProductIdentifierValidator,
+  validate,
+  ListProductsVariantsController.handle
+);
+
+/*------------------------------<  Variant Options Routes >--------------------------- */
+
 routes.post(
   "/Create/ProductVariantOption/:productIdentifier",
   asyncMiddlewareHandler(isRole([MERCHANT_ROLE_NAME])),

@@ -4,20 +4,21 @@ import {
   ERROR,
   NULL_OBJECT,
   PRODUCT_RESOURCE,
+  PRODUCT_VARIANT_RESOURCE,
   SOMETHING_WENT_WRONG,
   SUCCESS,
   UNAUTHORIZED_OPERATION,
 } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { AuthRequest } from "TypeChecking/GeneralPurpose/AuthRequest";
-import { ProfileInternalApi } from "Api/Modules/Client/Profile/ProfileInternalApi";
 import ProductService from "Api/Modules/Client/Inventory/Services/ProductService";
 import {
-  RESOURCE_FETCHED_SUCCESSFULLY,
+  RESOURCE_LIST_FETCHED_SUCCESSFULLY,
   RESOURCE_RECORD_NOT_FOUND,
 } from "Api/Modules/Common/Helpers/Messages/SystemMessageFunctions";
-import ProductVariantOptionsService from "Api/Modules/Client/Inventory/Services/ProductVariantOptionsService";
+import { ProfileInternalApi } from "Api/Modules/Client/Profile/ProfileInternalApi";
+import ProductVariantService from "Api/Modules/Client/Inventory/Services/ProductVariantService";
 
-class FetchProductByIdentifierController {
+class ListProductsVariantsController {
   public async handle(request: Request, response: Response) {
     try {
       const user = (request as AuthRequest).user;
@@ -45,25 +46,24 @@ class FetchProductByIdentifierController {
           message: UNAUTHORIZED_OPERATION,
         });
       }
-      const productVariantOptions =
-        await ProductVariantOptionsService.getProductVariantOptionsByProductId(
-          product.id
-        );
 
-      const fetchProductByIdentifierControllerResult = product.forClient;
-      fetchProductByIdentifierControllerResult.meta.variants =
-        productVariantOptions!.forClient;
+      const productsvariants =
+        await ProductVariantService.listProductVariantsByProductId(product.id);
+
+      const mutatedProductsVariants = productsvariants.map((variant) => {
+        return variant.forClient;
+      });
 
       return response.status(HttpStatusCodeEnum.OK).json({
         status_code: HttpStatusCodeEnum.OK,
         status: SUCCESS,
-        message: RESOURCE_FETCHED_SUCCESSFULLY(PRODUCT_RESOURCE),
-        results: fetchProductByIdentifierControllerResult,
+        message: RESOURCE_LIST_FETCHED_SUCCESSFULLY(PRODUCT_VARIANT_RESOURCE),
+        results: mutatedProductsVariants,
       });
-    } catch (FetchProductByIdentifierControllerError) {
+    } catch (ListProductsVariantsControllerError) {
       console.log(
-        "🚀 ~ FetchProductByIdentifierController.handle FetchProductByIdentifierControllerError ->",
-        FetchProductByIdentifierControllerError
+        "🚀 ~ ListProductsVariantsController.handle ListProductsVariantsControllerError ->",
+        ListProductsVariantsControllerError
       );
 
       return response.status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR).json({
@@ -75,4 +75,4 @@ class FetchProductByIdentifierController {
   }
 }
 
-export default new FetchProductByIdentifierController();
+export default new ListProductsVariantsController();

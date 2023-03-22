@@ -5,6 +5,7 @@ import {
   NOT_APPLICABLE,
   NULL_OBJECT,
   PRODUCT_RESOURCE,
+  PRODUCT_VARIANT_OPTION_RESOURCE,
   SOMETHING_WENT_WRONG,
   SUCCESS,
   UNAUTHORIZED_OPERATION,
@@ -14,7 +15,10 @@ import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { AuthRequest } from "TypeChecking/GeneralPurpose/AuthRequest";
 import { ProfileInternalApi } from "Api/Modules/Client/Profile/ProfileInternalApi";
 import ProductService from "Api/Modules/Client/Inventory/Services/ProductService";
-import { RESOURCE_RECORD_NOT_FOUND } from "Api/Modules/Common/Helpers/Messages/SystemMessageFunctions";
+import {
+  RESOURCE_RECORD_CREATED_SUCCESSFULLY,
+  RESOURCE_RECORD_NOT_FOUND,
+} from "Api/Modules/Common/Helpers/Messages/SystemMessageFunctions";
 import { ProductVariantOptions } from "Api/Modules/Client/Inventory/Entities";
 import ProductVariantOptionsService from "Api/Modules/Client/Inventory/Services/ProductVariantOptionsService";
 
@@ -88,11 +92,13 @@ class CreateProductVariantOptionController {
 
       await queryRunner.commitTransaction();
 
-      return response.status(HttpStatusCodeEnum.OK).json({
-        status_code: HttpStatusCodeEnum.OK,
+      return response.status(HttpStatusCodeEnum.CREATED).json({
+        status_code: HttpStatusCodeEnum.CREATED,
         status: SUCCESS,
-        message: "",
-        results: productVariant,
+        message: RESOURCE_RECORD_CREATED_SUCCESSFULLY(
+          PRODUCT_VARIANT_OPTION_RESOURCE
+        ),
+        results: productVariant!.forClient,
       });
     } catch (CreateProductVariantOptionControllerError) {
       console.log(

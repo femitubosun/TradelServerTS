@@ -1,7 +1,7 @@
 import { body } from "express-validator";
 
 export const CreateNewProductVariantValidator = [
-  body("variant_parents", "Variant Parents must be an array of string")
+  body("parent_variants", "Parent Variants must be an array of string")
     .isArray()
     .custom((array) => {
       return array.every((member: unknown) => {

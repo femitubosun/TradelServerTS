@@ -3,6 +3,7 @@ import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 import {
   ERROR,
   MERCHANT_COLLECTION_RESOURCE,
+  NOT_APPLICABLE,
   NULL_OBJECT,
   PRODUCT_RESOURCE,
   SOMETHING_WENT_WRONG,
@@ -68,7 +69,7 @@ class AddProductToMerchantCollectionController {
 
       collectionItems.push(product);
 
-      await CollectionService.updateCollection({
+      const updatedCollection = await CollectionService.updateCollection({
         identifierType: "id",
         identifier: collection.id,
         updatePayload: {
@@ -79,10 +80,26 @@ class AddProductToMerchantCollectionController {
 
       await queryRunner.commitTransaction();
 
+      const mutatedItems = collectionItems.map((el) => el.forClient);
+
       return response.status(HttpStatusCodeEnum.OK).json({
         status_code: HttpStatusCodeEnum.OK,
         status: SUCCESS,
         message: "Product Added to collection Successfully",
+        results: {
+          identifier: updatedCollection!.identifier,
+          label: updatedCollection!.label,
+          slug: updatedCollection!.slug,
+          image_url: updatedCollection!.imageUrl || NOT_APPLICABLE,
+          collection_items: {
+            items: mutatedItems,
+            count: mutatedItems.length,
+          },
+          meta: {
+            created_at: updatedCollection!.createdAt,
+            updated_at: updatedCollection!.updatedAt,
+          },
+        },
       });
     } catch (AddProductToMerchantCollectionError) {
       console.log(
