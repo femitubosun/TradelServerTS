@@ -1,4 +1,5 @@
 import { DateTime } from "luxon";
+import { Product } from "Api/Modules/Client/Inventory/Entities";
 
 export interface IProductVariant {
   id: number;
@@ -9,7 +10,11 @@ export interface IProductVariant {
 
   price: number;
 
+  stock: number;
+
   parentVariants: string[];
+
+  product: Product;
 
   productId: number;
 

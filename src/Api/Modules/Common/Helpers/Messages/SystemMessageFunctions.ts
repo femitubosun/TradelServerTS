@@ -19,5 +19,13 @@ export function RESOURCE_RECORD_UPDATED_SUCCESSFULLY(
 }
 
 export function RESOURCE_LIST_FETCHED_SUCCESSFULLY(resourceName = "Resource") {
-  return ` ${resourceName} List Fetched Successfully`;
+  return `${resourceName} List Fetched Successfully`;
+}
+
+export function OPERATION_SUCCESS(operationName?: string) {
+  return `${operationName} Operation was Successful`;
+}
+
+export function OPERATION_FAILURE(operationName?: string) {
+  return `${operationName} Operation was failure`;
 }

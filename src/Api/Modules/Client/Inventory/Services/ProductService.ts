@@ -6,6 +6,7 @@ import { NULL_OBJECT } from "Api/Modules/Common/Helpers/Messages/SystemMessages"
 import { CreateProductRecordDtoType } from "Api/Modules/Client/Inventory/TypeChecking/Product/CreateProductRecordDtoType";
 import { UpdateProductRecordDto } from "Api/Modules/Client/Inventory/TypeChecking/Product/UpdateProductRecordDto";
 import { DeleteRecordDto } from "Api/Modules/Client/Inventory/TypeChecking/GeneralPurpose/DeleteRecordDto";
+import { DepleteProductDto } from "Api/Modules/Client/Inventory/TypeChecking/Product/DepleteProductDto";
 
 @autoInjectable()
 class ProductService {
@@ -38,25 +39,42 @@ class ProductService {
   }
 
   public async getProductById(productId: number): Promise<Product | null> {
-    const product = await this.productsRepository.findOneById(productId);
+    const product = await this.productsRepository.findOne({
+      where: {
+        id: productId,
+      },
+      relations: {
+        variants: true,
+      },
+    });
     return product || NULL_OBJECT;
   }
 
   public async getProductByIdentifier(
     productIdentifier: string
   ): Promise<Product | null> {
-    const product = await this.productsRepository.findOneBy({
-      identifier: productIdentifier,
-      isActive: true,
-      isDeleted: false,
+    const product = await this.productsRepository.findOne({
+      where: {
+        identifier: productIdentifier,
+        isActive: true,
+        isDeleted: false,
+      },
+      relations: {
+        variants: true,
+      },
     });
 
     return product || NULL_OBJECT;
   }
 
   public async getProductBySlug(productSlug: string) {
-    const product = await this.productsRepository.findOneBy({
-      nameSlug: productSlug,
+    const product = await this.productsRepository.findOne({
+      where: {
+        nameSlug: productSlug,
+      },
+      relations: {
+        variants: true,
+      },
     });
 
     return product || NULL_OBJECT;
@@ -121,6 +139,23 @@ class ProductService {
     await queryRunner.manager.save(product);
 
     return product;
+  }
+
+  public async depleteProduct(depleteProductDto: DepleteProductDto) {
+    const { productId, quantity, queryRunner } = depleteProductDto;
+
+    const product = await this.getProductById(productId);
+
+    const newStock = product!.stock - quantity;
+
+    await this.updateProductRecord({
+      identifier: productId,
+      identifierType: "id",
+      updatePayload: {
+        stock: newStock,
+      },
+      queryRunner,
+    });
   }
 }
 

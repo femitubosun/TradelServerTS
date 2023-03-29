@@ -16,7 +16,6 @@ import {
   RESOURCE_RECORD_NOT_FOUND,
 } from "Api/Modules/Common/Helpers/Messages/SystemMessageFunctions";
 import { ProfileInternalApi } from "Api/Modules/Client/Profile/ProfileInternalApi";
-import ProductVariantService from "Api/Modules/Client/Inventory/Services/ProductVariantService";
 
 class ListProductsVariantsController {
   public async handle(request: Request, response: Response) {
@@ -47,11 +46,8 @@ class ListProductsVariantsController {
         });
       }
 
-      const productsvariants =
-        await ProductVariantService.listProductVariantsByProductId(product.id);
-
-      const mutatedProductsVariants = productsvariants.map((variant) => {
-        return variant.forClient;
+      const mutatedProductsVariants = product.variants.map((variant) => {
+        return variant.forMerchantClient;
       });
 
       return response.status(HttpStatusCodeEnum.OK).json({

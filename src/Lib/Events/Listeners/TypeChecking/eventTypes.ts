@@ -3,4 +3,8 @@ export const eventTypes = {
     signUp: "onUserSignUp",
     signIn: "onUserSignIn",
   },
+
+  order: {
+    createPurchaseOrder: "onCreatePurchaseOrder",
+  },
 };

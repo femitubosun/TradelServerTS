@@ -1,5 +1,6 @@
 import { BaseEntity } from "Entities/Base";
-import { Column, Entity } from "typeorm";
+import { Column, Entity, ManyToOne } from "typeorm";
+import { Product } from "Api/Modules/Client/Inventory/Entities/Product";
 
 @Entity()
 export class ProductVariant extends BaseEntity {
@@ -8,21 +9,44 @@ export class ProductVariant extends BaseEntity {
   })
   sku: string;
 
-  @Column()
-  productId: number;
-
-  @Column()
+  @Column({
+    type: "float",
+  })
   price: number;
+
+  @Column({
+    default: 1,
+  })
+  public stock: number;
 
   @Column({
     nullable: true,
   })
   photoUrl: string;
 
+  @ManyToOne(() => Product, (product) => product.variants)
+  product: Product;
+
+  @Column({
+    nullable: true,
+  })
+  productId: number;
+
   @Column("text", { array: true })
   parentVariants: string[];
 
-  public get forClient() {
+  public get forMerchantClient() {
+    return {
+      identifier: this.identifier,
+      sku: this.sku,
+      price: this.price,
+      stock: this.stock,
+      parent_variants: this.parentVariants,
+      photo_url: this.photoUrl,
+    };
+  }
+
+  public get forCustomerClient() {
     return {
       identifier: this.identifier,
       sku: this.sku,

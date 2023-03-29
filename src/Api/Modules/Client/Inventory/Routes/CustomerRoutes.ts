@@ -1,8 +1,7 @@
 import { Router } from "express";
 import { asyncMiddlewareHandler } from "Utils/asyncMiddlewareHandler";
-import { isAuthenticated } from "Api/Middleware/isAuthenticated";
 import ListActiveProductsController from "Api/Modules/Client/Inventory/Controllers/Customer/Product/ListActiveProductsController";
-import { ListActiveProductsByMerchantValidator } from "Api/Modules/Client/Inventory/Validators/Product/ListActiveProductsByMerchantValidator";
+import { MerchantIdentifierIsValidUuidValidator } from "Api/Modules/Client/Inventory/Validators/Product/MerchantIdentifierIsValidUuidValidator";
 import validate from "Api/Validators/Common/validate";
 import ListActiveProductsByMerchantController from "Api/Modules/Client/Inventory/Controllers/Customer/Product/ListActiveProductsByMerchantController";
 import FetchProductByIdentifierController from "Api/Modules/Client/Inventory/Controllers/Customer/Product/FetchProductByIdentifierController";
@@ -18,24 +17,30 @@ import UpdateCartItemController from "Api/Modules/Client/Inventory/Controllers/C
 import ClearCartController from "Api/Modules/Client/Inventory/Controllers/Customer/Cart/ClearCartController";
 import ListActiveMerchantsController from "Api/Modules/Client/Inventory/Controllers/Customer/Merchant/ListActiveMerchantsController";
 import FetchMerchantByIdentifierController from "Api/Modules/Client/Inventory/Controllers/Customer/Merchant/FetchMerchantByIdentifierController";
+import ListProductVariantsByProductController from "Api/Modules/Client/Inventory/Controllers/Customer/ProductVariant/ListProductVariantsByProductController";
+import FetchProductVariantByIdentifierController from "Api/Modules/Client/Inventory/Controllers/Customer/ProductVariant/FetchProductVariantByIdentifierController";
+import { AccessProductIdentifierValidator } from "Api/Modules/Client/Inventory/Validators/ProductVariant/AccessProductIdentifierValidator";
+import { AccessProductVariantIdentifierValidator } from "Api/Modules/Client/Inventory/Validators/ProductVariant/AccessProductVariantIdentifierValidator";
 
 const routes = Router();
 
-// Product Routes
+/*-------------------------------<  Product Routes  >---------------------------*/
 
 routes.get(
   "/Fetch/ActiveProducts",
-  asyncMiddlewareHandler(isAuthenticated),
+  asyncMiddlewareHandler(isRole([CUSTOMER_ROLE_NAME])),
   ListActiveProductsController.handle
 );
 
 routes.get(
   "/Fetch/Products/:productIdentifier",
-  asyncMiddlewareHandler(isAuthenticated),
+  asyncMiddlewareHandler(isRole([CUSTOMER_ROLE_NAME])),
+  AccessProductIdentifierValidator,
+  validate,
   FetchProductByIdentifierController.handle
 );
 
-//
+/*--------------------------------<  Cart Routes  >----------------------------- */
 
 routes.get(
   "/Fetch/Cart",
@@ -73,7 +78,7 @@ routes.patch(
   UpdateCartItemController.handle
 );
 
-// Merchants
+/*------------------------------<  Merchants Routes  >-------------------------- */
 
 routes.get(
   "/Fetch/Merchants",
@@ -83,16 +88,37 @@ routes.get(
 
 routes.get(
   "/Fetch/Merchants/:merchantIdentifier",
-  //TODO Add Validator
+  asyncMiddlewareHandler(isRole([CUSTOMER_ROLE_NAME])),
+  MerchantIdentifierIsValidUuidValidator,
+  validate,
   FetchMerchantByIdentifierController.handle
 );
 
 routes.get(
   "/Fetch/Merchants/:merchantIdentifier/Products",
-  asyncMiddlewareHandler(isAuthenticated),
-  ListActiveProductsByMerchantValidator,
+  asyncMiddlewareHandler(isRole([CUSTOMER_ROLE_NAME])),
+  MerchantIdentifierIsValidUuidValidator,
   validate,
   ListActiveProductsByMerchantController.handle
+);
+
+/*------------------------------<  Product Variant  >--------------------------- */
+
+routes.get(
+  "/Fetch/ListProductVariantsByProduct/:productIdentifier",
+  asyncMiddlewareHandler(isRole([CUSTOMER_ROLE_NAME])),
+  AccessProductIdentifierValidator,
+  validate,
+
+  ListProductVariantsByProductController.handle
+);
+
+routes.get(
+  "/Fetch/ProductVariants/:productVariantIdentifier",
+  asyncMiddlewareHandler(isRole([CUSTOMER_ROLE_NAME])),
+  AccessProductVariantIdentifierValidator,
+  validate,
+  FetchProductVariantByIdentifierController.handle
 );
 
 export default routes;

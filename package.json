@@ -2,10 +2,10 @@
   "name": "ts-express-project-template",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "bootstrap.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only --no-notify -r tsconfig-paths/register src/index.ts",
-    "prod": "node dist/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only --no-notify -r tsconfig-paths/register src/bootstrap.ts",
+    "prod": "node dist/bootstrap.js",
     "test": "jest",
     "build": "tsc && resolve-tspaths",
     "test:watch": "jest --watch --verbose",

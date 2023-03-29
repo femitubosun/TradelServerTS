@@ -35,6 +35,7 @@ class UsersService {
     };
 
     const user = new User();
+
     Object.assign(user, newUserData);
 
     await queryRunner.manager.save(user);

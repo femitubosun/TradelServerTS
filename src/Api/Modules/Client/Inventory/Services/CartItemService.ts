@@ -19,13 +19,16 @@ class CartItemService {
   public async createCartItemRecord(
     createCartItemDto: CreateCartItemRecordDto
   ) {
-    const { queryRunner, cartId, productId, quantity } = createCartItemDto;
+    const { queryRunner, cart, productVariant, product, quantity, isProduct } =
+      createCartItemDto;
 
     const cartItem = new CartItem();
 
     Object.assign(cartItem, {
-      cartId,
-      productId,
+      cart,
+      productVariant,
+      product,
+      isProduct,
       quantity,
     });
 

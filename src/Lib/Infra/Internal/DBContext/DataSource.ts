@@ -6,6 +6,16 @@ import {
   UserTokens,
 } from "Api/Modules/Client/OnboardingAndAuthentication/Entities";
 import { Customer, Merchant } from "Api/Modules/Client/Profile/Entities";
+import {
+  Wallet,
+  InternalTransaction,
+  TransactionDetails,
+} from "Api/Modules/Client/Finance/Entities";
+import {
+  PurchaseOrder,
+  PurchaseOrderItem,
+  SalesOrder,
+} from "Api/Modules/Client/Order/Entities";
 import { ProductCategory } from "Api/Modules/Client/Inventory/Entities/ProductCategory";
 import {
   Cart,
@@ -36,6 +46,13 @@ export const AppDataSource = new DataSource({
     ProductVariant,
     ProductVariantOptions,
     Product,
+    Wallet,
+    InternalTransaction,
+    PurchaseOrder,
+    PurchaseOrderItem,
+    SalesOrder,
+    TransactionDetails,
+    // SalesOrderItem,
   ],
   synchronize: true,
 });

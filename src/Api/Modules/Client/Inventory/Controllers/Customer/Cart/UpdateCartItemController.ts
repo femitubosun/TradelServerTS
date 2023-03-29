@@ -28,6 +28,7 @@ class UpdateCartItemController {
       const user = (request as AuthRequest).user;
 
       const { cartItemIdentifier } = request.params;
+
       const { quantity } = request.body;
 
       const customer = await ProfileInternalApi.getCustomerByUserId(user.id);

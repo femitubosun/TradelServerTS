@@ -7,7 +7,6 @@ import {
   PRODUCT_RESOURCE,
   SOMETHING_WENT_WRONG,
   SUCCESS,
-  UNAUTHORIZED_OPERATION,
 } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { container } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
@@ -28,7 +27,7 @@ class UpdateProductController {
 
       const { productIdentifier } = request.params;
 
-      const { name, description, base_price: basePrice } = request.body;
+      const { name, description, price: price } = request.body;
 
       const product = await ProductService.getProductByIdentifier(
         productIdentifier
@@ -45,10 +44,10 @@ class UpdateProductController {
       const merchant = await ProfileInternalApi.getMerchantByUserId(user.id);
 
       if (product.merchantId != merchant!.id) {
-        return response.status(HttpStatusCodeEnum.FORBIDDEN).json({
-          status_code: HttpStatusCodeEnum.FORBIDDEN,
+        return response.status(HttpStatusCodeEnum.NOT_FOUND).json({
+          status_code: HttpStatusCodeEnum.NOT_FOUND,
           status: ERROR,
-          message: UNAUTHORIZED_OPERATION,
+          message: RESOURCE_RECORD_NOT_FOUND(PRODUCT_RESOURCE),
         });
       }
 
@@ -56,7 +55,7 @@ class UpdateProductController {
         identifier: productIdentifier,
         identifierType: "identifier",
         updatePayload: {
-          basePrice: basePrice || product.basePrice,
+          basePrice: price || product.basePrice,
           name: name || product.name,
           description: description || product.description,
         },
@@ -69,6 +68,7 @@ class UpdateProductController {
         status_code: HttpStatusCodeEnum.OK,
         status: SUCCESS,
         message: INFORMATION_UPDATED,
+        results: product.forClient,
       });
     } catch (UpdateProductControllerError) {
       console.log(

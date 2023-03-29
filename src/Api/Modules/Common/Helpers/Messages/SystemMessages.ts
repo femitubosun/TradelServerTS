@@ -52,6 +52,7 @@ export const MERCHANT_COLLECTION_RESOURCE = "Collection Resource";
 export const PRODUCT_VARIANT_RESOURCE = "Product Variant Resource";
 export const PRODUCT_VARIANT_OPTION_RESOURCE =
   "Product Variant Option Resource";
+export const PURCHASE_ORDER_RESOURCE = "Purchase Order Resource";
 
 /* ------------------------------ Generic Messages  ------------------------- */
 
@@ -95,3 +96,18 @@ export const CART_ITEM_REMOVED_SUCCESS = "Cart Item removed Successfully";
 
 /*-------------------------------<  Variant Option  >--------------------------- */
 export const INVALID_VARIANT_OPTIONS_PARENT = "Invalid Variant Options Parents";
+
+/*----------------------------<  Collection Messages  >------------------------- */
+export const COLLECTION_WITH_LABEL_ALREADY_EXISTS =
+  "Collection With Label already exists";
+
+/*-------------------------------<  Order Messages  >--------------------------- */
+export const INSUFFICIENT_FUNDS_IN_WALLET = "Insufficient Funds in Wallet";
+export const NOT_ENOUGH_STOCK = "Not Enough Stock";
+export const CREATE_ORDER_FROM_CART_OPERATION = "Create Order From Cart ";
+export const PAY_FOR_ORDER_OPERATION = "Payment for Order ";
+
+export const YOU_HAVE_ALREADY_PAID_FOR_ORDER =
+  "You have already paid for this order";
+export const PLEASE_ACTIVATE_ACCOUNT_TO_COMPLETE_ORDER =
+  "Please Activate Your account to complete your order";

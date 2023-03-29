@@ -7,6 +7,9 @@ export const VerifyEmailValidator = [
       min: businessConfig.emailTokenLength,
       max: businessConfig.emailTokenLength,
     })
+    .withMessage(
+      `Otp Token must be ${businessConfig.emailTokenLength} characters long`
+    )
     .trim()
     .escape(),
 ];

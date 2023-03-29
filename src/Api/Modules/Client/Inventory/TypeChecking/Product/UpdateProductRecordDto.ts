@@ -6,6 +6,8 @@ type UpdateProductPayload = {
   description?: string;
 
   basePrice?: string;
+
+  stock?: number;
 };
 
 export type UpdateProductRecordDto = {

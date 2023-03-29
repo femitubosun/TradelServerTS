@@ -1,6 +1,7 @@
 import { BaseEntity } from "Entities/Base";
-import { Entity, Column } from "typeorm";
+import { Entity, Column, OneToOne, JoinColumn } from "typeorm";
 import { CartesianProduct } from "Api/Modules/Client/Inventory/Helpers/CartesianProduct";
+import { Product } from "Api/Modules/Client/Inventory/Entities/Product";
 
 @Entity()
 export class ProductVariantOptions extends BaseEntity {
@@ -13,8 +14,14 @@ export class ProductVariantOptions extends BaseEntity {
     options: string[];
   }[];
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   productId: number;
+
+  @OneToOne(() => Product)
+  @JoinColumn()
+  product: Product;
 
   get variantCombinations(): string[][] {
     const varOptions = this.variantOptions!.map((el) => {

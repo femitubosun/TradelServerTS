@@ -21,14 +21,21 @@ import { UpdateCollectionValidator } from "Api/Modules/Client/Inventory/Validato
 import { AddProductToCollectionValidator } from "Api/Modules/Client/Inventory/Validators/Collection/AddProductToCollectionValidator";
 import AddProductToMerchantCollectionController from "Api/Modules/Client/Inventory/Controllers/Merchant/Collections/AddProductToMerchantCollectionController";
 import RemoveProductFromMerchantCollectionController from "Api/Modules/Client/Inventory/Controllers/Merchant/Collections/RemoveProductFromMerchantCollectionController";
-import { CreateNewProductVariantOptionValidator } from "Api/Modules/Client/Inventory/Validators/ProductVariant/CreateNewProductVariantOptionValidator";
-import CreateProductVariantOptionController from "Api/Modules/Client/Inventory/Controllers/Merchant/ProductVariant/CreateProductVariantOptionController";
+import { CreateNewProductVariantOptionValidator } from "Api/Modules/Client/Inventory/Validators/ProductVariantOption/CreateNewProductVariantOptionValidator";
+import CreateProductVariantOptionController from "Api/Modules/Client/Inventory/Controllers/Merchant/ProductVariantOption/CreateProductVariantOptionController";
 import CreateNewProductVariantController from "Api/Modules/Client/Inventory/Controllers/Merchant/ProductVariant/CreateNewProductVariantController";
 import { AccessProductIdentifierValidator } from "Api/Modules/Client/Inventory/Validators/ProductVariant/AccessProductIdentifierValidator";
 import { CreateNewProductVariantValidator } from "Api/Modules/Client/Inventory/Validators/ProductVariant/CreateNewProductVariantValidator";
 import ListProductsVariantsController from "Api/Modules/Client/Inventory/Controllers/Merchant/ProductVariant/ListProductsVariantsController";
 import { CreateCollectionValidator } from "Api/Modules/Client/Inventory/Validators/Collection/CreateCollectionValidator";
 import CreateMerchantCollectionController from "Api/Modules/Client/Inventory/Controllers/Merchant/Collections/CreateMerchantCollectionController";
+import FetchProductVariantController from "Api/Modules/Client/Inventory/Controllers/Merchant/ProductVariant/FetchProductVariantController";
+import { AccessProductVariantIdentifierValidator } from "Api/Modules/Client/Inventory/Validators/ProductVariant/AccessProductVariantIdentifierValidator";
+import UpdateProductVariantController from "Api/Modules/Client/Inventory/Controllers/Merchant/ProductVariant/UpdateProductVariantController";
+import DeleteProductVariantController from "Api/Modules/Client/Inventory/Controllers/Merchant/ProductVariant/DeleteProductVariantController";
+import RemoveProductVariantOptionController from "Api/Modules/Client/Inventory/Controllers/Merchant/ProductVariantOption/RemoveProductVariantOptionController";
+import { RemoveMerchantProductVariantOptionValidator } from "Api/Modules/Client/Inventory/Validators/ProductVariantOption/RemoveMerchantProductVariantOptionValidator";
+import ClearProductVariantOptionController from "Api/Modules/Client/Inventory/Controllers/Merchant/ProductVariantOption/ClearProductVariantOptionController";
 
 const routes = Router();
 
@@ -129,7 +136,7 @@ routes.post(
 /* ------------------------------<  Product Variants Routes  >------------------------- */
 
 routes.post(
-  "/Create/ProductVariant/:productIdentifier",
+  "/Create/MerchantProductVariant/:productIdentifier",
   asyncMiddlewareHandler(isRole([MERCHANT_ROLE_NAME])),
   AccessProductIdentifierValidator,
   CreateNewProductVariantValidator,
@@ -138,21 +145,64 @@ routes.post(
 );
 
 routes.get(
-  "/Fetch/ProductVariants/:productIdentifier",
+  "/Fetch/MerchantProductVariantsByProduct/:productIdentifier",
   asyncMiddlewareHandler(isRole([MERCHANT_ROLE_NAME])),
   AccessProductIdentifierValidator,
   validate,
   ListProductsVariantsController.handle
 );
 
+routes.get(
+  "/Fetch/MerchantProductVariants/:productVariantIdentifier",
+  asyncMiddlewareHandler(isRole([MERCHANT_ROLE_NAME])),
+  AccessProductVariantIdentifierValidator,
+  validate,
+  FetchProductVariantController.handle
+);
+
+routes.patch(
+  "/Update/MerchantProductVariants/:productVariantIdentifier",
+  asyncMiddlewareHandler(isRole([MERCHANT_ROLE_NAME])),
+  AccessProductVariantIdentifierValidator,
+  UpdateProductValidator,
+  validate,
+  UpdateProductVariantController.handle
+);
+
+routes.delete(
+  "/Delete/MerchantProductVariants/:productVariantIdentifier",
+  asyncMiddlewareHandler(isRole([MERCHANT_ROLE_NAME])),
+  AccessProductVariantIdentifierValidator,
+  validate,
+  DeleteProductVariantController.handle
+);
+
 /*------------------------------<  Variant Options Routes >--------------------------- */
 
 routes.post(
-  "/Create/ProductVariantOption/:productIdentifier",
+  "/Create/MerchantProductVariantOptions/:productIdentifier",
   asyncMiddlewareHandler(isRole([MERCHANT_ROLE_NAME])),
+  AccessProductIdentifierValidator,
   CreateNewProductVariantOptionValidator,
   validate,
   CreateProductVariantOptionController.handle
+);
+
+routes.post(
+  "/Process/RemoveMerchantProductVariantOptions/:productIdentifier",
+  asyncMiddlewareHandler(isRole([MERCHANT_ROLE_NAME])),
+  AccessProductIdentifierValidator,
+  RemoveMerchantProductVariantOptionValidator,
+  validate,
+  RemoveProductVariantOptionController.handle
+);
+
+routes.get(
+  "/Process/ClearMerchantProductVariantOptions/:productIdentifier",
+  asyncMiddlewareHandler(isRole([MERCHANT_ROLE_NAME])),
+  AccessProductIdentifierValidator,
+  validate,
+  ClearProductVariantOptionController.handle
 );
 
 export default routes;

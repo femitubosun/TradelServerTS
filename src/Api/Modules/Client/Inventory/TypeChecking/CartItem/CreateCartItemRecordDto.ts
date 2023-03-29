@@ -3,6 +3,12 @@ import QueryRunner from "TypeChecking/QueryRunner";
 
 export type CreateCartItemRecordDto = Pick<
   ICartItem,
-  "cartId" | "productId" | "quantity"
+  | "cart"
+  | "productVariant"
+  | "productVariantId"
+  | "product"
+  | "productId"
+  | "isProduct"
+  | "quantity"
 > &
   QueryRunner;

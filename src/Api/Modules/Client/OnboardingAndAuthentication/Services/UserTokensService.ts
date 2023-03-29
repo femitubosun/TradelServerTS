@@ -166,6 +166,10 @@ class UserTokensService {
       minute: businessConfig.emailTokenExpiresInMinutes,
     });
   }
+
+  public checkTokenExpired(tokenExpiration: DateTime): boolean {
+    return businessConfig.currentDateTime() > tokenExpiration;
+  }
 }
 
 export default new UserTokensService();

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 import {
+  COLLECTION_WITH_LABEL_ALREADY_EXISTS,
   ERROR,
   MERCHANT_COLLECTION_RESOURCE,
   SOMETHING_WENT_WRONG,
@@ -27,7 +28,21 @@ class CreateMerchantCollectionController {
 
       const merchant = await ProfileInternalApi.getMerchantByUserId(user.id);
 
-      await CollectionService.createCollectionRecord({
+      const existingCollection =
+        await CollectionService.getMerchantCollectionByCollectionLabel({
+          label,
+          merchantId: merchant!.id,
+        });
+
+      if (existingCollection) {
+        return response.status(HttpStatusCodeEnum.BAD_REQUEST).json({
+          status_code: HttpStatusCodeEnum.BAD_REQUEST,
+          status: ERROR,
+          message: COLLECTION_WITH_LABEL_ALREADY_EXISTS,
+        });
+      }
+
+      const collection = await CollectionService.createCollectionRecord({
         label,
         merchantId: merchant!.id,
         queryRunner,
@@ -42,6 +57,11 @@ class CreateMerchantCollectionController {
         message: RESOURCE_RECORD_CREATED_SUCCESSFULLY(
           MERCHANT_COLLECTION_RESOURCE
         ),
+
+        result: {
+          ...collection.forClient,
+          collection_items: { items: [], count: 0 },
+        },
       });
     } catch (CreateMerchantCollectionControllerError) {
       console.log(

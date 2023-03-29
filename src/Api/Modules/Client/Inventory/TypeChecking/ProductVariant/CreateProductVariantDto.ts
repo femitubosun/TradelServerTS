@@ -3,6 +3,6 @@ import DbQueryRunner from "TypeChecking/QueryRunner";
 
 export type CreateProductVariantDto = Pick<
   IProductVariant,
-  "sku" | "price" | "productId" | "parentVariants"
+  "sku" | "price" | "product" | "stock" | "parentVariants"
 > &
   DbQueryRunner;

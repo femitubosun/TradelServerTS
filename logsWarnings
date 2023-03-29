@@ -268,3 +268,17 @@
 [ERROR] 2023-03-22 10:46:32 Postgres Database Connection Failure
 [ERROR] 2023-03-22 10:48:39 Postgres Database Connection Failure
 [ERROR] 2023-03-22 10:49:08 Postgres Database Connection Failure
+[ERROR] 2023-03-23 18:39:23 You are not authorized to perform this operation
+[ERROR] 2023-03-23 19:05:37 You are not authorized to perform this operation
+[ERROR] 2023-03-25 03:52:24 Postgres Database Connection Failure
+[ERROR] 2023-03-25 03:53:11 Postgres Database Connection Failure
+[ERROR] 2023-03-25 10:16:49 Postgres Database Connection Failure
+[ERROR] 2023-03-25 11:03:49 Postgres Database Connection Failure
+[ERROR] 2023-03-25 11:24:56 You are not authorized to perform this operation
+[ERROR] 2023-03-25 19:20:15 Postgres Database Connection Failure
+[ERROR] 2023-03-25 19:39:49 No metadata for "User" was found.
+[ERROR] 2023-03-25 19:41:11 No metadata for "User" was found.
+[ERROR] 2023-03-26 21:02:15 Postgres Database Connection Failure
+[ERROR] 2023-03-29 09:50:34 Postgres Database Connection Failure
+[ERROR] 2023-03-29 09:52:48 Postgres Database Connection Failure
+[ERROR] 2023-03-29 09:53:01 Postgres Database Connection Failure

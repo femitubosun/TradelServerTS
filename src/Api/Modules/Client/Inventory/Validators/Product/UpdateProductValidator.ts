@@ -1,11 +1,6 @@
 import { body, param } from "express-validator";
 
 export const UpdateProductValidator = [
-  param(
-    "productIdentifier",
-    "Product Identifier must be a valid UUID"
-  ).isUUID(),
-
   body("name", "Name is required")
     .isString()
     .optional()

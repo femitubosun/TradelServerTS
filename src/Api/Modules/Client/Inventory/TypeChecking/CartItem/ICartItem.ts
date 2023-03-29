@@ -1,13 +1,26 @@
 import { DateTime } from "luxon";
+import {
+  Cart,
+  Product,
+  ProductVariant,
+} from "Api/Modules/Client/Inventory/Entities";
 
 export interface ICartItem {
   id: number;
 
   identifier: string;
 
-  cartId: number;
+  cart: Cart;
 
-  productId: number;
+  productVariant?: ProductVariant;
+
+  productVariantId?: number;
+
+  product?: Product;
+
+  productId?: number;
+
+  isProduct?: boolean;
 
   quantity: number;
 

@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
 import {
-  MERCHANT_COLLECTION_RESOURCE,
   ERROR,
-  NOT_APPLICABLE,
+  MERCHANT_COLLECTION_RESOURCE,
   NULL_OBJECT,
   SOMETHING_WENT_WRONG,
   SUCCESS,
@@ -53,10 +52,7 @@ class FetchMerchantCollectionByIdentifierController {
         status: SUCCESS,
         message: RESOURCE_FETCHED_SUCCESSFULLY(MERCHANT_COLLECTION_RESOURCE),
         results: {
-          identifier: collection.identifier,
-          label: collection.label,
-          slug: collection.slug,
-          image_url: collection.imageUrl || NOT_APPLICABLE,
+          ...collection.forClient,
           collection_items: {
             items: mutatedItems,
             count: mutatedItems.length,

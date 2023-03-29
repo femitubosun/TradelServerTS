@@ -31,7 +31,12 @@ class CreateNewProductVariantController {
     await queryRunner.startTransaction();
     try {
       const { productIdentifier } = request.params;
-      const { parent_variants: parentVariants, sku, price } = request.body;
+      const {
+        parent_variants: parentVariants,
+        sku,
+        price,
+        stock,
+      } = request.body;
 
       const user = (request as AuthRequest).user;
 
@@ -85,7 +90,8 @@ class CreateNewProductVariantController {
           parentVariants: parentVariants,
           queryRunner,
           price,
-          productId: product.id,
+          stock,
+          product,
         });
 
       await queryRunner.commitTransaction();
@@ -94,7 +100,7 @@ class CreateNewProductVariantController {
         status_code: HttpStatusCodeEnum.CREATED,
         status: SUCCESS,
         message: RESOURCE_RECORD_CREATED_SUCCESSFULLY(PRODUCT_VARIANT_RESOURCE),
-        results: productVariant.forClient,
+        results: productVariant.forMerchantClient,
       });
     } catch (CreateNewProductVariantControllerError) {
       console.log(

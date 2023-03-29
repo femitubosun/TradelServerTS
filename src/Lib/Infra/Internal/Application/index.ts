@@ -3,7 +3,6 @@ import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { expressConfig } from "Config/index";
 import { SERVER_STARTED } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { DependencyContainer } from "tsyringe";
-import "Lib/Events/index";
 
 export class Application {
   express: Express;

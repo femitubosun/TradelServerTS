@@ -6,6 +6,7 @@ import { CreateCollectionRecordDto } from "Api/Modules/Client/Inventory/TypeChec
 import { NULL_OBJECT } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { DeleteRecordDto } from "Api/Modules/Client/Inventory/TypeChecking/GeneralPurpose/DeleteRecordDto";
 import { UpdateCollectionRecordDto } from "Api/Modules/Client/Inventory/TypeChecking/Collection/UpdateCollectionRecordDto";
+import { GetMerchantCollectionByLabelDto } from "Api/Modules/Client/Inventory/TypeChecking/Collection/GetMerchantCollectionByLabelDto";
 
 @autoInjectable()
 class CollectionService {
@@ -69,6 +70,44 @@ class CollectionService {
     const collectionsList = await this.collectionsRepository.find({
       where: {
         identifier,
+        isActive: true,
+        isDeleted: false,
+      },
+      relations: {
+        items: true,
+      },
+      take: 1,
+    });
+
+    const collection = collectionsList[0];
+
+    return collection || NULL_OBJECT;
+  }
+
+  public async getCollectionByCollectionLabel(collectionLabel: string) {
+    const collectionsList = await this.collectionsRepository.find({
+      where: {
+        label: collectionLabel,
+        isActive: true,
+        isDeleted: false,
+      },
+      relations: {
+        items: true,
+      },
+      take: 1,
+    });
+
+    const collection = collectionsList[0];
+
+    return collection || NULL_OBJECT;
+  }
+
+  public async getMerchantCollectionByCollectionLabel(
+    getMerchantCollectionByCollectionLabelDto: GetMerchantCollectionByLabelDto
+  ) {
+    const collectionsList = await this.collectionsRepository.find({
+      where: {
+        ...getMerchantCollectionByCollectionLabelDto,
         isActive: true,
         isDeleted: false,
       },

@@ -2,6 +2,8 @@ import CustomersService from "Api/Modules/Client/Profile/Services/CustomersServi
 import { CreateCustomerRecordDtoType } from "Api/Modules/Client/Profile/TypeChecking";
 import { CreateMerchantRecordDtoType } from "Api/Modules/Client/Profile/TypeChecking/Merchant";
 import MerchantService from "Api/Modules/Client/Profile/Services/MerchantService";
+import { GetCustomerUserIdDto } from "Api/Modules/Client/Profile/TypeChecking/GeneralPurpose/GetCustomerUserIdDto";
+import { GetMerchantUserIdDto } from "Api/Modules/Client/Profile/TypeChecking/GeneralPurpose/GetMerchantUserIdDto";
 
 export class ProfileInternalApi {
   public static async createCustomerRecord(
@@ -30,6 +32,18 @@ export class ProfileInternalApi {
 
   public static async getCustomerByUserId(userId: number) {
     return await CustomersService.getCustomerByUserId(userId);
+  }
+
+  public static async getCustomerUserId(
+    getCustomerUserIdDto: GetCustomerUserIdDto
+  ) {
+    return await CustomersService.getCustomerUserId(getCustomerUserIdDto);
+  }
+
+  public static async getMerchantUserId(
+    getMerchantUserIdDto: GetMerchantUserIdDto
+  ) {
+    return await MerchantService.getMerchantUserId(getMerchantUserIdDto);
   }
 
   public static async listActiveMerchants() {

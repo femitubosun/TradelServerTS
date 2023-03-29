@@ -39,49 +39,40 @@ class CartService {
   }
 
   public async getCartById(cartId: number) {
-    const cartsList = await this.cartRepository.find({
+    const cart = await this.cartRepository.findOne({
       where: {
         id: cartId,
       },
       relations: {
         items: true,
       },
-      take: 1,
     });
-
-    const cart = cartsList[0];
 
     return cart || NULL_OBJECT;
   }
 
   public async getCartByCustomerId(customerId: number) {
-    const cartsList = await this.cartRepository.find({
+    const cart = await this.cartRepository.findOne({
       where: {
         customerId,
       },
       relations: {
         items: true,
       },
-      take: 1,
     });
-
-    const cart = cartsList[0];
 
     return cart || NULL_OBJECT;
   }
 
   public async getCartByIdentifier(identifier: string) {
-    const cartsList = await this.cartRepository.find({
+    const cart = await this.cartRepository.findOne({
       where: {
         identifier,
       },
       relations: {
         items: true,
       },
-      take: 1,
     });
-
-    const cart = cartsList[0];
 
     return cart || NULL_OBJECT;
   }

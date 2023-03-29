@@ -10,4 +10,5 @@ export const CreateNewProductVariantValidator = [
     }),
   body("sku", "Sku must be a valid string").isString().trim().escape(),
   body("price", "Price must be a valid number").isNumeric(),
+  body("stock", "Stock must be a valid Integer").isInt(),
 ];

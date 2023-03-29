@@ -47,7 +47,7 @@ class CreateNewProductController {
       });
 
       await ProductVariantOptionsService.createProductVariantOptionsRecord({
-        productId: product.id,
+        product,
         variantOptions: [],
         queryRunner,
       });

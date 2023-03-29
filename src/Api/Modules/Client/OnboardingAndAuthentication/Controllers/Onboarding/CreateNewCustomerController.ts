@@ -77,7 +77,6 @@ class CreateNewCustomerController {
         queryRunner,
       });
 
-      // TODO Call CreateCartInternalAPI
       await InventoryInternalApi.createCartRecord({
         customerId: customer.id,
         queryRunner,

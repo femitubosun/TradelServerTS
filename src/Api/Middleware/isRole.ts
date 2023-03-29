@@ -3,7 +3,6 @@ import UsersService from "Api/Modules/Client/OnboardingAndAuthentication/Service
 import SettingsUserRoleService from "Api/Modules/Client/OnboardingAndAuthentication/Services/SettingsUserRoleService";
 import { JwtHelper } from "Api/Modules/Common/Helpers/JwtHelper";
 import { AuthRequest } from "../TypeChecking";
-
 import { UnauthorizedError } from "Api/Modules/Common/Exceptions/UnauthorizedError";
 import { UnauthenticatedError } from "Api/Modules/Common/Exceptions/UnauthenticatedError";
 import { NULL_OBJECT } from "Api/Modules/Common/Helpers/Messages/SystemMessages";

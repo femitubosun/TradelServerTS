@@ -67,6 +67,36 @@ class AddProductToMerchantCollectionController {
 
       const collectionItems = collection.items;
 
+      const isInCollection = true;
+
+      const productIsInCollection = collectionItems.some((item) => {
+        return item.identifier == product.identifier;
+      });
+
+      if (productIsInCollection === isInCollection) {
+        const mutatedItems = collectionItems.map((el) => el.forClient);
+
+        return response.status(HttpStatusCodeEnum.OK).json({
+          status_code: HttpStatusCodeEnum.OK,
+          status: SUCCESS,
+          message: "Product Added to Collection Successfully",
+          results: {
+            identifier: collection!.identifier,
+            label: collection!.label,
+            slug: collection!.slug,
+            image_url: collection!.imageUrl || NOT_APPLICABLE,
+            collection_items: {
+              items: mutatedItems,
+              count: mutatedItems.length,
+            },
+            meta: {
+              created_at: collection!.createdAt,
+              updated_at: collection!.updatedAt,
+            },
+          },
+        });
+      }
+
       collectionItems.push(product);
 
       const updatedCollection = await CollectionService.updateCollection({

@@ -1,7 +1,8 @@
 import { BaseEntity } from "Entities/Base";
-import { BeforeInsert, Column, Entity } from "typeorm";
+import { BeforeInsert, Column, Entity, OneToMany } from "typeorm";
 import slugify from "slugify";
 import { businessConfig } from "Config/businessConfig";
+import { ProductVariant } from "Api/Modules/Client/Inventory/Entities/ProductVariant";
 
 @Entity()
 export class Product extends BaseEntity {
@@ -14,8 +15,18 @@ export class Product extends BaseEntity {
   @Column()
   description: string;
 
-  @Column()
+  @Column({
+    type: "float",
+  })
   basePrice: number;
+
+  @Column({
+    default: 1,
+  })
+  stock: number;
+
+  @OneToMany(() => ProductVariant, (variant) => variant.product)
+  variants: ProductVariant[];
 
   @Column()
   merchantId: number;

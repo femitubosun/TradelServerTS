@@ -3,6 +3,7 @@ import { BeforeInsert, Column, Entity, JoinTable, ManyToMany } from "typeorm";
 import { Product } from "Api/Modules/Client/Inventory/Entities/Product";
 import slugify from "slugify";
 import { businessConfig } from "Config/businessConfig";
+import { NOT_APPLICABLE } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 
 @Entity()
 export class Collection extends BaseEntity {
@@ -32,5 +33,18 @@ export class Collection extends BaseEntity {
         "-" +
         businessConfig.currentDateTime().toUTC();
     }
+  }
+
+  public get forClient() {
+    return {
+      identifier: this.identifier,
+      label: this.label,
+      slug: this.slug,
+      image_url: this.imageUrl || NOT_APPLICABLE,
+      meta: {
+        created_at: this.createdAt,
+        updated_at: this.updatedAt,
+      },
+    };
   }
 }

@@ -3,6 +3,6 @@ import DbQueryRunner from "TypeChecking/QueryRunner";
 
 export type CreateProductVariantOptionRecordDto = Pick<
   IProductVariantOptions,
-  "variantOptions" | "productId"
+  "variantOptions" | "product"
 > &
   DbQueryRunner;

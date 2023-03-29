@@ -24,13 +24,13 @@ class ProductVariantOptionsService {
   public async createProductVariantOptionsRecord(
     createProductVariantOptionsDto: CreateProductVariantOptionRecordDto
   ) {
-    const { productId, variantOptions, queryRunner } =
+    const { product, variantOptions, queryRunner } =
       createProductVariantOptionsDto;
 
     const productVariantOptions = new ProductVariantOptions();
 
     Object.assign(productVariantOptions, {
-      productId,
+      product,
       variantOptions,
     });
 
@@ -115,36 +115,61 @@ class ProductVariantOptionsService {
     return productVariant;
   }
 
+  public async getProductVariantOptionsIdentifierFromProductId(
+    productId: number
+  ) {
+    const productVariantOptions =
+      await this.getProductVariantOptionsByProductId(productId);
+
+    if (productVariantOptions === NULL_OBJECT)
+      return {
+        productVariantOptionsId: NULL_OBJECT,
+        identifier: NULL_OBJECT,
+      };
+
+    return {
+      productVariantOptionsId: productVariantOptions.id,
+      identifier: productVariantOptions.identifier,
+    };
+  }
+
+  public async resetProductVariantOptions(productVariantId: number) {
+    return productVariantId;
+  }
+
   public async isCombinationInVariantOption(
     isCombinationInVariantOptionDto: IsCombinationInVariantOptionDto
   ): Promise<boolean> {
     const { identifier, identifierType, combination } =
       isCombinationInVariantOptionDto;
 
-    let productVariant;
+    let productVariantOptions;
 
     switch (identifierType) {
       case "productId":
-        productVariant = await this.getProductVariantOptionsByProductId(
+        productVariantOptions = await this.getProductVariantOptionsByProductId(
           identifier as number
         );
         break;
 
       case "id":
-        productVariant = await this.getProductVariantOptionsById(
+        productVariantOptions = await this.getProductVariantOptionsById(
           identifier as number
         );
         break;
 
       case "identifier":
-        productVariant = await this.getProductVariantOptionsByIdentifier(
+        productVariantOptions = await this.getProductVariantOptionsByIdentifier(
           identifier as string
         );
         break;
     }
-    if (productVariant === NULL_OBJECT) return false;
+    if (productVariantOptions === NULL_OBJECT) return false;
 
-    const variantOptionsCombinations = productVariant.variantCombinations;
+    const variantOptionsCombinations =
+      productVariantOptions.variantCombinations;
+
+    if (!variantOptionsCombinations) return false;
 
     // Search for array in an array of arrays.
     // Reference https://stackoverflow.com/questions/19543514/check-whether-an-array-exists-in-an-array-of-arrays

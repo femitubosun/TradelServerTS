@@ -9,6 +9,7 @@ import {
   UpdateMerchantRecordArgs,
 } from "Api/Modules/Client/Profile/TypeChecking/Merchant";
 import { Repository } from "typeorm";
+import { GetMerchantUserIdDto } from "Api/Modules/Client/Profile/TypeChecking/GeneralPurpose/GetMerchantUserIdDto";
 
 @autoInjectable()
 class MerchantService {
@@ -135,6 +136,19 @@ class MerchantService {
     });
 
     return merchant || NULL_OBJECT;
+  }
+
+  public async getMerchantUserId(getMerchantUserIdDto: GetMerchantUserIdDto) {
+    const { identifier, identifierType } = getMerchantUserIdDto;
+
+    const merchant =
+      identifierType === "id"
+        ? await this.getMerchantById(Number(identifier))
+        : await this.getMerchantByIdentifier(String(identifier));
+
+    if (merchant === NULL_OBJECT) return -1;
+
+    return merchant.userId;
   }
 }
 
