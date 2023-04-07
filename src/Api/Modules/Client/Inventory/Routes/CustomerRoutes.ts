@@ -21,6 +21,7 @@ import ListProductVariantsByProductController from "Api/Modules/Client/Inventory
 import FetchProductVariantByIdentifierController from "Api/Modules/Client/Inventory/Controllers/Customer/ProductVariant/FetchProductVariantByIdentifierController";
 import { AccessProductIdentifierValidator } from "Api/Modules/Client/Inventory/Validators/ProductVariant/AccessProductIdentifierValidator";
 import { AccessProductVariantIdentifierValidator } from "Api/Modules/Client/Inventory/Validators/ProductVariant/AccessProductVariantIdentifierValidator";
+import SearchProductByNameController from "Api/Modules/Client/Inventory/Controllers/Customer/Product/SearchProductByNameController";
 
 const routes = Router();
 
@@ -119,6 +120,12 @@ routes.get(
   AccessProductVariantIdentifierValidator,
   validate,
   FetchProductVariantByIdentifierController.handle
+);
+
+routes.get(
+  "/Process/SearchProduct/",
+  asyncMiddlewareHandler(isRole([CUSTOMER_ROLE_NAME])),
+  SearchProductByNameController.handle
 );
 
 export default routes;

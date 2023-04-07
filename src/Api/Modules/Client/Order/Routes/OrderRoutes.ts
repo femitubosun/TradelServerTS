@@ -3,10 +3,16 @@ import CreateNewOrderController from "Api/Modules/Client/Order/Controllers/Custo
 import validate from "Api/Validators/Common/validate";
 import { asyncMiddlewareHandler } from "Utils/asyncMiddlewareHandler";
 import { isRole } from "Api/Middleware/isRole";
-import { CUSTOMER_ROLE_NAME } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
+import {
+  CUSTOMER_ROLE_NAME,
+  MERCHANT_ROLE_NAME,
+} from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import ListPurchaseOrdersController from "Api/Modules/Client/Order/Controllers/Customer/ListPurchaseOrdersController";
 import PayOrderController from "Api/Modules/Client/Order/Controllers/Customer/PayOrderController";
 import { PayForOrderValidator } from "Api/Modules/Client/Order/Validators/PayForOrderValidator";
+import ListSaleOrderController from "Api/Modules/Client/Order/Controllers/Merchant/ListSaleOrderController";
+import FetchSaleOrderByIdentifierController from "Api/Modules/Client/Order/Controllers/Merchant/FetchSaleOrderByIdentifierController";
+import { AccessSalesOrderIdentifierValidator } from "Api/Modules/Client/Order/Validators/AccessSalesOrderIdentifierValidator";
 
 const routes = Router();
 
@@ -30,6 +36,20 @@ routes.post(
   PayForOrderValidator,
   validate,
   PayOrderController.handle
+);
+
+/*--------------------------------<  Sales Order  >----------------------------- */
+routes.get(
+  "/Fetch/SalesOrders",
+  asyncMiddlewareHandler(isRole([MERCHANT_ROLE_NAME])),
+  ListSaleOrderController.handle
+);
+
+routes.get(
+  "/Fetch/SalesOrders/:salesOrderIdentifier",
+  asyncMiddlewareHandler(isRole([MERCHANT_ROLE_NAME])),
+  AccessSalesOrderIdentifierValidator,
+  FetchSaleOrderByIdentifierController.handle
 );
 
 export default routes;

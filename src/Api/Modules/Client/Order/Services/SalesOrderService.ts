@@ -55,6 +55,14 @@ class SalesOrderService {
     });
   }
 
+  public async listSalesOrderByMerchantId(merchantId: number) {
+    return this.salesOrderRepository.find({
+      where: {
+        merchantId,
+      },
+    });
+  }
+
   public async getSalesOrderById(salesOrderId: number) {
     const salesOrder = await this.salesOrderRepository.findOneBy({
       id: salesOrderId,

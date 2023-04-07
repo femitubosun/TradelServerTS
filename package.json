@@ -9,6 +9,10 @@
     "test": "jest",
     "build": "tsc && resolve-tspaths",
     "test:watch": "jest --watch --verbose",
+    "typeorm": "ts-node -r tsconfig-paths/register -r dotenv ./node_modules/typeorm/cli.js",
+    "migration:generate": "ts-node -r tsconfig-paths/register -r dotenv ./node_modules/typeorm/cli.js migration:generate -p -d ./src/Lib/Infra/Internal/DbContext/Datasource.ts",
+    "migration:run": "ts-node -r tsconfig-paths/register -r dotenv ./node_modules/typeorm/cli.js migration:run -d ./src/Lib/Infra/Internal/DbContext/Datasource.ts",
+    "migration:revert": "ts-node -r tsconfig-paths/register -r dotenv ./node_modules/typeorm/cli.js migration:revert -d ./src/Lib/Infra/Internal/DbContext/Datasource.ts",
     "lint": "eslint . --ext .ts",
     "format": "prettier --write .",
     "prepare": "husky install"
@@ -72,6 +76,7 @@
     "ts-node": "^10.9.1",
     "tsyringe": "^4.7.0",
     "typeorm": "^0.3.11",
+    "typeorm-naming-strategies": "^4.1.0",
     "uuid": "^9.0.0",
     "winston": "^3.8.2"
   }

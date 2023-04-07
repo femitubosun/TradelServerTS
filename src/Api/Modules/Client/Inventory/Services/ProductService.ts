@@ -7,6 +7,7 @@ import { CreateProductRecordDtoType } from "Api/Modules/Client/Inventory/TypeChe
 import { UpdateProductRecordDto } from "Api/Modules/Client/Inventory/TypeChecking/Product/UpdateProductRecordDto";
 import { DeleteRecordDto } from "Api/Modules/Client/Inventory/TypeChecking/GeneralPurpose/DeleteRecordDto";
 import { DepleteProductDto } from "Api/Modules/Client/Inventory/TypeChecking/Product/DepleteProductDto";
+import { PaginationDto } from "Api/Modules/Common/TypeChecking/GeneralPurpose/PaginationDto";
 
 @autoInjectable()
 class ProductService {
@@ -80,7 +81,10 @@ class ProductService {
     return product || NULL_OBJECT;
   }
 
-  public async listActiveProductsByMerchantId(merchantId: number) {
+  public async listActiveProductsByMerchantId(
+    merchantId: number,
+    paginationDto?: PaginationDto
+  ) {
     return await this.productsRepository.findBy({
       isActive: true,
       merchantId,
@@ -156,6 +160,20 @@ class ProductService {
       },
       queryRunner,
     });
+  }
+
+  public async searchProduct(searchQuery: string) {
+    return this.productsRepository
+      .createQueryBuilder()
+      .select()
+      .where("document_with_weights @@ plainto_tsquery(:query)", {
+        searchQuery: `%${searchQuery}%`,
+      })
+      .orderBy(
+        "ts_rank(document_with_weights, plainto_tsquery(:query))",
+        "DESC"
+      )
+      .getMany();
   }
 }
 

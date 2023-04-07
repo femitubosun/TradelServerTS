@@ -1,5 +1,5 @@
 import { OrderStatusEnum } from "Api/Modules/Client/Order/Entities/OrderStatusEnum";
-import DbQueryRunner from "TypeChecking/QueryRunner";
+import { QueryRunner } from "typeorm";
 
 type UpdatePurchaseOrderRecordPayload = {
   cost?: number;
@@ -15,5 +15,5 @@ export type UpdatePurchaseOrderRecordDto = {
 
   useTransaction: boolean;
 
-  queryRunner?: DbQueryRunner;
+  queryRunner?: QueryRunner;
 };

@@ -53,6 +53,7 @@ export const PRODUCT_VARIANT_RESOURCE = "Product Variant Resource";
 export const PRODUCT_VARIANT_OPTION_RESOURCE =
   "Product Variant Option Resource";
 export const PURCHASE_ORDER_RESOURCE = "Purchase Order Resource";
+export const SALES_ORDER_RESOURCE = "Sales Order Resource";
 
 /* ------------------------------ Generic Messages  ------------------------- */
 
