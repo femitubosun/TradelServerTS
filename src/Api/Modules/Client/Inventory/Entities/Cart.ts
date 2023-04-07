@@ -2,7 +2,7 @@ import { BaseEntity } from "Entities/Base";
 import { Column, Entity, JoinTable, OneToMany } from "typeorm";
 import { CartItem } from "Api/Modules/Client/Inventory/Entities/CartItem";
 
-@Entity()
+@Entity("carts")
 export class Cart extends BaseEntity {
   @Column({
     nullable: true,

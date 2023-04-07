@@ -2,7 +2,7 @@ import { BeforeInsert, Column, Entity } from "typeorm";
 import { BaseEntity } from "Entities/Base";
 import { PasswordEncryptionHelper } from "Api/Modules/Common/Helpers/PasswordEncryptionHelper";
 
-@Entity()
+@Entity("users")
 export class User extends BaseEntity {
   @Column()
   firstName: string;

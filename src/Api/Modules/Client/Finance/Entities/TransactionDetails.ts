@@ -3,7 +3,7 @@ import { BaseEntity } from "Entities/Base";
 import { Wallet } from "Api/Modules/Client/Finance/Entities/Wallet";
 import { TransactionTypesEnum } from "Api/Modules/Client/Finance/TypeChecking/Transaction/TransactionTypesEnum";
 
-@Entity()
+@Entity("transaction_details")
 export class TransactionDetails extends BaseEntity {
   @ManyToOne(() => Wallet, (wallet) => wallet.transactions)
   wallet: Wallet;

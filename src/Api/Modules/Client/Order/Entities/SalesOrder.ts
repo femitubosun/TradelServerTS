@@ -3,7 +3,7 @@ import { Column, Entity, ManyToOne } from "typeorm";
 import { OrderStatusEnum } from "Api/Modules/Client/Order/Entities/OrderStatusEnum";
 import { PurchaseOrder } from "Api/Modules/Client/Order/Entities/PurchaseOrder";
 
-@Entity()
+@Entity("sales_orders")
 export class SalesOrder extends BaseEntity {
   @Column()
   customerId: number;
@@ -49,4 +49,13 @@ export class SalesOrder extends BaseEntity {
     default: OrderStatusEnum.PENDING,
   })
   status: OrderStatusEnum;
+
+  get forClient() {
+    return {
+      identifier: this.identifier,
+      status: this.status,
+      cost: this.cost,
+      quantity: this.quantity,
+    };
+  }
 }

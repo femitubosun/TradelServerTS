@@ -3,7 +3,7 @@ import { Column, Entity } from "typeorm";
 import { DateTime } from "luxon";
 import { UserTokenTypesEnum } from "../TypeChecking/UserTokens";
 
-@Entity()
+@Entity("user_tokens")
 export class UserTokens extends BaseEntity {
   @Column({
     nullable: true,

@@ -3,7 +3,7 @@ import { Column, Entity, OneToMany } from "typeorm";
 import { PurchaseOrderItem } from "Api/Modules/Client/Order/Entities/PurchaseOrderItem";
 import { OrderStatusEnum } from "Api/Modules/Client/Order/Entities/OrderStatusEnum";
 
-@Entity()
+@Entity("purchase_orders")
 export class PurchaseOrder extends BaseEntity {
   @Column()
   customerId: number;

@@ -2,7 +2,7 @@ import { Entity, Column, ManyToOne } from "typeorm";
 import { BaseEntity } from "Entities/Base";
 import { PurchaseOrder } from "Api/Modules/Client/Order/Entities/PurchaseOrder";
 
-@Entity()
+@Entity("purchase_order_items")
 export class PurchaseOrderItem extends BaseEntity {
   @ManyToOne(() => PurchaseOrder, (order) => order.items)
   order: PurchaseOrder;

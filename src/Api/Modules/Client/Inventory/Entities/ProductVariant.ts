@@ -2,7 +2,7 @@ import { BaseEntity } from "Entities/Base";
 import { Column, Entity, ManyToOne } from "typeorm";
 import { Product } from "Api/Modules/Client/Inventory/Entities/Product";
 
-@Entity()
+@Entity("product_variants")
 export class ProductVariant extends BaseEntity {
   @Column({
     nullable: false,

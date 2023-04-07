@@ -3,7 +3,7 @@ import { BeforeInsert, BeforeUpdate, Column, Entity } from "typeorm";
 import slugify from "slugify";
 import { businessConfig } from "Config/businessConfig";
 
-@Entity()
+@Entity("merchants")
 export class Merchant extends BaseEntity {
   @Column()
   storeName: string;

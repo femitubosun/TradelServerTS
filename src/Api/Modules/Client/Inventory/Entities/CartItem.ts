@@ -4,7 +4,7 @@ import { Cart } from "Api/Modules/Client/Inventory/Entities/Cart";
 import { ProductVariant } from "Api/Modules/Client/Inventory/Entities/ProductVariant";
 import { Product } from "Api/Modules/Client/Inventory/Entities/Product";
 
-@Entity()
+@Entity("cart_items")
 export class CartItem extends BaseEntity {
   @ManyToOne(() => Cart, (cart) => cart.items)
   cart: Cart;

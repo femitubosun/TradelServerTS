@@ -2,7 +2,7 @@ import { BaseEntity } from "Entities/Base";
 import { Column, Entity, OneToMany } from "typeorm";
 import { TransactionDetails } from "Api/Modules/Client/Finance/Entities/TransactionDetails";
 
-@Entity()
+@Entity("wallets")
 export class Wallet extends BaseEntity {
   @Column()
   userId: number;

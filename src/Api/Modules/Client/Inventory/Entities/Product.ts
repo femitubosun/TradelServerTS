@@ -1,11 +1,14 @@
 import { BaseEntity } from "Entities/Base";
-import { BeforeInsert, Column, Entity, OneToMany } from "typeorm";
+import { BeforeInsert, Column, Entity, OneToMany, Index } from "typeorm";
 import slugify from "slugify";
 import { businessConfig } from "Config/businessConfig";
 import { ProductVariant } from "Api/Modules/Client/Inventory/Entities/ProductVariant";
 
-@Entity()
+@Entity("products")
 export class Product extends BaseEntity {
+  @Index({
+    fulltext: true,
+  })
   @Column()
   name: string;
 
@@ -30,6 +33,9 @@ export class Product extends BaseEntity {
 
   @Column()
   merchantId: number;
+
+  @Column("tsvector", { select: false })
+  documentWithWeights: any;
 
   @BeforeInsert()
   generateSlug() {

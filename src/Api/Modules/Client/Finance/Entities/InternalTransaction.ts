@@ -1,7 +1,7 @@
 import { BaseEntity } from "Entities/Base";
 import { Column, Entity } from "typeorm";
 
-@Entity()
+@Entity("internal_transaction")
 export class InternalTransaction extends BaseEntity {
   @Column()
   amount: number;

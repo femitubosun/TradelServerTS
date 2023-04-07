@@ -3,7 +3,7 @@ import { Entity, Column, OneToOne, JoinColumn } from "typeorm";
 import { CartesianProduct } from "Api/Modules/Client/Inventory/Helpers/CartesianProduct";
 import { Product } from "Api/Modules/Client/Inventory/Entities/Product";
 
-@Entity()
+@Entity("product_variant_options")
 export class ProductVariantOptions extends BaseEntity {
   @Column({
     type: "jsonb",

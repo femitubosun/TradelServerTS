@@ -5,7 +5,7 @@ import slugify from "slugify";
 import { businessConfig } from "Config/businessConfig";
 import { NOT_APPLICABLE } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 
-@Entity()
+@Entity("collections")
 export class Collection extends BaseEntity {
   @Column({
     nullable: false,
