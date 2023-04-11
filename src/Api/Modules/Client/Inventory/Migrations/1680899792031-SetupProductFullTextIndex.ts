@@ -1,6 +1,8 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class SetupFullTextIndex1680899792031 implements MigrationInterface {
+export class SetupProductFullTextIndex1680899792031
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`update products
                                  set document_with_weights = setweight(to_tsvector(name), 'A') ||

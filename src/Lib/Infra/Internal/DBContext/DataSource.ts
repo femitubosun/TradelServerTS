@@ -25,12 +25,13 @@ import {
   ProductVariantOptions,
 } from "Api/Modules/Client/Inventory/Entities";
 import { SnakeNamingStrategy } from "typeorm-naming-strategies";
-import { SetupFullTextIndex1680899792031 } from "Api/Modules/Client/Inventory/Migrations/1680899792031-SetupFullTextIndex";
 import { InventoryMigrations1680900370122 } from "Api/Modules/Client/Inventory/Migrations/1680900370122-InventoryMigrations";
 import { OnboardingAndAuthenticationMigrations1680901444848 } from "Api/Modules/Client/OnboardingAndAuthentication/Migrations/1680901444848-OnboardingAndAuthenticationMigrations";
 import { ProfileMigrations1680901792744 } from "Api/Modules/Client/Profile/Migrations/1680901792744-ProfileMigrations";
 import { FinanceMigrations1680901883138 } from "Api/Modules/Client/Finance/Migrations/1680901883138-FinanceMigrations";
 import { OrderMigrations1680902127593 } from "Api/Modules/Client/Order/Migrations/1680902127593-OrderMigrations";
+import { SetupMerchantFullTextIndex1680899792032 } from "Api/Modules/Client/Profile/Migrations/1680899792032-SetupMerchantFullTextIndex";
+import { SetupProductFullTextIndex1680899792031 } from "Api/Modules/Client/Inventory/Migrations/1680899792031-SetupProductFullTextIndex";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -60,7 +61,8 @@ export const AppDataSource = new DataSource({
   ],
   migrations: [
     InventoryMigrations1680900370122,
-    // SetupFullTextIndex1680899792031,
+    SetupProductFullTextIndex1680899792031,
+    SetupMerchantFullTextIndex1680899792032,
     OnboardingAndAuthenticationMigrations1680901444848,
     ProfileMigrations1680901792744,
     FinanceMigrations1680901883138,

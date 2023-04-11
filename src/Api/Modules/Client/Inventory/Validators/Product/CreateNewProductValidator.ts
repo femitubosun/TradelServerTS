@@ -8,9 +8,8 @@ export const CreateNewProductValidator = [
     .trim()
     .escape(),
   body("description", "Description should be a string")
-    .optional({ nullable: true, checkFalsy: true })
+    .optional()
     .isString()
-    .trim()
     .escape(),
   body("base_price", "Base price should be a numeric value")
     .isNumeric()

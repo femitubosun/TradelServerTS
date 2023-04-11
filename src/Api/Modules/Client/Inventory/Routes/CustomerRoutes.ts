@@ -15,13 +15,14 @@ import { RemoveItemFromCartValidator } from "Api/Modules/Client/Inventory/Valida
 import { UpdateCartItemValidator } from "Api/Modules/Client/Inventory/Validators/Cart/UpdateCartItemValidator";
 import UpdateCartItemController from "Api/Modules/Client/Inventory/Controllers/Customer/Cart/UpdateCartItemController";
 import ClearCartController from "Api/Modules/Client/Inventory/Controllers/Customer/Cart/ClearCartController";
-import ListActiveMerchantsController from "Api/Modules/Client/Inventory/Controllers/Customer/Merchant/ListActiveMerchantsController";
-import FetchMerchantByIdentifierController from "Api/Modules/Client/Inventory/Controllers/Customer/Merchant/FetchMerchantByIdentifierController";
+import ListActiveMerchantsController from "Api/Modules/Client/Profile/Controllers/Customer/Merchant/ListActiveMerchantsController";
+import FetchMerchantByIdentifierController from "Api/Modules/Client/Profile/Controllers/Customer/Merchant/FetchMerchantByIdentifierController";
 import ListProductVariantsByProductController from "Api/Modules/Client/Inventory/Controllers/Customer/ProductVariant/ListProductVariantsByProductController";
 import FetchProductVariantByIdentifierController from "Api/Modules/Client/Inventory/Controllers/Customer/ProductVariant/FetchProductVariantByIdentifierController";
 import { AccessProductIdentifierValidator } from "Api/Modules/Client/Inventory/Validators/ProductVariant/AccessProductIdentifierValidator";
 import { AccessProductVariantIdentifierValidator } from "Api/Modules/Client/Inventory/Validators/ProductVariant/AccessProductVariantIdentifierValidator";
 import SearchProductByNameController from "Api/Modules/Client/Inventory/Controllers/Customer/Product/SearchProductByNameController";
+import SearchMerchantByNameController from "Api/Modules/Client/Profile/Controllers/Customer/Merchant/SearchMerchantByNameController";
 
 const routes = Router();
 
@@ -77,30 +78,6 @@ routes.patch(
   UpdateCartItemValidator,
   validate,
   UpdateCartItemController.handle
-);
-
-/*------------------------------<  Merchants Routes  >-------------------------- */
-
-routes.get(
-  "/Fetch/Merchants",
-  asyncMiddlewareHandler(isRole([CUSTOMER_ROLE_NAME])),
-  ListActiveMerchantsController.handle
-);
-
-routes.get(
-  "/Fetch/Merchants/:merchantIdentifier",
-  asyncMiddlewareHandler(isRole([CUSTOMER_ROLE_NAME])),
-  MerchantIdentifierIsValidUuidValidator,
-  validate,
-  FetchMerchantByIdentifierController.handle
-);
-
-routes.get(
-  "/Fetch/Merchants/:merchantIdentifier/Products",
-  asyncMiddlewareHandler(isRole([CUSTOMER_ROLE_NAME])),
-  MerchantIdentifierIsValidUuidValidator,
-  validate,
-  ListActiveProductsByMerchantController.handle
 );
 
 /*------------------------------<  Product Variant  >--------------------------- */

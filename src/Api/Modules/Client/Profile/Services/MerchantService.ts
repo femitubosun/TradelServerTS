@@ -150,6 +150,20 @@ class MerchantService {
 
     return merchant.userId;
   }
+
+  public async searchMerchant(searchQuery: string) {
+    return this.merchantsRepository
+      .createQueryBuilder()
+      .select()
+      .where("document_with_weights @@ plainto_tsquery(:query)", {
+        query: `%${searchQuery}%`,
+      })
+      .orderBy(
+        "ts_rank(document_with_weights, plainto_tsquery(:query))",
+        "DESC"
+      )
+      .getMany();
+  }
 }
 
 export default new MerchantService();

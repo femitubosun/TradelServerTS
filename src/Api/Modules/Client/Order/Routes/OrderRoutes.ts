@@ -13,6 +13,9 @@ import { PayForOrderValidator } from "Api/Modules/Client/Order/Validators/PayFor
 import ListSaleOrderController from "Api/Modules/Client/Order/Controllers/Merchant/ListSaleOrderController";
 import FetchSaleOrderByIdentifierController from "Api/Modules/Client/Order/Controllers/Merchant/FetchSaleOrderByIdentifierController";
 import { AccessSalesOrderIdentifierValidator } from "Api/Modules/Client/Order/Validators/AccessSalesOrderIdentifierValidator";
+import { FetchProductByIdentifierValidator } from "Api/Modules/Client/Inventory/Validators/Product/FetchProductByIdentifierValidator";
+import FetchPurchaseOrderByIdentifierController from "Api/Modules/Client/Order/Controllers/Customer/FetchPurchaseOrderByIdentifierController";
+import { AccessPurchaseOrderIdentifierValidator } from "Api/Modules/Client/Order/Validators/AccessPurchaseOrderIdentifierValidator";
 
 const routes = Router();
 
@@ -28,6 +31,15 @@ routes.get(
   "/Fetch/PurchaseOrders",
   asyncMiddlewareHandler(isRole([CUSTOMER_ROLE_NAME])),
   ListPurchaseOrdersController.handle
+);
+
+routes.get(
+  "/Fetch/PurchaseOrders/:purchaseOrderIdentifier",
+  asyncMiddlewareHandler(isRole([CUSTOMER_ROLE_NAME])),
+  AccessPurchaseOrderIdentifierValidator,
+  validate,
+
+  FetchPurchaseOrderByIdentifierController.handle
 );
 
 routes.post(
@@ -49,6 +61,7 @@ routes.get(
   "/Fetch/SalesOrders/:salesOrderIdentifier",
   asyncMiddlewareHandler(isRole([MERCHANT_ROLE_NAME])),
   AccessSalesOrderIdentifierValidator,
+  validate,
   FetchSaleOrderByIdentifierController.handle
 );
 

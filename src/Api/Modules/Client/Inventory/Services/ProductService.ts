@@ -167,7 +167,7 @@ class ProductService {
       .createQueryBuilder()
       .select()
       .where("document_with_weights @@ plainto_tsquery(:query)", {
-        searchQuery: `%${searchQuery}%`,
+        query: `%${searchQuery}%`,
       })
       .orderBy(
         "ts_rank(document_with_weights, plainto_tsquery(:query))",
