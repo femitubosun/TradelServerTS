@@ -10,5 +10,6 @@ export type CreateSalesOrderDto = Pick<
   | "productId"
   | "quantity"
   | "cost"
+  | "status"
 > &
   DbQueryRunner;

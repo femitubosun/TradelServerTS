@@ -8,8 +8,3 @@ Event.on(
   OrderEventTypesEnum.order.createPurchaseOrder,
   PurchaseOrderListener.onCreatePurchaseOrder
 );
-
-Event.on(
-  OrderEventTypesEnum.order.paymentForPurchaseOrder,
-  PurchaseOrderListener.onPaymentForPurchaseOrder
-);

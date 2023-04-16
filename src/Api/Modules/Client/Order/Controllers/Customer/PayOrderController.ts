@@ -7,6 +7,8 @@ import {
   NULL_OBJECT,
   PAY_FOR_ORDER_OPERATION,
   PLEASE_ACTIVATE_ACCOUNT_TO_COMPLETE_ORDER,
+  PRODUCT_RESOURCE,
+  PRODUCT_VARIANT_RESOURCE,
   SUCCESS,
   YOU_HAVE_ALREADY_PAID_FOR_ORDER,
 } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
@@ -25,9 +27,8 @@ import SalesOrderService from "Api/Modules/Client/Order/Services/SalesOrderServi
 import { InventoryInternalApi } from "Api/Modules/Client/Inventory/InventoryInternalApi";
 import { FinanceInternalApi } from "Api/Modules/Client/Finance/FinanceInternalApi";
 import { OrderItemErrorsType } from "Api/Modules/Client/Order/TypeChecking/GeneralPurpose/OrderItemErrorsType";
-import { Event } from "Api/Modules/Client/Order/Events";
-import { OrderEventTypesEnum } from "Api/Modules/Client/Order/TypeChecking/GeneralPurpose/OrderEventTypesEnum";
 import { OrderStatusEnum } from "Api/Modules/Client/Order/Entities/OrderStatusEnum";
+import { TransactionTypesEnum } from "Api/Modules/Client/Finance/TypeChecking/Transaction/TransactionTypesEnum";
 
 const dbContext = container.resolve(DbContext);
 
@@ -85,51 +86,71 @@ class PayOrderController {
         });
       }
 
+      await FinanceInternalApi.chargeWallet({
+        walletId: wallet.id,
+        amount: purchaseOrder.cost,
+        queryRunner,
+      });
+
+      await FinanceInternalApi.createTransactionDetailsRecord({
+        queryRunner,
+        wallet: wallet!,
+        amount: purchaseOrder.cost,
+        transactionDescription: `Purchase for ${purchaseOrder.identifier}`,
+        transactionType: TransactionTypesEnum.WITHDRAWAL,
+      });
+
       const orderErrors: OrderItemErrorsType[] = [];
 
       for (const item of purchaseOrder.items) {
-        let merchantId;
+        const ITEM_IS_A_PRODUCT = item.isProduct === true;
 
-        if (item.isProduct) {
-          const product = await InventoryInternalApi.getProductById(
-            item.productId
-          );
-          merchantId = product?.merchantId;
+        const merchantId = ITEM_IS_A_PRODUCT
+          ? (await InventoryInternalApi.getProductById(item.productId))
+              ?.merchantId
+          : (
+              await InventoryInternalApi.getProductVariantById(
+                item.productVariantId
+              )
+            )?.product.merchantId;
 
-          if (product && item.quantity > product?.stock) {
-            orderErrors.push({
-              order_item: item.forClient,
-              message: NOT_ENOUGH_STOCK,
-            });
-          }
-
-          await InventoryInternalApi.depleteProduct({
-            productId: item.productId,
-            quantity: item.quantity,
-            queryRunner,
-          });
-        }
-        if (item.productVariantId) {
-          const productVariant =
-            await InventoryInternalApi.getProductVariantById(
+        const inventoryItem = ITEM_IS_A_PRODUCT
+          ? await InventoryInternalApi.getProductById(item.productId)
+          : await InventoryInternalApi.getProductVariantById(
               item.productVariantId
             );
 
-          merchantId = productVariant?.product.merchantId;
-
-          if (productVariant && item.quantity > productVariant?.stock) {
-            orderErrors.push({
-              order_item: item.forClient,
-              message: NOT_ENOUGH_STOCK,
-            });
-          }
-
-          await InventoryInternalApi.depleteProductVariant({
-            productVariantId: item.productVariantId,
-            queryRunner,
-            quantity: item.quantity,
+        if (inventoryItem === NULL_OBJECT) {
+          orderErrors.push({
+            order_item: item.forClient,
+            message: RESOURCE_RECORD_NOT_FOUND(
+              ITEM_IS_A_PRODUCT ? PRODUCT_RESOURCE : PRODUCT_VARIANT_RESOURCE
+            ),
           });
+
+          continue;
         }
+
+        if (inventoryItem!.stock < item.quantity) {
+          orderErrors.push({
+            order_item: item.forClient,
+            message: NOT_ENOUGH_STOCK,
+          });
+
+          continue;
+        }
+
+        ITEM_IS_A_PRODUCT
+          ? await InventoryInternalApi.depleteProduct({
+              productId: item.productId,
+              quantity: item.quantity,
+              queryRunner,
+            })
+          : await InventoryInternalApi.depleteProductVariant({
+              productVariantId: item.productVariantId,
+              queryRunner,
+              quantity: item.quantity,
+            });
 
         const createSalesOrderDto: CreateSalesOrderDto = {
           customerId: customer!.id,
@@ -139,9 +160,48 @@ class PayOrderController {
           productVariantId: item.productVariantId,
           productId: item.productId,
           cost: item.cost,
+          status: OrderStatusEnum.PROCESSED,
           queryRunner,
         };
-        await SalesOrderService.createSalesOrderRecord(createSalesOrderDto);
+
+        const salesOrder = await SalesOrderService.createSalesOrderRecord(
+          createSalesOrderDto
+        );
+
+        const merchantUserId = await ProfileInternalApi.getMerchantUserId({
+          identifier: Number(merchantId),
+          identifierType: "id",
+        });
+
+        const merchantWallet = await FinanceInternalApi.getWalletByUserId(
+          merchantUserId
+        );
+
+        const transactionDescription = `Purchase for ${salesOrder.identifier})`;
+
+        // Handle this guy as an event.
+
+        await FinanceInternalApi.createInternalTransactionRecord({
+          amount: salesOrder.cost,
+          sourceWalletId: wallet!.id,
+          destinationWalletId: merchantWallet!.id,
+          transactionDescription,
+          queryRunner,
+        });
+
+        await FinanceInternalApi.fundWallet({
+          amount: salesOrder.cost,
+          walletId: merchantWallet!.id,
+          queryRunner,
+        });
+
+        await FinanceInternalApi.createTransactionDetailsRecord({
+          queryRunner,
+          wallet: merchantWallet!,
+          amount: salesOrder.cost,
+          transactionType: TransactionTypesEnum.DEPOSIT,
+          transactionDescription,
+        });
       }
 
       if (orderErrors.length > 0) {
@@ -155,12 +215,17 @@ class PayOrderController {
         });
       }
 
-      await queryRunner.commitTransaction();
+      await PurchaseOrderService.updatePurchaseOrderRecord({
+        identifier: purchaseOrder.id,
+        identifierType: "id",
+        updatePayload: {
+          status: OrderStatusEnum.PROCESSED,
+        },
+        queryRunner,
+        useTransaction: true,
+      });
 
-      Event.emit(
-        OrderEventTypesEnum.order.paymentForPurchaseOrder,
-        purchaseOrder.id
-      );
+      await queryRunner.commitTransaction();
 
       return response.status(HttpStatusCodeEnum.OK).json({
         status_code: HttpStatusCodeEnum.OK,
