@@ -13,7 +13,6 @@ import { PayForOrderValidator } from "Api/Modules/Client/Order/Validators/PayFor
 import ListSaleOrderController from "Api/Modules/Client/Order/Controllers/Merchant/ListSaleOrderController";
 import FetchSaleOrderByIdentifierController from "Api/Modules/Client/Order/Controllers/Merchant/FetchSaleOrderByIdentifierController";
 import { AccessSalesOrderIdentifierValidator } from "Api/Modules/Client/Order/Validators/AccessSalesOrderIdentifierValidator";
-import { FetchProductByIdentifierValidator } from "Api/Modules/Client/Inventory/Validators/Product/FetchProductByIdentifierValidator";
 import FetchPurchaseOrderByIdentifierController from "Api/Modules/Client/Order/Controllers/Customer/FetchPurchaseOrderByIdentifierController";
 import { AccessPurchaseOrderIdentifierValidator } from "Api/Modules/Client/Order/Validators/AccessPurchaseOrderIdentifierValidator";
 

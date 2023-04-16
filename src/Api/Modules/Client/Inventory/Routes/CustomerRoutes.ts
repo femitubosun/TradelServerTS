@@ -1,9 +1,7 @@
 import { Router } from "express";
 import { asyncMiddlewareHandler } from "Utils/asyncMiddlewareHandler";
 import ListActiveProductsController from "Api/Modules/Client/Inventory/Controllers/Customer/Product/ListActiveProductsController";
-import { MerchantIdentifierIsValidUuidValidator } from "Api/Modules/Client/Inventory/Validators/Product/MerchantIdentifierIsValidUuidValidator";
 import validate from "Api/Validators/Common/validate";
-import ListActiveProductsByMerchantController from "Api/Modules/Client/Inventory/Controllers/Customer/Product/ListActiveProductsByMerchantController";
 import FetchProductByIdentifierController from "Api/Modules/Client/Inventory/Controllers/Customer/Product/FetchProductByIdentifierController";
 import { isRole } from "Api/Middleware/isRole";
 import { CUSTOMER_ROLE_NAME } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
@@ -15,14 +13,11 @@ import { RemoveItemFromCartValidator } from "Api/Modules/Client/Inventory/Valida
 import { UpdateCartItemValidator } from "Api/Modules/Client/Inventory/Validators/Cart/UpdateCartItemValidator";
 import UpdateCartItemController from "Api/Modules/Client/Inventory/Controllers/Customer/Cart/UpdateCartItemController";
 import ClearCartController from "Api/Modules/Client/Inventory/Controllers/Customer/Cart/ClearCartController";
-import ListActiveMerchantsController from "Api/Modules/Client/Profile/Controllers/Customer/Merchant/ListActiveMerchantsController";
-import FetchMerchantByIdentifierController from "Api/Modules/Client/Profile/Controllers/Customer/Merchant/FetchMerchantByIdentifierController";
 import ListProductVariantsByProductController from "Api/Modules/Client/Inventory/Controllers/Customer/ProductVariant/ListProductVariantsByProductController";
 import FetchProductVariantByIdentifierController from "Api/Modules/Client/Inventory/Controllers/Customer/ProductVariant/FetchProductVariantByIdentifierController";
 import { AccessProductIdentifierValidator } from "Api/Modules/Client/Inventory/Validators/ProductVariant/AccessProductIdentifierValidator";
 import { AccessProductVariantIdentifierValidator } from "Api/Modules/Client/Inventory/Validators/ProductVariant/AccessProductVariantIdentifierValidator";
 import SearchProductByNameController from "Api/Modules/Client/Inventory/Controllers/Customer/Product/SearchProductByNameController";
-import SearchMerchantByNameController from "Api/Modules/Client/Profile/Controllers/Customer/Merchant/SearchMerchantByNameController";
 
 const routes = Router();
 

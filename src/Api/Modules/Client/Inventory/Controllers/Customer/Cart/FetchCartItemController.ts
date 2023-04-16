@@ -8,8 +8,6 @@ import {
   SUCCESS,
 } from "Api/Modules/Common/Helpers/Messages/SystemMessages";
 import { AuthRequest } from "TypeChecking/GeneralPurpose/AuthRequest";
-import { ProfileInternalApi } from "Api/Modules/Client/Profile/ProfileInternalApi";
-import CartService from "Api/Modules/Client/Inventory/Services/CartService";
 import CartItemService from "Api/Modules/Client/Inventory/Services/CartItemService";
 import {
   RESOURCE_FETCHED_SUCCESSFULLY,
