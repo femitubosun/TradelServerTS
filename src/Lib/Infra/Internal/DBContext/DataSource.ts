@@ -30,8 +30,8 @@ import { OnboardingAndAuthenticationMigrations1680901444848 } from "Api/Modules/
 import { ProfileMigrations1680901792744 } from "Api/Modules/Client/Profile/Migrations/1680901792744-ProfileMigrations";
 import { FinanceMigrations1680901883138 } from "Api/Modules/Client/Finance/Migrations/1680901883138-FinanceMigrations";
 import { OrderMigrations1680902127593 } from "Api/Modules/Client/Order/Migrations/1680902127593-OrderMigrations";
-import { SetupMerchantFullTextIndex1680899792032 } from "Api/Modules/Client/Profile/Migrations/1680899792032-SetupMerchantFullTextIndex";
-import { SetupProductFullTextIndex1680899792031 } from "Api/Modules/Client/Inventory/Migrations/1680899792031-SetupProductFullTextIndex";
+import { SetupProductFullTextIndex1680899792031 } from "Api/Modules/Client/Inventory/Migrations/1681654813559-SetupProductFullTextIndex";
+import { SetupMerchantFullTextIndex1680899792032 } from "Api/Modules/Client/Profile/Migrations/1681654831072-SetupMerchantFullTextIndex";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
