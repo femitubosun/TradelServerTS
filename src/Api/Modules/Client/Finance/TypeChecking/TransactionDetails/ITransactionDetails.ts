@@ -1,5 +1,5 @@
 import { TransactionTypesEnum } from "Api/Modules/Client/Finance/TypeChecking/Transaction/TransactionTypesEnum";
-import { Wallet } from "Api/Modules/Client/Finance/Entities";
+import { Wallet } from "src/Api/Modules/Client/Finance/Entities";
 
 export interface ITransactionDetails {
   id: number;

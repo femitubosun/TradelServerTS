@@ -1,3 +1,5 @@
+import { ExternalTransactionChannelsEnum } from "Api/Modules/Client/Finance/TypeChecking/ExternalTransaction/ExternalTransactionChannelsEnum";
+
 export function RESOURCE_FETCHED_SUCCESSFULLY(resourceName = "Resource") {
   return ` ${resourceName} Fetched Successfully`;
 }
@@ -28,4 +30,13 @@ export function OPERATION_SUCCESS(operationName?: string) {
 
 export function OPERATION_FAILURE(operationName?: string) {
   return `${operationName} Operation was failure`;
+}
+
+export function WALLET_FUNDING_FROM_EXTERNAL_SOURCE_DESCRIPTION(fundingDesscriptionDto: {
+  sourceChannel: ExternalTransactionChannelsEnum;
+  amount: number;
+}) {
+  const { sourceChannel, amount } = fundingDesscriptionDto;
+
+  return `${amount} funding through ${sourceChannel}`;
 }

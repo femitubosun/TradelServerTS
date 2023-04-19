@@ -1,6 +1,6 @@
 import { autoInjectable } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
-import { InternalTransaction } from "Api/Modules/Client/Finance/Entities";
+import { InternalTransaction } from "src/Api/Modules/Client/Finance/Entities";
 import { Repository } from "typeorm";
 import { CreateInternalTransactionRecordDto } from "Api/Modules/Client/Finance/TypeChecking/Transaction/CreateInternalTransactionRecordDto";
 

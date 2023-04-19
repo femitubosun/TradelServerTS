@@ -10,7 +10,7 @@ import {
   InternalTransaction,
   TransactionDetails,
   Wallet,
-} from "Api/Modules/Client/Finance/Entities";
+} from "src/Api/Modules/Client/Finance/Entities";
 import {
   PurchaseOrder,
   PurchaseOrderItem,
@@ -30,8 +30,8 @@ import { OnboardingAndAuthenticationMigrations1680901444848 } from "Api/Modules/
 import { ProfileMigrations1680901792744 } from "Api/Modules/Client/Profile/Migrations/1680901792744-ProfileMigrations";
 import { FinanceMigrations1680901883138 } from "Api/Modules/Client/Finance/Migrations/1680901883138-FinanceMigrations";
 import { OrderMigrations1680902127593 } from "Api/Modules/Client/Order/Migrations/1680902127593-OrderMigrations";
-import { SetupProductFullTextIndex1680899792031 } from "Api/Modules/Client/Inventory/Migrations/1681654813559-SetupProductFullTextIndex";
-import { SetupMerchantFullTextIndex1680899792032 } from "Api/Modules/Client/Profile/Migrations/1681654831072-SetupMerchantFullTextIndex";
+import { ExternalTransaction } from "Api/Modules/Client/Finance/Entities/ExternalTransaction";
+import { ExternalTransaction1681888952091 } from "Api/Modules/Client/Finance/Migrations/1681888952091-ExternalTransaction";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -54,6 +54,7 @@ export const AppDataSource = new DataSource({
     Customer,
     Wallet,
     InternalTransaction,
+    ExternalTransaction,
     TransactionDetails,
     PurchaseOrder,
     PurchaseOrderItem,
@@ -61,12 +62,11 @@ export const AppDataSource = new DataSource({
   ],
   migrations: [
     InventoryMigrations1680900370122,
-    SetupProductFullTextIndex1680899792031,
-    SetupMerchantFullTextIndex1680899792032,
     OnboardingAndAuthenticationMigrations1680901444848,
     ProfileMigrations1680901792744,
     FinanceMigrations1680901883138,
     OrderMigrations1680902127593,
+    ExternalTransaction1681888952091,
   ],
   namingStrategy: new SnakeNamingStrategy(),
 });

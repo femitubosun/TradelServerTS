@@ -1,11 +1,11 @@
 import { IPaymentProviderDriver } from "Lib/Infra/External/Payment/TypeChecking/IPaymentProviderDriver";
 
 export class FlutterwaveDriver implements IPaymentProviderDriver {
-  confirmTransaction(): null {
+  verifyTransaction(): null {
     return null;
   }
 
-  pay(): null {
+  initializeTransaction(): null {
     return null;
   }
 }

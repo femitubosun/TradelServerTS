@@ -68,6 +68,14 @@ declare global {
       PAYMENT_PROVIDER: string;
 
       INITIAL_WALLET_BALANCE: number;
+
+      PAYSTACK_API_KEY: string;
+
+      PAYSTACK_INITIALIZE_TRANSACTION_URL: string;
+
+      PAYSTACK_VERIFY_TRANSACTION_URL: string;
+
+      TRANSACTION_REFERENCE_LENGTH: number;
     }
   }
 }

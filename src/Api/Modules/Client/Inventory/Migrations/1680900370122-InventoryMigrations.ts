@@ -147,6 +147,29 @@ export class InventoryMigrations1680900370122 implements MigrationInterface {
             ALTER TABLE "collections_items_products"
                 ADD CONSTRAINT "FK_e4869ab557938509b9c10d273eb" FOREIGN KEY ("products_id") REFERENCES "products" ("id") ON DELETE CASCADE ON UPDATE CASCADE
         `);
+
+    await queryRunner.query(`update products
+                                 set document_with_weights = setweight(to_tsvector(name), 'A') ||
+                                                             setweight(to_tsvector(coalesce(description, '')), 'B');
+
+        CREATE INDEX document_weights_idx
+            ON products
+                USING GIN (document_with_weights);
+        CREATE FUNCTION products_tsvector_trigger() RETURNS trigger AS
+        $$
+        begin
+            new.document_with_weights :=
+                        setweight(to_tsvector('english', coalesce(new.name, '')), 'A')
+                        || setweight(to_tsvector('english', coalesce(new.description, '')), 'B');
+            return new;
+        end
+        $$ LANGUAGE plpgsql;
+        CREATE TRIGGER tsvectorupdate
+            BEFORE INSERT OR UPDATE
+            ON products
+            FOR EACH ROW
+        EXECUTE PROCEDURE products_tsvector_trigger();
+        `);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

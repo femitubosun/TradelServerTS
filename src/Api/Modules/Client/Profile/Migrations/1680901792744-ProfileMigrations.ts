@@ -37,6 +37,27 @@ export class ProfileMigrations1680901792744 implements MigrationInterface {
                 CONSTRAINT "PK_133ec679a801fab5e070f73d3ea" PRIMARY KEY ("id")
             )
         `);
+
+    await queryRunner.query(`update merchants
+                                 set document_with_weights = setweight(to_tsvector(store_name), 'A');
+
+        CREATE INDEX merchant_document_weights_idx
+            ON merchants
+                USING GIN (document_with_weights);
+        CREATE FUNCTION merchants_tsvector_trigger() RETURNS trigger AS
+        $$
+        begin
+            new.document_with_weights :=
+                    setweight(to_tsvector('english', coalesce(new.store_name, '')), 'A');
+            return new;
+        end
+        $$ LANGUAGE plpgsql;
+        CREATE TRIGGER tsvectorupdate
+            BEFORE INSERT OR UPDATE
+            ON merchants
+            FOR EACH ROW
+        EXECUTE PROCEDURE merchants_tsvector_trigger();
+        `);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

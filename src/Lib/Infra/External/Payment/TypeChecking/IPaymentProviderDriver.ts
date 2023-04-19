@@ -1,5 +1,12 @@
-export interface IPaymentProviderDriver {
-  pay(): null;
+import { InitializeTransactionDto } from "Lib/Infra/External/Payment/TypeChecking/InitializeTransactionDto";
+import { VerifyTransactionDto } from "Lib/Infra/External/Payment/TypeChecking/VerifyTransactionDto";
 
-  confirmTransaction(): null;
+export interface IPaymentProviderDriver {
+  initializeTransaction(
+    initializeTransactionDto: InitializeTransactionDto
+  ): Promise<object | null>;
+
+  verifyTransaction(
+    verifyTransactionDto: VerifyTransactionDto
+  ): Promise<object | null>;
 }

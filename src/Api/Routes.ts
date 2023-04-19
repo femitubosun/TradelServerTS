@@ -4,7 +4,10 @@ import OnboardingAndAuthenticationRoutes from "Api/Modules/Client/OnboardingAndA
 import InventoryRoutes from "Api/Modules/Client/Inventory/Routes/index";
 import OrderRoutes from "Api/Modules/Client/Order/Routes/index";
 import ProfileRoutes from "Api/Modules/Client/Profile/Routes/index";
+import FinanceRoutes from "Api/Modules/Client/Finance/Routes/index";
+
 import { HttpStatusCodeEnum } from "Utils/HttpStatusCodeEnum";
+
 import {
   SUCCESS,
   WELCOME_TO_API,
@@ -16,6 +19,7 @@ routes.use("", OnboardingAndAuthenticationRoutes);
 routes.use("", InventoryRoutes);
 routes.use("", OrderRoutes);
 routes.use("", ProfileRoutes);
+routes.use("", FinanceRoutes);
 
 routes.use("/", (request: Request, response: Response) => {
   response.status(HttpStatusCodeEnum.OK).json({

@@ -1,6 +1,6 @@
 import { autoInjectable } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
-import { Wallet } from "Api/Modules/Client/Finance/Entities";
+import { Wallet } from "src/Api/Modules/Client/Finance/Entities";
 import { Repository } from "typeorm";
 import { PurchaseOrderItem } from "Api/Modules/Client/Order/Entities";
 import { CreatePurchaseOrderItemDto } from "Api/Modules/Client/Order/TypeChecking/PurchaseOderItem/CreatePurchaseOrderItemDto";
