@@ -1,6 +1,6 @@
 import { autoInjectable } from "tsyringe";
 import { CreateWalletRecordDto } from "Api/Modules/Client/Finance/TypeChecking/Wallet/CreateWalletRecordDto";
-import { Wallet } from "src/Api/Modules/Client/Finance/Entities";
+import { Wallet } from "Api/Modules/Client/Finance/Entities";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
 import { Repository } from "typeorm";
 import { NULL_OBJECT } from "Api/Modules/Common/Helpers/Messages/SystemMessages";

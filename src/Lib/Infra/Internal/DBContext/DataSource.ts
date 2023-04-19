@@ -10,7 +10,8 @@ import {
   InternalTransaction,
   TransactionDetails,
   Wallet,
-} from "src/Api/Modules/Client/Finance/Entities";
+  ExternalTransaction,
+} from "Api/Modules/Client/Finance/Entities";
 import {
   PurchaseOrder,
   PurchaseOrderItem,
@@ -30,7 +31,6 @@ import { OnboardingAndAuthenticationMigrations1680901444848 } from "Api/Modules/
 import { ProfileMigrations1680901792744 } from "Api/Modules/Client/Profile/Migrations/1680901792744-ProfileMigrations";
 import { FinanceMigrations1680901883138 } from "Api/Modules/Client/Finance/Migrations/1680901883138-FinanceMigrations";
 import { OrderMigrations1680902127593 } from "Api/Modules/Client/Order/Migrations/1680902127593-OrderMigrations";
-import { ExternalTransaction } from "Api/Modules/Client/Finance/Entities/ExternalTransaction";
 import { ExternalTransaction1681888952091 } from "Api/Modules/Client/Finance/Migrations/1681888952091-ExternalTransaction";
 
 export const AppDataSource = new DataSource({

@@ -1,6 +1,6 @@
 import { autoInjectable } from "tsyringe";
 import { DbContext } from "Lib/Infra/Internal/DBContext";
-import { TransactionDetails } from "src/Api/Modules/Client/Finance/Entities";
+import { TransactionDetails } from "Api/Modules/Client/Finance/Entities";
 import { Repository } from "typeorm";
 import { CreateTransactionDetailsRecordDto } from "Api/Modules/Client/Finance/TypeChecking/TransactionDetails/CreateTransactionDetailsRecordDto";
 

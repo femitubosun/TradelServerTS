@@ -13,6 +13,7 @@ import * as console from "console";
 import {
   OPERATION_FAILURE,
   OPERATION_SUCCESS,
+  RESOURCE_RECORD_NOT_FOUND,
 } from "Api/Modules/Common/Helpers/Messages/SystemMessageFunctions";
 import ExternalTransactionService from "Api/Modules/Client/Finance/Services/ExternalTransactionService";
 import { ExternalTransactionStatusEnum } from "Api/Modules/Client/Finance/TypeChecking/ExternalTransaction/ExternalTransactionStatusEnum";
@@ -27,6 +28,19 @@ class VerifyTransactionController {
 
     try {
       const { transactionReference } = request.params;
+
+      const externalTransaction =
+        await ExternalTransactionService.getExternalTransactionByReference(
+          transactionReference
+        );
+
+      if (externalTransaction === NULL_OBJECT) {
+        return response.status(HttpStatusCodeEnum.NOT_FOUND).json({
+          status_code: HttpStatusCodeEnum.NOT_FOUND,
+          status: ERROR,
+          message: RESOURCE_RECORD_NOT_FOUND("External Transaction"),
+        });
+      }
 
       const paymentProvider = PaymentProviderFactory.getPaymentProvider();
 
